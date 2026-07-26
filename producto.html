@@ -6,39 +6,13 @@
   <title>Cuartos Disponibles</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="script.js"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            heading: ['Outfit', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#f0fdfa',
-              100: '#ccfbf1',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e',
-            },
-            accent: {
-              400: '#38bdf8',
-              500: '#0284c7',
-              600: '#0369a1',
-            }
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
     .glass-nav {
@@ -56,35 +30,83 @@
       transition: opacity 0.8s ease-in-out;
     }
   </style>
+
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
 
   <!-- ================= MENÚ ================= -->
-  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
-    <a href="index.html" class="flex items-center gap-2 group">
-      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
-        <i class="fa-solid fa-house-user"></i>
-      </div>
-      <div class="flex flex-col">
-        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
-          UniCuartos
-        </span>
-        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
-          Panamá / UP
-        </span>
-      </div>
-    </a>
+<header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+  <a href="index.html" class="flex items-center gap-2 group">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+      <i class="fa-solid fa-house-user"></i>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+        UniCuartos
+      </span>
+      <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+        Panamá / UP
+      </span>
+    </div>
+  </a>
 
-    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
-      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
-      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
-      <a href="index.html#publicar-sec" class="hover:text-brand-600 transition">¿Cómo funciona?</a>
-      <a href="index.html#faq" class="hover:text-brand-600 transition">Preguntas</a>
-    </nav>
+  <!-- Menú de Escritorio -->
+  <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+    <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+    <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
+    <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
+    <a href="donaciones.html" class="hover:text-brand-600 transition">¿Cómo apoyar?</a>
+    <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
+    <a href="blog.html" class="hover:text-brand-600 transition">Blog</a>
+</nav>
 
+  <div class="flex items-center gap-3">
     <div id="authNavContainer" class="flex items-center gap-3">
       <!-- Inyectado dinámicamente -->
     </div>
+    
+    <!-- Botón de Menú Móvil (Hamburguesa) -->
+    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
+      <i class="fa-solid fa-bars text-lg"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
+<div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
+
+<div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+  <!-- Cabecera del menú lateral -->
+  <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+    <span class="font-heading font-extrabold text-lg text-slate-900">Menú de Navegación</span>
+    <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+      <i class="fa-solid fa-xmark text-base"></i>
+    </button>
+  </div>
+
+  <!-- Enlaces de navegación móvil -->
+  <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
+    <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+    </a>
+    <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos Disponibles
+    </a>
+    <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
+    </a>
+    <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> ¿Cómo apoyar?
+    </a>
+    <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
+    </a>
+    <a href="blog.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
+    </a>
+  </div>
+</div>
+
 
     <!-- NOTIFICACIÓN TOAST -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
@@ -93,8 +115,31 @@
     </div>
   </header>
 
+  <script>
+   function toggleMobileMenu() {
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('mobileBackdrop');
+  
+  if (!drawer || !backdrop) return;
 
-  <!-- ================= 1. VISTA DE CATÁLOGO GENERAL (INICIO) ================= -->
+  const isOpen = drawer.classList.contains('translate-x-full');
+
+  if (isOpen) {
+    // Abrir menú
+    drawer.classList.remove('translate-x-full');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
+  } else {
+    // Cerrar menú
+    drawer.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = ''; // Restaura el scroll
+  }
+}
+    </script>
+
+
+  <!-- ================= 1. VISTA DE CATÁLOGO GENERAL ================= -->
   <!-- Se añadió mt-28 para evitar que el menú flotante tape el contenido -->
   <main id="catalogView" class="max-w-7xl mx-auto px-4 mt-28 mb-10 flex-1 w-full space-y-8">
     
@@ -306,6 +351,245 @@
 
   </main>
 
+  <!-- ================= FOOTER ================= -->
+<footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+  <!-- Contenedor de 3 columnas (grid-cols-1 md:grid-cols-3) para escritorio -->
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+    
+    <!-- Columna 1: Información y marca -->
+    <div class="space-y-4">
+      <a href="index.html" onclick="showCatalogView()" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+          <i class="fa-solid fa-house-user"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+            UniCuartos
+          </span>
+          <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+            Panamá / UP
+          </span>
+        </div>
+      </a>
+      <p class="text-slate-400 leading-relaxed text-xs">
+        Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+      </p>
+    </div>
+
+    <!-- Columna 2: Enlaces de Información -->
+    <div class="space-y-3">
+      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+      <ul class="space-y-2 text-xs">
+        <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+        <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+        <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+      </ul>
+    </div>
+
+    <!-- Columna 3: Soporte -->
+    <div class="space-y-3">
+      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
+      <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?.</p>
+      <div class="pt-1">
+        <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+          <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Copyright -->
+  <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+    <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+    <p class="flex items-center gap-1">
+      Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ================= MODALES ================= -->
+
+  <!-- MODAL DETALLES DE CUARTO -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+      <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <h3 id="mTitle" class="font-heading text-xl font-bold text-slate-900"></h3>
+      <p id="mPrice" class="text-lg font-black text-brand-600"></p>
+      <p id="mLoc" class="text-xs text-slate-500"></p>
+      <p id="mDesc" class="text-xs text-slate-600 leading-relaxed"></p>
+      <div id="mSelectArea" class="pt-2">
+        <button onclick="selectRoomForStudent()" class="w-full py-2.5 mb-2 bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 text-center font-bold text-xs rounded-xl transition">
+          📌 Elegir este anuncio para mi perfil
+        </button>
+      </div>
+      <a id="mWaLink" href="https://wa.me/" target="_blank" class="block w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold text-xs rounded-xl transition">
+        <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Contactar por WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- MODAL CUENTA (LOGIN / REGISTRO / OLVIDO DE CONTRASEÑA) -->
+  <div id="accountModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+      <button onclick="closeModal('accountModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      
+      <div id="authTabsHeader" class="flex border-b border-slate-200 text-sm font-bold">
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="w-1/2 py-2 text-brand-600 border-b-2 border-brand-600">Crear Cuenta</button>
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 py-2 text-slate-400">Iniciar Sesión</button>
+      </div>
+
+      <p id="authNotice" class="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200 hidden font-medium">
+        <i class="fa-solid fa-circle-info mr-1"></i> Debes crear una cuenta o iniciar sesión para realizar esta acción.
+      </p>
+
+      <!-- FORMULARIO REGISTRO -->
+      <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nombre Completo</label>
+          <input type="text" id="regName" required placeholder="Ej. Ana Torres" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="regEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">¿Qué perfil deseas?</label>
+          <select id="regRole" class="w-full p-3 rounded-xl border border-slate-200 font-semibold text-slate-700 focus:outline-none">
+            <option value="estudiante">🎓 Estudiante (Busco cuarto / Escribir reseñas)</option>
+            <option value="arrendador">🏠 Arrendador (Publicar y administrar cuartos)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Contraseña</label>
+          <input type="password" id="regPass" required placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
+          Crear Mi Cuenta
+        </button>
+      </form>
+
+      <!-- FORMULARIO LOGIN -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs hidden">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="loginEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="font-bold text-slate-700">Contraseña</label>
+            <button type="button" onclick="showForgotPassword(true)" class="text-[11px] font-bold text-brand-600 hover:underline">¿Olvidaste tu contraseña?</button>
+          </div>
+          <input type="password" id="loginPass" required placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition">
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <!-- FORMULARIO OLVIDÉ CONTRASEÑA -->
+      <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-3 text-xs hidden">
+        <div class="bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800 space-y-1">
+          <p class="font-bold">Restablecer acceso</p>
+          <p class="text-[11px]">Ingresa tu correo registrado y te enviaremos las instrucciones.</p>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="forgotEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition">
+          Enviar enlace de recuperación
+        </button>
+        <button type="button" onclick="showForgotPassword(false)" class="w-full text-center text-slate-500 font-bold pt-1">
+          ← Volver al inicio de sesión
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- MODAL PUBLICAR ANUNCIO -->
+  <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('postRoomModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <div>
+        <h3 class="font-heading text-xl font-extrabold text-slate-900">Publicar Anuncio de Cuarto</h3>
+        <p class="text-xs text-slate-500">Completa la información para que aparezca en el catálogo general.</p>
+      </div>
+
+      <form onsubmit="handlePostRoom(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Título del Anuncio</label>
+          <input type="text" id="roomTitle" required placeholder="Ej. Cuarto amueblado cerca de Transístmica" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Precio Mensual ($USD)</label>
+            <input type="number" id="roomPrice" required placeholder="200" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Modalidad</label>
+            <select id="roomType" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+              <option value="Individual">Individual</option>
+              <option value="Compartido">Compartido</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Ubicación / Zona</label>
+            <select id="roomLocation" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+              <option value="El Cangrejo">El Cangrejo</option>
+              <option value="Transístmica">Vía Transístmica</option>
+              <option value="Vista Hermosa">Vista Hermosa</option>
+              <option value="La Cresta">La Cresta</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">WhatsApp de Contacto</label>
+            <input type="tel" id="roomPhone" required placeholder="60000000" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Descripción y Servicios Incluidos</label>
+          <textarea id="roomDesc" rows="3" required placeholder="Incluye agua, luz, WiFi 500MB, acceso a cocina..." class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
+          🚀 Publicar Anuncio
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PUBLICAR RESEÑA -->
+  <div id="postReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+      <button onclick="closeModal('postReviewModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <div>
+        <h3 class="font-heading text-xl font-extrabold text-slate-900">Escribir una Reseña</h3>
+        <p class="text-xs text-slate-500">Comparte tu experiencia para orientar a otros estudiantes.</p>
+      </div>
+      <form onsubmit="handlePostReview(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Puntuación</label>
+          <select id="reviewRating" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none font-bold text-amber-500">
+            <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
+            <option value="4">⭐⭐⭐⭐ (Buena opción)</option>
+            <option value="3">⭐⭐⭐ (Regular)</option>
+            <option value="2">⭐⭐ (Poco recomendado)</option>
+            <option value="1">⭐ (Mala experiencia)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Tu Opinión</label>
+          <textarea id="reviewText" rows="4" required placeholder="¿Qué tal es la zona? ¿El ambiente de la casa? ¿El trato con el arrendador?" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
+          Publicar Reseña
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- ================= SCRIPT LOGICA Y BASE DE DATOS LOCAL ================= -->
   <script>
@@ -594,553 +878,6 @@
       renderRecentSection();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  </script>
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-      
-      <!-- Columna 1 -->
-      <div class="space-y-4">
-        <a href="#" onclick="showCatalogView()" class="flex items-center gap-2 group">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
-            <i class="fa-solid fa-house-user"></i>
-          </div>
-          <div class="flex flex-col">
-            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
-              UniCuartos
-            </span>
-            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
-              Panamá / UP
-            </span>
-          </div>
-        </a>
-        <p class="text-slate-400 leading-relaxed text-xs">
-          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
-        </p>
-        <div class="pt-1">
-          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
-            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
-          </a>
-        </div>
-      </div>
-
-      <!-- Columna 2 -->
-      <div class="space-y-3">
-        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
-        <ul class="space-y-2 text-xs">
-          <li><a href="#" class="hover:text-white transition-colors">Nosotros</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Política de Privacidad</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Copyright -->
-    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
-      <p class="flex items-center gap-1">
-        Hecho con <i class="fa-solid fa-heart text-rose-500 mx-1"></i> para estudiantes universitarios.
-      </p>
-    </div>
-  </footer>
-<!-- ================= MODALES ================= -->
-
-  <!-- MODAL DETALLES DE CUARTO -->
-  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
-      <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      <h3 id="mTitle" class="font-heading text-xl font-bold text-slate-900"></h3>
-      <p id="mPrice" class="text-lg font-black text-brand-600"></p>
-      <p id="mLoc" class="text-xs text-slate-500"></p>
-      <p id="mDesc" class="text-xs text-slate-600 leading-relaxed"></p>
-      <div id="mSelectArea" class="pt-2">
-        <button onclick="selectRoomForStudent()" class="w-full py-2.5 mb-2 bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 text-center font-bold text-xs rounded-xl transition">
-          📌 Elegir este anuncio para mi perfil
-        </button>
-      </div>
-      <a id="mWaLink" href="https://wa.me/" target="_blank" class="block w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold text-xs rounded-xl transition">
-        <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Contactar por WhatsApp
-      </a>
-    </div>
-  </div>
-
-  <!-- MODAL CUENTA (LOGIN / REGISTRO / OLVIDO DE CONTRASEÑA) -->
-  <div id="accountModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
-      <button onclick="closeModal('accountModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      
-      <div id="authTabsHeader" class="flex border-b border-slate-200 text-sm font-bold">
-        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="w-1/2 py-2 text-brand-600 border-b-2 border-brand-600">Crear Cuenta</button>
-        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 py-2 text-slate-400">Iniciar Sesión</button>
-      </div>
-
-      <p id="authNotice" class="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200 hidden font-medium">
-        <i class="fa-solid fa-circle-info mr-1"></i> Debes crear una cuenta o iniciar sesión para realizar esta acción.
-      </p>
-
-      <!-- FORMULARIO REGISTRO -->
-      <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Nombre Completo</label>
-          <input type="text" id="regName" required placeholder="Ej. Ana Torres" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
-          <input type="email" id="regEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">¿Qué perfil deseas?</label>
-          <select id="regRole" class="w-full p-3 rounded-xl border border-slate-200 font-semibold text-slate-700 focus:outline-none">
-            <option value="estudiante">🎓 Estudiante (Busco cuarto / Escribir reseñas)</option>
-            <option value="arrendador">🏠 Arrendador (Publicar y administrar cuartos)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Contraseña</label>
-          <input type="password" id="regPass" required placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
-          Crear Mi Cuenta
-        </button>
-      </form>
-
-      <!-- FORMULARIO LOGIN -->
-      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs hidden">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
-          <input type="email" id="loginEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-        </div>
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label class="font-bold text-slate-700">Contraseña</label>
-            <button type="button" onclick="showForgotPassword(true)" class="text-[11px] font-bold text-brand-600 hover:underline">¿Olvidaste tu contraseña?</button>
-          </div>
-          <input type="password" id="loginPass" required placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition">
-          Iniciar Sesión
-        </button>
-      </form>
-
-      <!-- FORMULARIO OLVIDÉ CONTRASEÑA (OCULTO POR DEFECTO) -->
-      <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-3 text-xs hidden">
-        <div class="bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800 space-y-1">
-          <p class="font-bold">Restablecer acceso</p>
-          <p class="text-[11px]">Ingresa tu correo registrado y te enviaremos las instrucciones.</p>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
-          <input type="email" id="forgotEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition">
-          Enviar enlace de recuperación
-        </button>
-        <button type="button" onclick="showForgotPassword(false)" class="w-full text-center text-slate-500 font-bold pt-1">
-          ← Volver al inicio de sesión
-        </button>
-      </form>
-
-    </div>
-  </div>
-
-  <!-- MODAL PUBLICAR ANUNCIO (RESTRINGIDO A ARRENDADORES) -->
-  <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeModal('postRoomModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      <div>
-        <h3 class="font-heading text-xl font-extrabold text-slate-900">Publicar Anuncio de Cuarto</h3>
-        <p class="text-xs text-slate-500">Completa la información para que aparezca en el catálogo general.</p>
-      </div>
-
-      <form onsubmit="handlePostRoom(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Título del Anuncio</label>
-          <input type="text" id="roomTitle" required placeholder="Ej. Cuarto amueblado cerca de Transístmica" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Precio Mensual ($USD)</label>
-            <input type="number" id="roomPrice" required placeholder="200" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Modalidad</label>
-            <select id="roomType" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
-              <option value="Individual">Individual</option>
-              <option value="Compartido">Compartido</option>
-            </select>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Ubicación / Zona</label>
-            <select id="roomLocation" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
-              <option value="El Cangrejo">El Cangrejo</option>
-              <option value="Transístmica">Vía Transístmica</option>
-              <option value="Vista Hermosa">Vista Hermosa</option>
-              <option value="La Cresta">La Cresta</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">WhatsApp de Contacto</label>
-            <input type="tel" id="roomPhone" required placeholder="60000000" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
-          </div>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Descripción y Servicios Incluidos</label>
-          <textarea id="roomDesc" rows="3" required placeholder="Incluye agua, luz, WiFi 500MB, acceso a cocina..." class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
-          🚀 Publicar Anuncio
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL PUBLICAR RESEÑA -->
-  <div id="postReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
-      <button onclick="closeModal('postReviewModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      <div>
-        <h3 class="font-heading text-xl font-extrabold text-slate-900">Escribir una Reseña</h3>
-        <p class="text-xs text-slate-500">Comparte tu experiencia para orientar a otros estudiantes.</p>
-      </div>
-      <form onsubmit="handlePostReview(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Puntuación</label>
-          <select id="reviewRating" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none font-bold text-amber-500">
-            <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
-            <option value="4">⭐⭐⭐⭐ (Buena opción)</option>
-            <option value="3">⭐⭐⭐ (Regular)</option>
-            <option value="2">⭐⭐ (Poco recomendado)</option>
-            <option value="1">⭐ (Mala experiencia)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Tu Opinión</label>
-          <textarea id="reviewText" rows="4" required placeholder="¿Qué tal es la zona? ¿El ambiente de la casa? ¿El trato con el arrendador?" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
-          Publicar Reseña
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ================= LÓGICA DE JAVASCRIPT ================= -->
-  <script>
-    let currentUser = JSON.parse(localStorage.getItem('unicuartos_user')) || null;
-    let pendingAction = null;
-    let currentSlide = 0;
-    let selectedRoomTemp = null;
-
-    // 1. RENDERIZADO Y NAVEGACIÓN DE USUARIO
-    function updateAuthNav() {
-      const container = document.getElementById('authNavContainer');
-      if (!container) return;
-
-      if (currentUser) {
-        const isStudent = currentUser.role === 'estudiante';
-        const targetPage = isStudent ? 'panel_estudiante.html' : 'panel_propietario.html';
-        const roleLabel = isStudent ? 'Mi Panel' : 'Panel Propietario';
-        const roleIcon = isStudent ? 'fa-graduation-cap' : 'fa-house-user';
-
-        container.innerHTML = `
-          <div class="flex items-center gap-3">
-            <a href="${targetPage}" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
-              <i class="fa-solid ${roleIcon}"></i>
-              <span>${roleLabel}</span>
-            </a>
-            <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-400 hover:text-rose-500 font-bold text-xs p-2 rounded-full transition">
-              <i class="fa-solid fa-right-from-bracket text-base"></i>
-            </button>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <button onclick="openModal('accountModal')" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
-            <i class="fa-solid fa-user text-xs"></i>
-            <span>Ingresar</span>
-          </button>
-        `;
-      }
-    }
-
-    // 2. CONTROL DE MODALES Y ACCESO ESTRICTO
-    function openModal(id) {
-      document.getElementById(id)?.classList.remove('hidden');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id)?.classList.add('hidden');
-      if (id === 'accountModal') {
-        document.getElementById('authNotice')?.classList.add('hidden');
-        showForgotPassword(false);
-      }
-    }
-
-    function requireAuth(action) {
-      pendingAction = action;
-      if (!currentUser) {
-        document.getElementById('authNotice')?.classList.remove('hidden');
-        openModal('accountModal');
-      } else {
-        executePendingAction();
-      }
-    }
-
-    function executePendingAction() {
-      if (pendingAction === 'room') {
-        if (currentUser.role === 'arrendador') {
-          openModal('postRoomModal');
-        } else {
-          showToast('Solo cuentas con perfil de Arrendador pueden publicar cuartos.');
-        }
-      } else if (pendingAction === 'review') {
-        openModal('postReviewModal');
-      }
-      pendingAction = null;
-    }
-
-    // 3. AUTENTICACIÓN, REGISTRO Y RECUPERACIÓN
-    function switchAuthTab(tab) {
-      const regForm = document.getElementById('registerForm');
-      const loginForm = document.getElementById('loginForm');
-      const regBtn = document.getElementById('tabRegisterBtn');
-      const loginBtn = document.getElementById('tabLoginBtn');
-
-      showForgotPassword(false);
-
-      if (tab === 'register') {
-        regForm.classList.remove('hidden');
-        loginForm.classList.add('hidden');
-        regBtn.className = 'w-1/2 py-2 text-brand-600 border-b-2 border-brand-600';
-        loginBtn.className = 'w-1/2 py-2 text-slate-400';
-      } else {
-        loginForm.classList.remove('hidden');
-        regForm.classList.add('hidden');
-        loginBtn.className = 'w-1/2 py-2 text-brand-600 border-b-2 border-brand-600';
-        regBtn.className = 'w-1/2 py-2 text-slate-400';
-      }
-    }
-
-    function showForgotPassword(show) {
-      const loginForm = document.getElementById('loginForm');
-      const forgotForm = document.getElementById('forgotForm');
-      const tabsHeader = document.getElementById('authTabsHeader');
-
-      if (show) {
-        loginForm.classList.add('hidden');
-        tabsHeader.classList.add('hidden');
-        forgotForm.classList.remove('hidden');
-      } else {
-        forgotForm.classList.add('hidden');
-        tabsHeader.classList.remove('hidden');
-        loginForm.classList.remove('hidden');
-      }
-    }
-
-    function handleForgotPassword(e) {
-      e.preventDefault();
-      const email = document.getElementById('forgotEmail').value;
-      showToast(`Instrucciones enviadas a ${email}`);
-      closeModal('accountModal');
-      showForgotPassword(false);
-    }
-
-    function handleRegister(e) {
-      e.preventDefault();
-      currentUser = {
-        name: document.getElementById('regName').value,
-        email: document.getElementById('regEmail').value,
-        role: document.getElementById('regRole').value
-      };
-      localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
-      closeModal('accountModal');
-      updateAuthNav();
-      showToast(`¡Bienvenido a UniCuartos, ${currentUser.name}!`);
-
-      if (pendingAction) {
-        executePendingAction();
-      }
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      currentUser = {
-        name: email.split('@')[0],
-        email: email,
-        role: 'estudiante'
-      };
-      localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
-      closeModal('accountModal');
-      updateAuthNav();
-      showToast('Sesión iniciada correctamente.');
-
-      if (pendingAction) {
-        executePendingAction();
-      }
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('unicuartos_user');
-      currentUser = null;
-      updateAuthNav();
-      showToast('Has cerrado sesión exitosamente.');
-    }
-
-    // 4. ACCIONES DE ANUNCIOS Y RESEÑAS
-    function openDetailModal(title, price, location, type, desc) {
-      document.getElementById('mTitle').innerText = title;
-      document.getElementById('mPrice').innerText = price;
-      document.getElementById('mLoc').innerText = location;
-      document.getElementById('mDesc').innerText = desc;
-      document.getElementById('mWaLink').href = `https://wa.me/50760000000?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20${encodeURIComponent(title)}`;
-      selectedRoomTemp = { title, price, location, type };
-      openModal('detailModal');
-    }
-
-    function selectRoomForStudent() {
-      if (!currentUser) {
-        closeModal('detailModal');
-        requireAuth('select');
-        return;
-      }
-      localStorage.setItem('unicuartos_selected_room', JSON.stringify(selectedRoomTemp));
-      showToast('Anuncio guardado en tu perfil.');
-      closeModal('detailModal');
-    }
-
-    function handlePostRoom(e) {
-      e.preventDefault();
-      const title = document.getElementById('roomTitle').value;
-      const price = document.getElementById('roomPrice').value;
-      const type = document.getElementById('roomType').value;
-      const location = document.getElementById('roomLocation').value;
-      const desc = document.getElementById('roomDesc').value;
-
-      const container = document.getElementById('roomsContainer');
-      const newCard = document.createElement('div');
-      newCard.className = "room-item bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition group flex flex-col";
-      newCard.setAttribute('data-location', location);
-      newCard.setAttribute('data-price', price);
-      newCard.setAttribute('data-type', type);
-
-      newCard.innerHTML = `
-        <div class="relative h-52 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <span class="absolute top-3 left-3 bg-brand-600 text-white text-[11px] font-bold px-3 py-1 rounded-full">Nuevo</span>
-          <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white font-black px-3 py-1 rounded-xl text-lg">
-            $${price} <span class="text-xs font-normal text-slate-300">/ mes</span>
-          </div>
-        </div>
-        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <h3 class="font-heading font-bold text-lg text-slate-900">${title}</h3>
-            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> ${location}</p>
-          </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs text-slate-500 font-medium">Directo con Propietario</span>
-            <button onclick="openDetailModal('${title}', '$${price} / mes', '${location}', '${type}', '${desc}')" class="text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg">
-              Ver Contacto
-            </button>
-          </div>
-        </div>
-      `;
-
-      container.prepend(newCard);
-      closeModal('postRoomModal');
-      showToast('¡Anuncio publicado con éxito!');
-      e.target.reset();
-    }
-
-    function handlePostReview(e) {
-      e.preventDefault();
-      const rating = '⭐'.repeat(document.getElementById('reviewRating').value);
-      const text = document.getElementById('reviewText').value;
-
-      const container = document.getElementById('reviewsContainer');
-      const reviewElem = document.createElement('div');
-      reviewElem.className = 'bg-white p-4 rounded-2xl border border-slate-200 space-y-2';
-      reviewElem.innerHTML = `
-        <div class="flex justify-between items-center">
-          <span class="font-bold text-slate-800 text-xs">${currentUser ? currentUser.name : 'Estudiante'}</span>
-          <span class="text-amber-400 text-xs">${rating}</span>
-        </div>
-        <p class="text-xs text-slate-600">"${text}"</p>
-      `;
-      container.prepend(reviewElem);
-      closeModal('postReviewModal');
-      showToast('Reseña agregada correctamente.');
-    }
-
-    function toggleFavorite(title) {
-      showToast(`Guardado en favoritos: ${title}`);
-    }
-
-    // 5. FILTROS
-    function filterRooms() {
-      const loc = document.getElementById('filterLocation').value;
-      const price = document.getElementById('filterPrice').value;
-      const type = document.getElementById('filterType').value;
-
-      const rooms = document.querySelectorAll('.room-item');
-      rooms.forEach(room => {
-        const rLoc = room.getAttribute('data-location');
-        const rPrice = parseInt(room.getAttribute('data-price'));
-        const rType = room.getAttribute('data-type');
-
-        let matchLoc = (loc === 'todos' || rLoc === loc);
-        let matchPrice = (price === 'todos' || rPrice <= parseInt(price));
-        let matchType = (type === 'todos' || rType === type);
-
-        room.style.display = (matchLoc && matchPrice && matchType) ? 'flex' : 'none';
-      });
-    }
-
-    function quickFilter(val) {
-      const rooms = document.querySelectorAll('.room-item');
-      rooms.forEach(room => {
-        if (val === 'todos') {
-          room.style.display = 'flex';
-        } else {
-          const rLoc = room.getAttribute('data-location');
-          const rType = room.getAttribute('data-type');
-          room.style.display = (rLoc === val || rType === val) ? 'flex' : 'none';
-        }
-      });
-    }
-
-    // 6. CARRUSEL
-    function setSlide(index) {
-      const slides = document.querySelectorAll('.hero-slide');
-      const dots = document.querySelectorAll('.slider-dot');
-      slides.forEach((slide, i) => {
-        slide.style.opacity = i === index ? '1' : '0';
-        dots[i].className = i === index ? 'slider-dot w-3 h-3 rounded-full bg-white transition' : 'slider-dot w-3 h-3 rounded-full bg-white/40 transition';
-      });
-      currentSlide = index;
-    }
-
-    setInterval(() => {
-      currentSlide = (currentSlide + 1) % 3;
-      setSlide(currentSlide);
-    }, 5000);
-
-    // 7. TOAST NOTIFICACIONES
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMsg');
-      toastMsg.innerText = msg;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 3000);
-    }
-
-    // Inicialización al cargar la página
-    document.addEventListener('DOMContentLoaded', updateAuthNav);
   </script>
 </body>
 </html>

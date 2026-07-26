@@ -6,6 +6,7 @@
   <title>UniCuartos - Panel de Propietario</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="script.js"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- Google Fonts -->
@@ -13,27 +14,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            heading: ['Outfit', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#f0fdfa',
-              100: '#ccfbf1',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e',
-            }
-          }
-        }
-      }
-    }
-  </script>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
@@ -222,311 +202,62 @@
     </div>
   </main>
 
-  <!-- SCRIPT CON LA LÓGICA DEL PANEL -->
-  <script>
-    // Estado inicial con datos de ejemplo
-    let properties = [
-      {
-        id: 1,
-        title: "Habitación Amueblada en El Cangrejo",
-        status: "Disponible",
-        location: "El Cangrejo",
-        address: "Calle Eusebio A. Morales, Edif. Aurora Apto 2B",
-        price: 220,
-        type: "Individual",
-        phone: "60000000",
-        images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
-        services: ["Luz, Agua y WiFi incluido", "Amoblado", "Baño individual", "Aire Acondicionado"],
-        requirements: "Copia de cédula/pasaporte, matrícula universitaria vigente y depósito equivalente a medio mes."
-      },
-      {
-        id: 2,
-        title: "Cuarto Compartido - Vía Transístmica",
-        status: "Alquilado",
-        location: "Transístmica",
-        address: "Vía Transístmica frente a la Puerta Principal",
-        price: 140,
-        type: "Compartido",
-        phone: "61111111",
-        images: ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80"],
-        services: ["Luz, Agua y WiFi incluido", "Baño compartido", "Acceso a Cocina"],
-        requirements: "Solo estudiantes activos. Pago puntual los 30 de cada mes."
-      }
-    ];
-
-    let currentImages = [];
-
-    // Cambiar entre Dashboard y Página de Formulario
-    function showFormPage(index = -1) {
-      document.getElementById('mainDashboard').classList.add('hidden');
-      document.getElementById('formPage').classList.remove('hidden');
-      window.scrollTo(0, 0);
-
-      document.getElementById('propertyForm').reset();
-      currentImages = [];
-      document.getElementById('imagePreviewContainer').innerHTML = '';
-      validatePrice();
-
-      if (index >= 0) {
-        // Modo Edición
-        document.getElementById('pageTitle').innerText = "Editar Anuncio";
-        document.getElementById('editIndex').value = index;
-        
-        const p = properties[index];
-        document.getElementById('pTitle').value = p.title;
-        document.getElementById('pStatus').value = p.status;
-        document.getElementById('pLocation').value = p.location;
-        document.getElementById('pAddress').value = p.address;
-        document.getElementById('pPrice').value = p.price;
-        document.getElementById('pType').value = p.type;
-        document.getElementById('pPhone').value = p.phone;
-        document.getElementById('pRequirements').value = p.requirements;
-
-        // Checkboxes de servicios
-        document.querySelectorAll('input[name="services"]').forEach(cb => {
-          cb.checked = p.services.includes(cb.value);
-        });
-
-        // Imágenes existentes
-        currentImages = [...p.images];
-        renderImagePreviews();
-        validatePrice();
-      } else {
-        // Modo Nuevo
-        document.getElementById('pageTitle').innerText = "Publicar Nuevo Cuarto";
-        document.getElementById('editIndex').value = -1;
-      }
-    }
-
-    function showDashboard() {
-      document.getElementById('formPage').classList.add('hidden');
-      document.getElementById('mainDashboard').classList.remove('hidden');
-      window.scrollTo(0, 0);
-    }
-
-    // Validar restricción de precio ($350 máx)
-    function validatePrice() {
-      const priceInput = document.getElementById('pPrice');
-      const warning = document.getElementById('priceWarning');
-      const submitBtn = document.getElementById('btnSubmit');
-      const val = parseFloat(priceInput.value);
-
-      if (val > 350) {
-        warning.classList.remove('hidden');
-        submitBtn.disabled = true;
-        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      } else {
-        warning.classList.add('hidden');
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-      }
-    }
-
-    // Renderizar listado de anuncios
-    function renderProperties() {
-      const container = document.getElementById('propertyGrid');
-      container.innerHTML = '';
-
-      if (properties.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">No tienes publicaciones aún. Haz clic en "Publicar Nuevo Cuarto".</div>`;
-        return;
-      }
-
-      properties.forEach((p, index) => {
-        const isAvailable = p.status === 'Disponible';
-        const badgeColor = isAvailable ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white';
-
-        const card = `
-          <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-            <div>
-              <!-- Imagen + Estado -->
-              <div class="relative h-48 bg-slate-200 overflow-hidden">
-                <img src="${p.images[0] || 'https://via.placeholder.com/400x300?text=Sin+Imagen'}" class="w-full h-full object-cover">
-                <span class="absolute top-3 left-3 text-[11px] font-bold px-3 py-1 rounded-full ${badgeColor}">
-                  ${p.status}
-                </span>
-                <span class="absolute top-3 right-3 bg-slate-900/80 text-white text-[11px] font-bold px-3 py-1 rounded-full">
-                  $${p.price} / mes
-                </span>
-              </div>
-
-              <!-- Contenido de la tarjeta -->
-              <div class="p-5 space-y-3">
-                <h3 class="font-heading font-bold text-base text-slate-900 line-clamp-1">${p.title}</h3>
-                
-                <p class="text-xs text-slate-500 flex items-start gap-1.5">
-                  <i class="fa-solid fa-location-dot text-brand-600 mt-0.5"></i>
-                  <span><strong>${p.location}:</strong> ${p.address}</span>
-                </p>
-
-                <!-- Requisitos enfatizados en Celeste -->
-                <div class="bg-sky-50 p-3 rounded-2xl border border-sky-200 text-[11px] text-sky-950">
-                  <strong class="text-sky-900 block mb-0.5 font-bold">📋 Requisitos:</strong>
-                  <p class="line-clamp-2 leading-relaxed">${p.requirements || 'Sin requisitos específicos.'}</p>
-                </div>
-
-                <!-- Servicios -->
-                <div class="flex flex-wrap gap-1">
-                  ${p.services.map(s => `<span class="bg-teal-50 text-teal-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-teal-100">${s}</span>`).join('')}
-                </div>
-              </div>
-            </div>
-
-            <!-- Botones de Acción -->
-            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-              <button onclick="toggleStatus(${index})" class="text-xs font-bold px-3 py-1.5 rounded-xl border transition ${isAvailable ? 'border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100' : 'border-emerald-300 text-emerald-700 bg-emerald-50 hover:bg-emerald-100'}">
-                <i class="fa-solid fa-arrows-rotate mr-1"></i> ${isAvailable ? 'Marcar Alquilado' : 'Marcar Disponible'}
-              </button>
-
-              <div class="flex gap-1">
-                <button onclick="showFormPage(${index})" class="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-brand-600 hover:border-brand-200 flex items-center justify-center text-xs transition" title="Editar">
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-                <button onclick="deleteProperty(${index})" class="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center justify-center text-xs transition" title="Eliminar">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-        container.insertAdjacentHTML('beforeend', card);
-      });
-    }
-
-    // Cambiar estado rápido
-    function toggleStatus(index) {
-      properties[index].status = properties[index].status === 'Disponible' ? 'Alquilado' : 'Disponible';
-      renderProperties();
-    }
-
-    // Manejar subida de imágenes (archivos locales a base64 para vista previa)
-    function handleImageUpload(e) {
-      const files = Array.from(e.target.files);
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          currentImages.push(evt.target.result);
-          renderImagePreviews();
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function renderImagePreviews() {
-      const preview = document.getElementById('imagePreviewContainer');
-      preview.innerHTML = '';
-      currentImages.forEach((src, idx) => {
-        preview.innerHTML += `
-          <div class="relative w-20 h-20 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
-            <img src="${src}" class="w-full h-full object-cover">
-            <button type="button" onclick="removeImage(${idx})" class="absolute top-1 right-1 bg-slate-900/80 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">✕</button>
-          </div>
-        `;
-      });
-    }
-
-    function removeImage(idx) {
-      currentImages.splice(idx, 1);
-      renderImagePreviews();
-    }
-
-    // Guardar (Crear / Editar)
-    function saveProperty(e) {
-      e.preventDefault();
-      const price = parseInt(document.getElementById('pPrice').value);
-      
-      if (price > 350) {
-        alert("El precio debe ser de $350 o menos.");
-        return;
-      }
-
-      const index = parseInt(document.getElementById('editIndex').value);
-      const checkedServices = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
-
-      const data = {
-        id: index >= 0 ? properties[index].id : Date.now(),
-        title: document.getElementById('pTitle').value,
-        status: document.getElementById('pStatus').value,
-        location: document.getElementById('pLocation').value,
-        address: document.getElementById('pAddress').value,
-        price: price,
-        type: document.getElementById('pType').value,
-        phone: document.getElementById('pPhone').value,
-        images: currentImages.length > 0 ? currentImages : ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
-        services: checkedServices,
-        requirements: document.getElementById('pRequirements').value
-      };
-
-      if (index >= 0) {
-        properties[index] = data;
-      } else {
-        properties.unshift(data);
-      }
-
-      renderProperties();
-      showDashboard();
-    }
-
-    // Eliminar anuncio
-    function deleteProperty(index) {
-      if (confirm('¿Estás seguro de que deseas eliminar este anuncio?')) {
-        properties.splice(index, 1);
-        renderProperties();
-      }
-    }
-
-    // Inicializar al cargar
-    renderProperties();
-  </script>
-
  <!-- ================= FOOTER ================= -->
-  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-      
-      <!-- Columna 1: Información del sitio y logotipo -->
-      <div class="space-y-4">
-        <a href="#" class="flex items-center gap-2 group">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
-            <i class="fa-solid fa-house-user"></i>
-          </div>
-          <div class="flex flex-col">
-            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
-              UniCuartos
-            </span>
-            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
-              Panamá / UP
-            </span>
-          </div>
-        </a>
-        <p class="text-slate-400 leading-relaxed text-xs">
-          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
-        </p>
-        <div class="pt-1">
-          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
-            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
-          </a>
+<footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+  <!-- Contenedor de 3 columnas (grid-cols-1 md:grid-cols-3) para escritorio -->
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+    
+    <!-- Columna 1: Información y marca -->
+    <div class="space-y-4">
+      <a href="index.html" onclick="showCatalogView()" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+          <i class="fa-solid fa-house-user"></i>
         </div>
-      </div>
-
-      <!-- Columna 2: Sobre Nosotros -->
-      <div class="space-y-3">
-        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
-        <ul class="space-y-2 text-xs">
-          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
-          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
-          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Línea divisoria y Copyright -->
-    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
-      <p class="flex items-center gap-1">
-        Hecho con <i class="fa-solid fa-heart text-rose-500 mx-1"></i> por <a href="https://www.wecreatebylucero.com" target="_blank" class="text-slate-400 hover:text-white transition-colors">WeCreate</a>.
+        <div class="flex flex-col">
+          <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+            UniCuartos
+          </span>
+          <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+            Panamá / UP
+          </span>
+        </div>
+      </a>
+      <p class="text-slate-400 leading-relaxed text-xs">
+        Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
       </p>
     </div>
-  </footer>
+
+    <!-- Columna 2: Enlaces de Información -->
+    <div class="space-y-3">
+      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+      <ul class="space-y-2 text-xs">
+        <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+        <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+        <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+      </ul>
+    </div>
+
+    <!-- Columna 3: Soporte -->
+    <div class="space-y-3">
+      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
+      <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?.</p>
+      <div class="pt-1">
+        <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+          <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Copyright -->
+  <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+    <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+    <p class="flex items-center gap-1">
+      Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
+    </p>
+  </div>
+</footer>
 
 </body>
 </html>

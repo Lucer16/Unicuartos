@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog y Consejos - UniCuartos</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="script.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .slide-fade {
+      transition: opacity 0.8s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
+
+<!-- ================= MENÚ ================= -->
+<header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+  <a href="index.html" class="flex items-center gap-2 group">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+      <i class="fa-solid fa-house-user"></i>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+        UniCuartos
+      </span>
+      <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+        Panamá / UP
+      </span>
+    </div>
+  </a>
+
+  <!-- Menú de Escritorio -->
+  <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+    <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+    <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
+    <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
+    <a href="donaciones.html" class="hover:text-brand-600 transition">¿Cómo apoyar?</a>
+    <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
+    <a href="blog.html" class="hover:text-brand-600 transition">Blog</a>
+</nav>
+
+  <div class="flex items-center gap-3">
+    <div id="authNavContainer" class="flex items-center gap-3">
+      <!-- Inyectado dinámicamente -->
+    </div>
+    
+    <!-- Botón de Menú Móvil (Hamburguesa) -->
+    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
+      <i class="fa-solid fa-bars text-lg"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
+<div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
+
+<div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+  <!-- Cabecera del menú lateral -->
+  <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+    <span class="font-heading font-extrabold text-lg text-slate-900">Menú de Navegación</span>
+    <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+      <i class="fa-solid fa-xmark text-base"></i>
+    </button>
+  </div>
+
+  <!-- Enlaces de navegación móvil -->
+  <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
+    <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+    </a>
+    <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos Disponibles
+    </a>
+    <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
+    </a>
+    <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> ¿Cómo apoyar?
+    </a>
+    <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
+    </a>
+    <a href="blog.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+      <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
+    </a>
+  </div>
+</div>
+
+
+    <!-- NOTIFICACIÓN TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+      <span id="toastMsg">Actualizado</span>
+    </div>
+  </header>
+
+  <script>
+   function toggleMobileMenu() {
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('mobileBackdrop');
+  
+  if (!drawer || !backdrop) return;
+
+  const isOpen = drawer.classList.contains('translate-x-full');
+
+  if (isOpen) {
+    // Abrir menú
+    drawer.classList.remove('translate-x-full');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
+  } else {
+    // Cerrar menú
+    drawer.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = ''; // Restaura el scroll
+  }
+}
+    </script>
+
+  <!-- ================= SECCIÓN BLOG / CONSEJOS (MODERNA) ================= -->
+  <main class="flex-grow pt-32 pb-24 px-6 max-w-6xl mx-auto w-full space-y-12">
+    
+    <!-- Encabezado de la Sección -->
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-bold tracking-wide uppercase">
+        <span class="w-2 h-2 rounded-full bg-brand-600 animate-pulse"></span>
+        Blog Estudiantil
+      </div>
+      <h1 class="font-heading text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+        Consejos y Guías para tu <span class="bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent">Vida Universitaria</span>
+      </h1>
+      <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+        Todo lo que necesitas saber antes de rentar, tips de ahorro y cómo adaptarte a tu nueva etapa cerca de la universidad en Panamá.
+      </p>
+    </div>
+
+    <!-- Filtros de Categorías Interactivo -->
+    <div class="flex flex-wrap items-center justify-center gap-2 pt-2" id="filterContainer">
+      <button onclick="filterArticles('todos')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-slate-900 text-white shadow-md transition">Todos</button>
+      <button onclick="filterArticles('alquileres')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Alquileres</button>
+      <button onclick="filterArticles('finanzas')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Finanzas</button>
+      <button onclick="filterArticles('ubicacion')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Ubicación</button>
+      <button onclick="filterArticles('convivencia')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Convivencia</button>
+      <button onclick="filterArticles('guias')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Guías de Zona</button>
+    </div>
+
+    <!-- Cuadrícula de Artículos (Grid Moderno) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4" id="articlesGrid">
+
+      <!-- Tarjeta 1: Finanzas -->
+      <article data-category="finanzas" class="article-card bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+        <div class="p-6 md:p-8 flex-grow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-wider">Finanzas</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> 5 min</span>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">
+            <a href="contrato-alquiler.html">
+              Cómo leer y entender un contrato de alquiler sin morir en el intento
+            </a>
+          </h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Consejos clave sobre cláusulas de rescisión, depósitos de garantía y qué pasa si te mudas antes de tiempo.
+          </p>
+        </div>
+        <div class="px-6 md:px-8 pb-6 pt-0 flex items-center justify-between text-xs text-slate-400 border-t border-slate-50 pt-4">
+          <span class="flex items-center gap-1"><i class="fa-solid fa-calendar-days"></i> 28 Jul, 2026</span>
+          <a href="contrato-alquiler.html" class="text-teal-600 font-bold hover:text-teal-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Leer artículo <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Tarjeta 2: Alquileres -->
+      <article data-category="alquileres" class="article-card bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+        <div class="p-6 md:p-8 flex-grow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-wider">Alquileres</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> 4 min</span>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">
+            <a href="deposito-garantia.html">
+              ¿Depósito de garantía o adelanto? Conoce tus derechos como arrendatario
+            </a>
+          </h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Aprende a diferenciar los pagos iniciales y cómo exigir la devolución justa de tu dinero al terminar el contrato.
+          </p>
+        </div>
+        <div class="px-6 md:px-8 pb-6 pt-0 flex items-center justify-between text-xs text-slate-400 border-t border-slate-50 pt-4">
+          <span class="flex items-center gap-1"><i class="fa-solid fa-calendar-days"></i> 27 Jul, 2026</span>
+          <a href="deposito-garantia.html" class="text-teal-600 font-bold hover:text-teal-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Leer artículo <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Tarjeta 3: Ubicación -->
+      <article data-category="ubicacion" class="article-card bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+        <div class="p-6 md:p-8 flex-grow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-wider">Ubicación</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> 4 min</span>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">
+            <a href="revisar-antes-de-rentar.html">
+              ¿Qué revisar antes de rentar un cuarto cerca del campus?
+            </a>
+          </h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Evalúa rutas de transporte, accesibilidad nocturna y servicios incluidos para elegir la mejor opción de vivienda.
+          </p>
+        </div>
+        <div class="px-6 md:px-8 pb-6 pt-0 flex items-center justify-between text-xs text-slate-400 border-t border-slate-50 pt-4">
+          <span class="flex items-center gap-1"><i class="fa-solid fa-calendar-days"></i> 26 Jul, 2026</span>
+          <a href="revisar-antes-de-rentar.html" class="text-teal-600 font-bold hover:text-teal-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Leer artículo <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Tarjeta 4: Convivencia -->
+      <article data-category="convivencia" class="article-card bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+        <div class="p-6 md:p-8 flex-grow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-wider">Convivencia</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> 3 min</span>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">
+            <a href="tips-convivencia-roomies.html">
+              Tips clave para convivir con roomies universitarios en armonía
+            </a>
+          </h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Establece reglas claras de limpieza, horarios de estudio y división de gastos desde el primer día de mudanza.
+          </p>
+        </div>
+        <div class="px-6 md:px-8 pb-6 pt-0 flex items-center justify-between text-xs text-slate-400 border-t border-slate-50 pt-4">
+          <span class="flex items-center gap-1"><i class="fa-solid fa-calendar-days"></i> 20 Jul, 2026</span>
+          <a href="tips-convivencia-roomies.html" class="text-teal-600 font-bold hover:text-teal-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Leer artículo <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Tarjeta 5: Guías de Zona -->
+      <article data-category="guias" class="article-card bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+        <div class="p-6 md:p-8 flex-grow space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-wider">Guías de Zona</span>
+            <span class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> 5 min</span>
+          </div>
+          <h3 class="font-heading text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">
+            <a href="guias-zona-up.html">
+              Vivir cerca de la UP: Los mejores sectores y facilidades para estudiantes
+            </a>
+          </h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Descubre cuáles son los barrios más seguros, céntricos y conectados para establecer tu base estudiantil en la capital.
+          </p>
+        </div>
+        <div class="px-6 md:px-8 pb-6 pt-0 flex items-center justify-between text-xs text-slate-400 border-t border-slate-50 pt-4">
+          <span class="flex items-center gap-1"><i class="fa-solid fa-calendar-days"></i> 15 Jul, 2026</span>
+          <a href="guias-zona-up.html" class="text-teal-600 font-bold hover:text-teal-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Leer artículo <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- ================= SCRIPT PARA EL FILTRO ================= -->
+  <script>
+    function filterArticles(category) {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white', 'shadow-md');
+        btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+      });
+      
+      event.currentTarget.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+      event.currentTarget.classList.add('bg-slate-900', 'text-white', 'shadow-md');
+
+      const cards = document.querySelectorAll('.article-card');
+      cards.forEach(card => {
+        if (category === 'todos' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+    <!-- Contenedor de 3 columnas (grid-cols-1 md:grid-cols-3) para escritorio -->
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      
+      <!-- Columna 1: Información y marca -->
+      <div class="space-y-4">
+        <a href="index.html" onclick="showCatalogView()" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+      </div>
+
+      <!-- Columna 2: Enlaces de Información -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Soporte -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
+        <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?.</p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

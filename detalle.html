@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle del Cuarto - UniCuartos</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
@@ -41,34 +42,5 @@
     </div>
   </main>
 
-  <!-- Script para cargar la información guardada -->
-  <script>
-    let selectedRoom = JSON.parse(localStorage.getItem('unicuartos_selected_room'));
-
-    if (selectedRoom) {
-      document.getElementById('detailTitle').innerText = selectedRoom.title;
-      document.getElementById('detailPrice').innerText = selectedRoom.price;
-      document.getElementById('detailLocation').innerHTML = `<i class="fa-solid fa-location-dot text-teal-600 mr-1"></i> ${selectedRoom.location}`;
-      document.getElementById('detailType').innerText = selectedRoom.type;
-      document.getElementById('detailDesc').innerText = selectedRoom.desc;
-      document.getElementById('detailWaLink').href = `https://wa.me/50760000000?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20${encodeURIComponent(selectedRoom.title)}`;
-    } else {
-      document.querySelector('main').innerHTML = `
-        <div class="text-center py-20 space-y-4">
-          <h2 class="text-xl font-bold">No se encontró información del cuarto.</h2>
-          <a href="index.html" class="inline-block bg-teal-400 text-slate-900 font-bold px-6 py-2.5 rounded-full text-xs">Volver al inicio</a>
-        </div>
-      `;
-    }
-
-    function selectRoomForStudent() {
-      let currentUser = JSON.parse(localStorage.getItem('unicuartos_user'));
-      if (!currentUser) {
-        alert('Debes iniciar sesión para guardar un cuarto en tu perfil.');
-        return;
-      }
-      alert('¡Anuncio guardado en tu perfil correctamente!');
-    }
-  </script>
 </body>
 </html>
