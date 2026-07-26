@@ -51,13 +51,7 @@ UniCuartos está pensado para:
 
 Las contribuciones son bienvenidas. Si deseas mejorar el proyecto, puedes realizar un **Fork**, crear una nueva rama y enviar un **Pull Request**.
 
-## 📄 Licencia
-
-Este proyecto se encuentra bajo la licencia **MIT**, por lo que puede utilizarse, modificarse y distribuirse respetando los términos de dicha licencia.
-
 ## 📷 Captura de Pantalla
-
-> Agrega aquí una captura de la página principal.
 
 ```markdown
 ![Captura de Pantalla](img/screenshot.png)
