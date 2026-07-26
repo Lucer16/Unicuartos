@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuartos Disponibles</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .slide-fade {
+      transition: opacity 0.8s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
+
+  <!-- ================= MENÚ ================= -->
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+        <i class="fa-solid fa-house-user"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+          UniCuartos
+        </span>
+        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+          Panamá / UP
+        </span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
+      <a href="index.html#publicar-sec" class="hover:text-brand-600 transition">¿Cómo funciona?</a>
+      <a href="index.html#faq" class="hover:text-brand-600 transition">Preguntas</a>
+    </nav>
+
+    <div id="authNavContainer" class="flex items-center gap-3">
+      <!-- Inyectado dinámicamente -->
+    </div>
+
+    <!-- NOTIFICACIÓN TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+      <span id="toastMsg">Actualizado</span>
+    </div>
+  </header>
+
+
+  <!-- ================= 1. VISTA DE CATÁLOGO GENERAL (INICIO) ================= -->
+  <!-- Se añadió mt-28 para evitar que el menú flotante tape el contenido -->
+  <main id="catalogView" class="max-w-7xl mx-auto px-4 mt-28 mb-10 flex-1 w-full space-y-8">
+    
+    <!-- Encabezado -->
+    <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm text-center md:text-left flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-1">
+        <h1 class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Habitaciones Disponibles</h1>
+        <p class="text-xs md:text-sm text-slate-500">Explora alojamientos verificados y seguros diseñados para estudiantes universitarios.</p>
+      </div>
+    </div>
+
+    <!-- BARRA DE BÚSQUEDA AVANZADA -->
+    <div class="w-full bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200">
+      <div class="mb-4">
+        <h3 class="font-heading font-bold text-slate-900 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-teal-600"></i> Filtros de Búsqueda Avanzada
+        </h3>
+      </div>
+      <form onsubmit="event.preventDefault(); filterRooms();" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+          <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Lugar</label>
+          <select id="filterLocation" class="w-full bg-transparent font-semibold text-sm text-slate-800 focus:outline-none cursor-pointer">
+            <option value="todos">Cualquier zona</option>
+            <option value="El Cangrejo">El Cangrejo</option>
+            <option value="Vista Hermosa">Vista Hermosa</option>
+            <option value="Transístmica">Vía Transístmica</option>
+            <option value="La Cresta">La Cresta</option>
+            <option value="El Carmen">El Carmen</option>
+            <option value="Tumba Muerto">Tumba Muerto</option>
+          </select>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+          <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Precio Máx.</label>
+          <select id="filterPrice" class="w-full bg-transparent font-semibold text-sm text-slate-800 focus:outline-none cursor-pointer">
+            <option value="todos">Cualquier precio</option>
+            <option value="150">Hasta $150 / mes</option>
+            <option value="250">Hasta $250 / mes</option>
+            <option value="350">Hasta $350 / mes</option>
+          </select>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+          <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Modalidad</label>
+          <select id="filterType" class="w-full bg-transparent font-semibold text-sm text-slate-800 focus:outline-none cursor-pointer">
+            <option value="todos">Cualquier tipo</option>
+            <option value="Individual">Individual</option>
+            <option value="Compartido">Compartido</option>
+          </select>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+          <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Orden</label>
+          <select id="filterOrder" class="w-full bg-transparent font-semibold text-sm text-slate-800 focus:outline-none cursor-pointer">
+            <option value="recientes">Más recientes</option>
+            <option value="bajo">Precio más bajo</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button type="submit" class="w-full h-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Buscar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Grid de Publicaciones -->
+    <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Se inyecta dinámicamente desde JS -->
+    </div>
+
+    <!-- Sección de Últimos Vistos en el Catálogo -->
+    <section id="recentSection" class="pt-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-heading text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left text-teal-600"></i> Tus Últimos Alojamientos Vistos
+        </h3>
+      </div>
+      <div id="recentCatalogGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Inyectado por JS -->
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= 2. VISTA DE DETALLE COMPLETA DEL ANUNCIO ================= -->
+  <!-- Se añadió mt-28 para evitar que el menú flotante tape el contenido -->
+  <main id="detailView" class="hidden max-w-5xl mx-auto px-4 mt-28 mb-10 flex-1 w-full space-y-6">
+    
+    <!-- Botón de Retorno -->
+    <div>
+      <button onclick="showCatalogView()" class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-slate-600 hover:text-brand-600 transition-colors bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-sm">
+        <i class="fa-solid fa-arrow-left"></i> Volver al listado
+      </button>
+    </div>
+
+    <!-- Contenedor General del Detalle -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+      
+      <!-- Grid Superior: Galería y Datos Clave -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-10">
+        
+        <!-- Galería de Imágenes -->
+        <div class="space-y-4">
+          <div class="relative h-72 md:h-96 rounded-2xl overflow-hidden bg-slate-100 shadow-inner">
+            <img id="detMainImage" src="" alt="Cuarto universitario" class="w-full h-full object-cover">
+            <span id="detStatusBadge" class="absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+              Disponible
+            </span>
+            <span class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1 rounded-full">
+              <span id="detTypeBadge">Individual</span>
+            </span>
+          </div>
+          <div id="detThumbnails" class="grid grid-cols-3 gap-3">
+            <!-- Inyectado por JS -->
+          </div>
+        </div>
+
+        <!-- Información y CTA de Contacto -->
+        <div class="flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span id="detLocationBadge" class="px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold uppercase tracking-wider border border-brand-100">
+                Zona
+              </span>
+            </div>
+
+            <h1 id="detTitle" class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
+              Título del anuncio
+            </h1>
+
+            <div class="flex items-baseline gap-2">
+              <span id="detPrice" class="text-3xl md:text-4xl font-extrabold text-slate-900">$0</span>
+              <span class="text-xs md:text-sm text-slate-500 font-medium">/ mes (servicios detallados)</span>
+            </div>
+
+            <p class="text-xs text-slate-500 flex items-start gap-1.5">
+              <i class="fa-solid fa-location-dot text-brand-600 mt-0.5"></i>
+              <span id="detAddress" class="font-medium">Dirección exacta</span>
+            </p>
+
+            <!-- Servicios ofrecidos (Insignias) -->
+            <div class="pt-2">
+              <h3 class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">Servicios y Comodidades Incluidas</h3>
+              <div id="detServicesContainer" class="flex flex-wrap gap-1.5">
+                <!-- Inyectado por JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Contacto Directo WhatsApp Estilizado -->
+          <div class="pt-4 border-t border-slate-100">
+            <a id="detWhatsappBtn" href="#" target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs md:text-sm py-4 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all">
+              <i class="fa-brands fa-whatsapp text-lg"></i> Contactar al Arrendador por WhatsApp
+            </a>
+            <p class="text-[10px] text-slate-400 text-center mt-2">
+              UniCuartos actúa únicamente como directorio informativo independiente.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Sección Inferior: Requisitos -->
+      <div class="bg-slate-50 p-6 md:p-10 border-t border-slate-200/60">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm text-slate-600">
+          <!-- Requisitos enfatizados en Celeste -->
+          <div class="bg-sky-50/70 p-6 rounded-2xl border border-sky-200 space-y-2">
+            <h4 class="font-bold text-sky-950 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-list text-brand-600"></i> Requisitos de Admisión
+            </h4>
+            <p id="detRequirements" class="text-sky-900 leading-relaxed text-xs md:text-sm">
+              Requisitos del propietario...
+            </p>
+          </div>
+
+          <!-- Garantía Universitaria -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-2 shadow-sm">
+            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-shield-halved text-brand-600"></i> Garantía Universitaria UniCuartos
+            </h4>
+            <p class="text-slate-600 leading-relaxed text-xs md:text-sm">
+              Espacio verificado para fomentar un ambiente de estudio enfocado, seguro y accesible dentro de la comunidad de Panamá.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ================= PRECIOS SIMILARES ================= -->
+    <section class="bg-white rounded-3xl p-6 md:p-10 border border-slate-200 shadow-sm space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-teal-600">Opciones cercanas</span>
+          <h3 class="font-heading text-xl md:text-2xl font-extrabold text-slate-900 flex items-center gap-2.5 mt-1">
+            <i class="fa-solid fa-tags text-teal-600"></i> Alojamientos con Precios Similares
+          </h3>
+        </div>
+        <p class="text-xs text-slate-500 max-w-xs">Alternativas con tarifas cercanas a este alojamiento para comparar costos fácilmente.</p>
+      </div>
+
+      <div id="detRelatedPrices" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Inyectado por JS -->
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= SCRIPT LOGICA Y BASE DE DATOS LOCAL ================= -->
+  <script>
+    let propertiesData = [
+      {
+        id: 1,
+        title: "Habitación Amueblada en El Cangrejo",
+        status: "Disponible",
+        location: "El Cangrejo",
+        address: "Calle Eusebio A. Morales, Edif. Aurora Apto 2B",
+        price: 220,
+        type: "Individual",
+        phone: "60000000",
+        images: [
+          "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1000&q=80",
+          "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80"
+        ],
+        services: ["Luz, Agua y WiFi incluido", "Amoblado", "Baño individual", "Aire Acondicionado"],
+        requirements: "Copia de cédula/pasaporte, matrícula universitaria vigente y depósito equivalente a medio mes."
+      },
+      {
+        id: 2,
+        title: "Cuarto Compartido - Vía Transístmica",
+        status: "Disponible",
+        location: "Transístmica",
+        address: "Vía Transístmica frente a la Puerta Principal",
+        price: 140,
+        type: "Compartido",
+        phone: "61111111",
+        images: [
+          "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1000&q=80",
+          "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80"
+        ],
+        services: ["Luz, Agua y WiFi incluido", "Baño compartido", "Acceso a Cocina"],
+        requirements: "Solo estudiantes activos. Pago puntual los 30 de cada mes."
+      },
+      {
+        id: 3,
+        title: "Estudio Estudiantil cerca de El Carmen",
+        status: "Disponible",
+        location: "El Carmen",
+        address: "Via Argentina, Edificio Estudiantil Central",
+        price: 235,
+        type: "Individual",
+        phone: "62222222",
+        images: [
+          "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1000&q=80"
+        ],
+        services: ["WiFi de alta velocidad", "Seguridad 24/7", "Luz y Agua"],
+        requirements: "Estudiante de universidad estatal o privada, carta de trabajo o referencia familiar."
+      },
+      {
+        id: 4,
+        title: "Habitación Económica Tumba Muerto",
+        status: "Disponible",
+        location: "Tumba Muerto",
+        address: "Urbanización Condado del Rey, Cerca de Universidades",
+        price: 155,
+        type: "Compartido",
+        phone: "63333333",
+        images: [
+          "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1000&q=80"
+        ],
+        services: ["Agua y Gas incluidos", "Internet básico", "Área de lavandería"],
+        requirements: "Cédula juvenil o de identidad panameña, récord policivo actualizado."
+      }
+    ];
+
+    let recentlyViewedIds = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCatalog(propertiesData);
+      renderRecentSection();
+    });
+
+    function filterRooms() {
+      const locationVal = document.getElementById("filterLocation").value;
+      const priceVal = document.getElementById("filterPrice").value;
+      const typeVal = document.getElementById("filterType").value;
+      const orderVal = document.getElementById("filterOrder").value;
+
+      let filtered = propertiesData.filter(p => {
+        if (locationVal !== "todos" && p.location !== locationVal) return false;
+        if (priceVal !== "todos" && p.price > Number(priceVal)) return false;
+        if (typeVal !== "todos" && p.type !== typeVal) return false;
+        return true;
+      });
+
+      if (orderVal === "bajo") {
+        filtered.sort((a, b) => a.price - b.price);
+      } else {
+        filtered.sort((a, b) => b.id - a.id);
+      }
+
+      renderCatalog(filtered);
+    }
+
+    function renderCatalog(items) {
+      const grid = document.getElementById("catalogGrid");
+      grid.innerHTML = "";
+
+      if (items.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-16 text-slate-400 text-xs md:text-sm">No se encontraron alojamientos disponibles con esos criterios de filtrado.</div>`;
+        return;
+      }
+
+      items.forEach(p => {
+        const isAvailable = p.status === 'Disponible';
+        const badgeColor = isAvailable ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white';
+
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col justify-between group cursor-pointer";
+        card.innerHTML = `
+          <div class="p-0">
+            <div class="relative h-52 bg-slate-200 overflow-hidden">
+              <img src="${p.images[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-3 left-3 text-[11px] font-bold px-3 py-1 rounded-full ${badgeColor} shadow-md">
+                ${p.status}
+              </span>
+              <span class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                $${p.price} / mes
+              </span>
+            </div>
+
+            <div class="p-6 space-y-3">
+              <span class="text-[10px] font-extrabold text-teal-600 uppercase tracking-widest">${p.location}</span>
+              <h3 class="font-heading font-extrabold text-base text-slate-900 line-clamp-1 group-hover:text-brand-600 transition-colors">${p.title}</h3>
+              
+              <p class="text-xs text-slate-500 flex items-start gap-1.5">
+                <i class="fa-solid fa-location-dot text-brand-600 mt-0.5 shrink-0"></i>
+                <span class="line-clamp-1"><strong>Dirección:</strong> ${p.address}</span>
+              </p>
+
+              <div class="bg-sky-50/70 p-3 rounded-2xl border border-sky-100 text-[11px] text-sky-950">
+                <strong class="text-sky-900 block mb-0.5 font-bold">📋 Requisitos:</strong>
+                <p class="line-clamp-2 leading-relaxed">${p.requirements || 'Sin requisitos específicos.'}</p>
+              </div>
+
+              <div class="flex flex-wrap gap-1 pt-1">
+                ${p.services.map(s => `<span class="bg-teal-50 text-teal-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-teal-100">${s}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="px-6 pb-6 pt-0 flex items-center justify-between text-xs font-bold text-teal-600 group-hover:text-teal-700">
+            <span>Ver detalles y contacto</span>
+            <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        `;
+
+        card.addEventListener("click", () => selectProperty(p));
+        grid.appendChild(card);
+      });
+    }
+
+    function selectProperty(p) {
+      recentlyViewedIds = recentlyViewedIds.filter(id => id !== p.id);
+      recentlyViewedIds.unshift(p.id);
+      showDetailView(p);
+    }
+
+    function renderRecentSection() {
+      const section = document.getElementById("recentSection");
+      const grid = document.getElementById("recentCatalogGrid");
+      
+      if (recentlyViewedIds.length === 0) {
+        section.classList.add("hidden");
+        return;
+      }
+
+      section.classList.remove("hidden");
+      grid.innerHTML = "";
+
+      const recentItems = recentlyViewedIds.slice(0, 3).map(id => propertiesData.find(p => p.id === id)).filter(Boolean);
+
+      recentItems.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-all flex items-center gap-4 p-3 cursor-pointer group";
+        card.innerHTML = `
+          <img src="${p.images[0]}" class="w-16 h-16 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform">
+          <div class="overflow-hidden space-y-1">
+            <span class="text-[10px] font-bold text-teal-600 uppercase tracking-wide">${p.location}</span>
+            <h4 class="font-heading font-bold text-xs text-slate-900 line-clamp-1 group-hover:text-brand-600 transition-colors">${p.title}</h4>
+            <span class="text-xs font-extrabold text-slate-900">$${p.price} / mes</span>
+          </div>
+        `;
+        card.addEventListener("click", () => selectProperty(p));
+        grid.appendChild(card);
+      });
+    }
+
+    function showDetailView(p) {
+      document.getElementById("catalogView").classList.add("hidden");
+      document.getElementById("detailView").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      document.getElementById("detTitle").textContent = p.title;
+      document.getElementById("detPrice").textContent = `$${p.price}`;
+      document.getElementById("detLocationBadge").textContent = p.location;
+      document.getElementById("detAddress").textContent = p.address;
+      document.getElementById("detTypeBadge").textContent = p.type;
+      document.getElementById("detMainImage").src = p.images[0];
+      document.getElementById("detRequirements").textContent = p.requirements;
+
+      const statusBadge = document.getElementById("detStatusBadge");
+      const isAvailable = p.status === 'Disponible';
+      statusBadge.textContent = p.status;
+      statusBadge.className = `absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md ${isAvailable ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`;
+
+      const thumbContainer = document.getElementById("detThumbnails");
+      thumbContainer.innerHTML = "";
+      p.images.forEach((imgSrc) => {
+        const thumb = document.createElement("div");
+        thumb.className = "h-20 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer opacity-80 hover:opacity-100 transition-opacity shadow-sm";
+        thumb.innerHTML = `<img src="${imgSrc}" class="w-full h-full object-cover">`;
+        thumb.addEventListener("click", () => {
+          document.getElementById("detMainImage").src = imgSrc;
+        });
+        thumbContainer.appendChild(thumb);
+      });
+
+      const servContainer = document.getElementById("detServicesContainer");
+      servContainer.innerHTML = "";
+      p.services.forEach(s => {
+        servContainer.innerHTML += `
+          <div class="inline-flex items-center gap-2 bg-teal-50 text-teal-800 text-xs font-semibold px-3 py-1.5 rounded-xl border border-teal-100">
+            <i class="fa-solid fa-check text-teal-600"></i> ${s}
+          </div>
+        `;
+      });
+
+      const waBtn = document.getElementById("detWhatsappBtn");
+      waBtn.href = `https://wa.me/507${p.phone}?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20*${encodeURIComponent(p.title)}*%20ubicado%20en%20*${encodeURIComponent(p.location)}*.`;
+
+      renderRelatedPrices(p);
+    }
+
+    function renderRelatedPrices(currentProp) {
+      const container = document.getElementById("detRelatedPrices");
+      container.innerHTML = "";
+
+      const related = propertiesData.filter(item => item.id !== currentProp.id && Math.abs(item.price - currentProp.price) <= 60);
+
+      let itemsToShow = related;
+      if (itemsToShow.length === 0) {
+        itemsToShow = propertiesData.filter(item => item.id !== currentProp.id).slice(0, 3);
+      }
+
+      if (itemsToShow.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-xs text-slate-500">No hay alojamientos con precios relacionados en este momento.</div>`;
+        return;
+      }
+
+      itemsToShow.slice(0, 3).forEach(p => {
+        const diff = p.price - currentProp.price;
+        const diffText = diff > 0 ? `+$${diff} vs actual` : diff < 0 ? `-$${Math.abs(diff)} vs actual` : `Mismo precio`;
+        
+        const card = document.createElement("div");
+        card.className = "bg-slate-50 p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group";
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-teal-50 text-teal-700 border border-teal-100">${p.location}</span>
+              <span class="text-[10px] font-semibold text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">${diffText}</span>
+            </div>
+            <h4 class="font-heading font-bold text-sm text-slate-900 line-clamp-1 group-hover:text-teal-600 transition-colors">${p.title}</h4>
+            <div class="flex items-baseline gap-1 pt-1">
+              <span class="text-2xl font-extrabold text-slate-900">$${p.price}</span>
+              <span class="text-xs text-slate-500">/ mes</span>
+            </div>
+          </div>
+          <div class="pt-4 mt-4 border-t border-slate-200/60 text-xs font-bold text-teal-600 flex items-center justify-between group-hover:text-teal-700 transition-colors">
+            <span>Ver opción</span>
+            <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        `;
+        card.addEventListener("click", () => selectProperty(p));
+        container.appendChild(card);
+      });
+    }
+
+    function showCatalogView() {
+      document.getElementById("detailView").classList.add("hidden");
+      document.getElementById("catalogView").classList.remove("hidden");
+      renderRecentSection();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      
+      <!-- Columna 1 -->
+      <div class="space-y-4">
+        <a href="#" onclick="showCatalogView()" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna 2 -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="#" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-rose-500 mx-1"></i> para estudiantes universitarios.
+      </p>
+    </div>
+  </footer>
+<!-- ================= MODALES ================= -->
+
+  <!-- MODAL DETALLES DE CUARTO -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+      <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <h3 id="mTitle" class="font-heading text-xl font-bold text-slate-900"></h3>
+      <p id="mPrice" class="text-lg font-black text-brand-600"></p>
+      <p id="mLoc" class="text-xs text-slate-500"></p>
+      <p id="mDesc" class="text-xs text-slate-600 leading-relaxed"></p>
+      <div id="mSelectArea" class="pt-2">
+        <button onclick="selectRoomForStudent()" class="w-full py-2.5 mb-2 bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 text-center font-bold text-xs rounded-xl transition">
+          📌 Elegir este anuncio para mi perfil
+        </button>
+      </div>
+      <a id="mWaLink" href="https://wa.me/" target="_blank" class="block w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold text-xs rounded-xl transition">
+        <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Contactar por WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- MODAL CUENTA (LOGIN / REGISTRO / OLVIDO DE CONTRASEÑA) -->
+  <div id="accountModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+      <button onclick="closeModal('accountModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      
+      <div id="authTabsHeader" class="flex border-b border-slate-200 text-sm font-bold">
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="w-1/2 py-2 text-brand-600 border-b-2 border-brand-600">Crear Cuenta</button>
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 py-2 text-slate-400">Iniciar Sesión</button>
+      </div>
+
+      <p id="authNotice" class="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200 hidden font-medium">
+        <i class="fa-solid fa-circle-info mr-1"></i> Debes crear una cuenta o iniciar sesión para realizar esta acción.
+      </p>
+
+      <!-- FORMULARIO REGISTRO -->
+      <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nombre Completo</label>
+          <input type="text" id="regName" required placeholder="Ej. Ana Torres" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="regEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">¿Qué perfil deseas?</label>
+          <select id="regRole" class="w-full p-3 rounded-xl border border-slate-200 font-semibold text-slate-700 focus:outline-none">
+            <option value="estudiante">🎓 Estudiante (Busco cuarto / Escribir reseñas)</option>
+            <option value="arrendador">🏠 Arrendador (Publicar y administrar cuartos)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Contraseña</label>
+          <input type="password" id="regPass" required placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
+          Crear Mi Cuenta
+        </button>
+      </form>
+
+      <!-- FORMULARIO LOGIN -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs hidden">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="loginEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="font-bold text-slate-700">Contraseña</label>
+            <button type="button" onclick="showForgotPassword(true)" class="text-[11px] font-bold text-brand-600 hover:underline">¿Olvidaste tu contraseña?</button>
+          </div>
+          <input type="password" id="loginPass" required placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition">
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <!-- FORMULARIO OLVIDÉ CONTRASEÑA (OCULTO POR DEFECTO) -->
+      <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-3 text-xs hidden">
+        <div class="bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800 space-y-1">
+          <p class="font-bold">Restablecer acceso</p>
+          <p class="text-[11px]">Ingresa tu correo registrado y te enviaremos las instrucciones.</p>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="forgotEmail" required placeholder="tu.correo@ejemplo.com" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition">
+          Enviar enlace de recuperación
+        </button>
+        <button type="button" onclick="showForgotPassword(false)" class="w-full text-center text-slate-500 font-bold pt-1">
+          ← Volver al inicio de sesión
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- MODAL PUBLICAR ANUNCIO (RESTRINGIDO A ARRENDADORES) -->
+  <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('postRoomModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <div>
+        <h3 class="font-heading text-xl font-extrabold text-slate-900">Publicar Anuncio de Cuarto</h3>
+        <p class="text-xs text-slate-500">Completa la información para que aparezca en el catálogo general.</p>
+      </div>
+
+      <form onsubmit="handlePostRoom(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Título del Anuncio</label>
+          <input type="text" id="roomTitle" required placeholder="Ej. Cuarto amueblado cerca de Transístmica" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Precio Mensual ($USD)</label>
+            <input type="number" id="roomPrice" required placeholder="200" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Modalidad</label>
+            <select id="roomType" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+              <option value="Individual">Individual</option>
+              <option value="Compartido">Compartido</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Ubicación / Zona</label>
+            <select id="roomLocation" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+              <option value="El Cangrejo">El Cangrejo</option>
+              <option value="Transístmica">Vía Transístmica</option>
+              <option value="Vista Hermosa">Vista Hermosa</option>
+              <option value="La Cresta">La Cresta</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">WhatsApp de Contacto</label>
+            <input type="tel" id="roomPhone" required placeholder="60000000" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Descripción y Servicios Incluidos</label>
+          <textarea id="roomDesc" rows="3" required placeholder="Incluye agua, luz, WiFi 500MB, acceso a cocina..." class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
+          🚀 Publicar Anuncio
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PUBLICAR RESEÑA -->
+  <div id="postReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+      <button onclick="closeModal('postReviewModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <div>
+        <h3 class="font-heading text-xl font-extrabold text-slate-900">Escribir una Reseña</h3>
+        <p class="text-xs text-slate-500">Comparte tu experiencia para orientar a otros estudiantes.</p>
+      </div>
+      <form onsubmit="handlePostReview(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Puntuación</label>
+          <select id="reviewRating" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none font-bold text-amber-500">
+            <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
+            <option value="4">⭐⭐⭐⭐ (Buena opción)</option>
+            <option value="3">⭐⭐⭐ (Regular)</option>
+            <option value="2">⭐⭐ (Poco recomendado)</option>
+            <option value="1">⭐ (Mala experiencia)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Tu Opinión</label>
+          <textarea id="reviewText" rows="4" required placeholder="¿Qué tal es la zona? ¿El ambiente de la casa? ¿El trato con el arrendador?" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
+          Publicar Reseña
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= LÓGICA DE JAVASCRIPT ================= -->
+  <script>
+    let currentUser = JSON.parse(localStorage.getItem('unicuartos_user')) || null;
+    let pendingAction = null;
+    let currentSlide = 0;
+    let selectedRoomTemp = null;
+
+    // 1. RENDERIZADO Y NAVEGACIÓN DE USUARIO
+    function updateAuthNav() {
+      const container = document.getElementById('authNavContainer');
+      if (!container) return;
+
+      if (currentUser) {
+        const isStudent = currentUser.role === 'estudiante';
+        const targetPage = isStudent ? 'panel_estudiante.html' : 'panel_propietario.html';
+        const roleLabel = isStudent ? 'Mi Panel' : 'Panel Propietario';
+        const roleIcon = isStudent ? 'fa-graduation-cap' : 'fa-house-user';
+
+        container.innerHTML = `
+          <div class="flex items-center gap-3">
+            <a href="${targetPage}" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
+              <i class="fa-solid ${roleIcon}"></i>
+              <span>${roleLabel}</span>
+            </a>
+            <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-400 hover:text-rose-500 font-bold text-xs p-2 rounded-full transition">
+              <i class="fa-solid fa-right-from-bracket text-base"></i>
+            </button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="openModal('accountModal')" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-user text-xs"></i>
+            <span>Ingresar</span>
+          </button>
+        `;
+      }
+    }
+
+    // 2. CONTROL DE MODALES Y ACCESO ESTRICTO
+    function openModal(id) {
+      document.getElementById(id)?.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id)?.classList.add('hidden');
+      if (id === 'accountModal') {
+        document.getElementById('authNotice')?.classList.add('hidden');
+        showForgotPassword(false);
+      }
+    }
+
+    function requireAuth(action) {
+      pendingAction = action;
+      if (!currentUser) {
+        document.getElementById('authNotice')?.classList.remove('hidden');
+        openModal('accountModal');
+      } else {
+        executePendingAction();
+      }
+    }
+
+    function executePendingAction() {
+      if (pendingAction === 'room') {
+        if (currentUser.role === 'arrendador') {
+          openModal('postRoomModal');
+        } else {
+          showToast('Solo cuentas con perfil de Arrendador pueden publicar cuartos.');
+        }
+      } else if (pendingAction === 'review') {
+        openModal('postReviewModal');
+      }
+      pendingAction = null;
+    }
+
+    // 3. AUTENTICACIÓN, REGISTRO Y RECUPERACIÓN
+    function switchAuthTab(tab) {
+      const regForm = document.getElementById('registerForm');
+      const loginForm = document.getElementById('loginForm');
+      const regBtn = document.getElementById('tabRegisterBtn');
+      const loginBtn = document.getElementById('tabLoginBtn');
+
+      showForgotPassword(false);
+
+      if (tab === 'register') {
+        regForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        regBtn.className = 'w-1/2 py-2 text-brand-600 border-b-2 border-brand-600';
+        loginBtn.className = 'w-1/2 py-2 text-slate-400';
+      } else {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        loginBtn.className = 'w-1/2 py-2 text-brand-600 border-b-2 border-brand-600';
+        regBtn.className = 'w-1/2 py-2 text-slate-400';
+      }
+    }
+
+    function showForgotPassword(show) {
+      const loginForm = document.getElementById('loginForm');
+      const forgotForm = document.getElementById('forgotForm');
+      const tabsHeader = document.getElementById('authTabsHeader');
+
+      if (show) {
+        loginForm.classList.add('hidden');
+        tabsHeader.classList.add('hidden');
+        forgotForm.classList.remove('hidden');
+      } else {
+        forgotForm.classList.add('hidden');
+        tabsHeader.classList.remove('hidden');
+        loginForm.classList.remove('hidden');
+      }
+    }
+
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail').value;
+      showToast(`Instrucciones enviadas a ${email}`);
+      closeModal('accountModal');
+      showForgotPassword(false);
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      currentUser = {
+        name: document.getElementById('regName').value,
+        email: document.getElementById('regEmail').value,
+        role: document.getElementById('regRole').value
+      };
+      localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
+      closeModal('accountModal');
+      updateAuthNav();
+      showToast(`¡Bienvenido a UniCuartos, ${currentUser.name}!`);
+
+      if (pendingAction) {
+        executePendingAction();
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      currentUser = {
+        name: email.split('@')[0],
+        email: email,
+        role: 'estudiante'
+      };
+      localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
+      closeModal('accountModal');
+      updateAuthNav();
+      showToast('Sesión iniciada correctamente.');
+
+      if (pendingAction) {
+        executePendingAction();
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('unicuartos_user');
+      currentUser = null;
+      updateAuthNav();
+      showToast('Has cerrado sesión exitosamente.');
+    }
+
+    // 4. ACCIONES DE ANUNCIOS Y RESEÑAS
+    function openDetailModal(title, price, location, type, desc) {
+      document.getElementById('mTitle').innerText = title;
+      document.getElementById('mPrice').innerText = price;
+      document.getElementById('mLoc').innerText = location;
+      document.getElementById('mDesc').innerText = desc;
+      document.getElementById('mWaLink').href = `https://wa.me/50760000000?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20${encodeURIComponent(title)}`;
+      selectedRoomTemp = { title, price, location, type };
+      openModal('detailModal');
+    }
+
+    function selectRoomForStudent() {
+      if (!currentUser) {
+        closeModal('detailModal');
+        requireAuth('select');
+        return;
+      }
+      localStorage.setItem('unicuartos_selected_room', JSON.stringify(selectedRoomTemp));
+      showToast('Anuncio guardado en tu perfil.');
+      closeModal('detailModal');
+    }
+
+    function handlePostRoom(e) {
+      e.preventDefault();
+      const title = document.getElementById('roomTitle').value;
+      const price = document.getElementById('roomPrice').value;
+      const type = document.getElementById('roomType').value;
+      const location = document.getElementById('roomLocation').value;
+      const desc = document.getElementById('roomDesc').value;
+
+      const container = document.getElementById('roomsContainer');
+      const newCard = document.createElement('div');
+      newCard.className = "room-item bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition group flex flex-col";
+      newCard.setAttribute('data-location', location);
+      newCard.setAttribute('data-price', price);
+      newCard.setAttribute('data-type', type);
+
+      newCard.innerHTML = `
+        <div class="relative h-52 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          <span class="absolute top-3 left-3 bg-brand-600 text-white text-[11px] font-bold px-3 py-1 rounded-full">Nuevo</span>
+          <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white font-black px-3 py-1 rounded-xl text-lg">
+            $${price} <span class="text-xs font-normal text-slate-300">/ mes</span>
+          </div>
+        </div>
+        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="font-heading font-bold text-lg text-slate-900">${title}</h3>
+            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> ${location}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-500 font-medium">Directo con Propietario</span>
+            <button onclick="openDetailModal('${title}', '$${price} / mes', '${location}', '${type}', '${desc}')" class="text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg">
+              Ver Contacto
+            </button>
+          </div>
+        </div>
+      `;
+
+      container.prepend(newCard);
+      closeModal('postRoomModal');
+      showToast('¡Anuncio publicado con éxito!');
+      e.target.reset();
+    }
+
+    function handlePostReview(e) {
+      e.preventDefault();
+      const rating = '⭐'.repeat(document.getElementById('reviewRating').value);
+      const text = document.getElementById('reviewText').value;
+
+      const container = document.getElementById('reviewsContainer');
+      const reviewElem = document.createElement('div');
+      reviewElem.className = 'bg-white p-4 rounded-2xl border border-slate-200 space-y-2';
+      reviewElem.innerHTML = `
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-slate-800 text-xs">${currentUser ? currentUser.name : 'Estudiante'}</span>
+          <span class="text-amber-400 text-xs">${rating}</span>
+        </div>
+        <p class="text-xs text-slate-600">"${text}"</p>
+      `;
+      container.prepend(reviewElem);
+      closeModal('postReviewModal');
+      showToast('Reseña agregada correctamente.');
+    }
+
+    function toggleFavorite(title) {
+      showToast(`Guardado en favoritos: ${title}`);
+    }
+
+    // 5. FILTROS
+    function filterRooms() {
+      const loc = document.getElementById('filterLocation').value;
+      const price = document.getElementById('filterPrice').value;
+      const type = document.getElementById('filterType').value;
+
+      const rooms = document.querySelectorAll('.room-item');
+      rooms.forEach(room => {
+        const rLoc = room.getAttribute('data-location');
+        const rPrice = parseInt(room.getAttribute('data-price'));
+        const rType = room.getAttribute('data-type');
+
+        let matchLoc = (loc === 'todos' || rLoc === loc);
+        let matchPrice = (price === 'todos' || rPrice <= parseInt(price));
+        let matchType = (type === 'todos' || rType === type);
+
+        room.style.display = (matchLoc && matchPrice && matchType) ? 'flex' : 'none';
+      });
+    }
+
+    function quickFilter(val) {
+      const rooms = document.querySelectorAll('.room-item');
+      rooms.forEach(room => {
+        if (val === 'todos') {
+          room.style.display = 'flex';
+        } else {
+          const rLoc = room.getAttribute('data-location');
+          const rType = room.getAttribute('data-type');
+          room.style.display = (rLoc === val || rType === val) ? 'flex' : 'none';
+        }
+      });
+    }
+
+    // 6. CARRUSEL
+    function setSlide(index) {
+      const slides = document.querySelectorAll('.hero-slide');
+      const dots = document.querySelectorAll('.slider-dot');
+      slides.forEach((slide, i) => {
+        slide.style.opacity = i === index ? '1' : '0';
+        dots[i].className = i === index ? 'slider-dot w-3 h-3 rounded-full bg-white transition' : 'slider-dot w-3 h-3 rounded-full bg-white/40 transition';
+      });
+      currentSlide = index;
+    }
+
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % 3;
+      setSlide(currentSlide);
+    }, 5000);
+
+    // 7. TOAST NOTIFICACIONES
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // Inicialización al cargar la página
+    document.addEventListener('DOMContentLoaded', updateAuthNav);
+  </script>
+</body>
+</html>

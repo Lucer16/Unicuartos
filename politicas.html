@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .slide-fade {
+      transition: opacity 0.8s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ================= MENÚ ================= -->
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+        <i class="fa-solid fa-house-user"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+          UniCuartos
+        </span>
+        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+          Panamá / UP
+        </span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
+      <a href="index.html#publicar-sec" class="hover:text-brand-600 transition">¿Cómo funciona?</a>
+      <a href="index.html#faq" class="hover:text-brand-600 transition">Preguntas</a>
+    </nav>
+
+    <div id="authNavContainer" class="flex items-center gap-3">
+      <!-- Inyectado dinámicamente -->
+    </div>
+
+    <!-- NOTIFICACIÓN TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+      <span id="toastMsg">Actualizado</span>
+    </div>
+  </header>
+
+<!-- ================= POLÍTICA DE PRIVACIDAD ================= -->
+  <section id="privacy-page" class="py-24 px-6 max-w-5xl mx-auto text-slate-800">
+    
+    <!-- Encabezado Principal -->
+    <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-bold tracking-wide uppercase">
+        <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+        Privacidad y Protección de Datos
+      </div>
+      <h1 class="font-heading text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+        Política de <span class="bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent">Privacidad</span>
+      </h1>
+      <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+        Descubre cómo recopilamos, utilizamos y protegemos la información personal en la plataforma UniCuartos.
+      </p>
+    </div>
+
+    <!-- Contenedor Principal de Secciones -->
+    <div class="space-y-8 mb-12">
+      
+      <!-- Bloque 1: Recopilación de Datos -->
+      <div class="bg-white p-8 md:p-10 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 space-y-4">
+        <h2 class="font-heading text-xl md:text-2xl font-bold text-slate-900">1. Recopilación de Información</h2>
+        <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+          En <strong>UniCuartos</strong> valoramos y respetamos tu privacidad. Recopilamos únicamente los datos básicos e indispensables para garantizar el funcionamiento operativo de la plataforma, tales como el nombre, la dirección de correo electrónico u otros datos de contacto que el usuario proporciona de forma voluntaria al interactuar con nuestros canales de soporte o al registrarse.
+        </p>
+      </div>
+
+      <!-- Bloque 2: Uso de la Información -->
+      <div class="bg-white p-8 md:p-10 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 space-y-4">
+        <h2 class="font-heading text-xl md:text-2xl font-bold text-slate-900">2. Uso de los Datos</h2>
+        <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+          La información recopilada se utiliza de manera exclusiva para gestionar cuentas de usuario, optimizar el rendimiento técnico del sitio, mejorar la experiencia de navegación y atender de forma oportuna las solicitudes o consultas enviadas a través de nuestro correo oficial (<code class="bg-slate-100 text-brand-700 px-2 py-0.5 rounded font-mono text-xs">soporte@unicuartos.com</code>).
+        </p>
+      </div>
+
+      <!-- Bloque 3: Protección y Seguridad -->
+      <div class="bg-white p-8 md:p-10 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 space-y-4">
+        <h2 class="font-heading text-xl md:text-2xl font-bold text-slate-900">3. Protección de Datos</h2>
+        <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+          Implementamos medidas de seguridad técnicas y organizativas razonables orientadas a resguardar tus datos personales frente a accesos no autorizados, pérdida, alteración o divulgación indebida. <strong>UniCuartos</strong> no comparte, cede ni comercializa información personal con terceros con fines publicitarios o comerciales bajo ninguna circunstancia.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Banner de Soporte / Cierre de Privacidad -->
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-8 md:p-10 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 text-center md:text-left">
+        <h3 class="font-heading text-xl font-bold">¿Tienes dudas sobre tu privacidad?</h3>
+        <p class="text-slate-300 text-xs md:text-sm">Si requieres aclaraciones adicionales sobre el tratamiento de tus datos, contáctanos directamente.</p>
+      </div>
+      <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 bg-white text-slate-900 hover:bg-slate-100 font-extrabold text-xs md:text-sm px-6 py-3.5 rounded-2xl shadow-lg transition-all whitespace-nowrap">
+        <i class="fa-solid fa-envelope text-brand-600"></i> soporte@unicuartos.com
+      </a>
+    </div>
+
+  </section>
+
+ <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      
+      <!-- Columna 1: Información del sitio y logotipo -->
+      <div class="space-y-4">
+        <a href="#" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna 2: Sobre Nosotros -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Línea divisoria y Copyright -->
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-rose-500 mx-1"></i> por <a href="https://www.wecreatebylucero.com" target="_blank" class="text-slate-400 hover:text-white transition-colors">WeCreate</a>.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

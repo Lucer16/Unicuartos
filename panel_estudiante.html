@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCuartos - Panel de Estudiante</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-full bg-brand-500 flex items-center justify-center text-white text-base font-black shadow-md">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <span class="font-heading text-lg font-extrabold tracking-tight text-white">
+          UniCuartos <span class="text-xs font-normal text-teal-400 font-sans">| Mi Panel de Estudiante</span>
+        </span>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <span class="text-xs font-medium text-slate-300 hidden sm:inline-block">
+          <i class="fa-solid fa-user-graduate mr-1 text-teal-400"></i> Hola, Estudiante
+        </span>
+        <a href="index.html" class="text-xs font-bold text-slate-300 hover:text-white transition">
+          <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Ir a la Web
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+    
+    <!-- ENCABEZADO Y ACCIONES RÁPIDAS -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+      <div>
+        <h1 class="font-heading text-2xl font-extrabold text-slate-900">Panel del Estudiante</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Gestiona tus opiniones, tus cuartos guardados y tus búsquedas de roomie.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="openRoomieModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-md transition flex items-center gap-2">
+          <i class="fa-solid fa-user-plus"></i> Buscar Roomie
+        </button>
+        <button onclick="openReviewModal()" class="bg-gradient-to-r from-brand-600 to-teal-600 hover:from-brand-700 hover:to-teal-700 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-md transition flex items-center gap-2">
+          <i class="fa-solid fa-pen"></i> Escribir Reseña
+        </button>
+      </div>
+    </div>
+
+    <!-- PESTAÑAS DE NAVEGACIÓN INTERNA -->
+    <div class="flex border-b border-slate-200 font-bold text-xs gap-6 overflow-x-auto">
+      <button id="tabReviewsBtn" onclick="switchSection('reviews')" class="pb-3 text-brand-600 border-b-2 border-brand-600 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-star"></i> Mis Reseñas (<span id="reviewCount">0</span>)
+      </button>
+      <button id="tabFavsBtn" onclick="switchSection('favorites')" class="pb-3 text-slate-400 hover:text-slate-600 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-heart"></i> Cuartos Guardados (<span id="favCount">0</span>)
+      </button>
+      <button id="tabRoomieBtn" onclick="switchSection('roomies')" class="pb-3 text-slate-400 hover:text-slate-600 transition flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-users"></i> Mis Anuncios (Roomie) (<span id="roomieCount">0</span>)
+      </button>
+    </div>
+
+    <!-- SECCIÓN 1: MIS RESEÑAS -->
+    <section id="reviewsSection" class="space-y-4">
+      <div id="reviewsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Reseñas cargadas dinámicamente -->
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: CUARTOS GUARDADOS / FAVORITOS -->
+    <section id="favoritesSection" class="hidden space-y-4">
+      <div id="favoritesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Favoritos cargados dinámicamente -->
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: MIS ANUNCIOS DE ROOMIE -->
+    <section id="roomiesSection" class="hidden space-y-4">
+      <div id="roomiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Anuncios de roomies cargados dinámicamente -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL PARA CREAR / EDITAR RESEÑA -->
+  <div id="reviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="closeModal('reviewModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h2 id="modalTitle" class="font-heading text-xl font-extrabold text-slate-900">Escribir Reseña</h2>
+        <p class="text-xs text-slate-500">Ayuda a otros universitarios compartiendo tu experiencia de hospedaje.</p>
+      </div>
+
+      <form id="reviewForm" onsubmit="saveReview(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="editIndex" value="-1">
+
+        <!-- Selector de Publicación/Alojamiento -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Seleccionar Publicación o Hospedaje *</label>
+          <select id="rListing" required class="w-full p-3 rounded-xl border border-slate-200 font-medium focus:outline-none focus:border-brand-500">
+            <option value="" disabled selected>-- Selecciona un alojamiento --</option>
+            <option value="Habitación Amueblada en El Cangrejo">Habitación Amueblada en El Cangrejo</option>
+            <option value="Estudio Anexo en La Cresta">Estudio Anexo en La Cresta</option>
+            <option value="Cuarto Universitario en Vía Transístmica">Cuarto Universitario en Vía Transístmica</option>
+            <option value="Apartamento Compartido en Vista Hermosa">Apartamento Compartido en Vista Hermosa</option>
+            <option value="Reseña General del Sector / Zona">Reseña General del Sector / Zona (Sin hospedaje específico)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Facultad / Escuela *</label>
+            <input type="text" id="rFaculty" required placeholder="Ej. Fac. de Ciencias / Medicina" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Puntuación General *</label>
+            <select id="rRating" class="w-full p-3 rounded-xl border border-slate-200 font-bold text-amber-500 focus:outline-none">
+              <option value="5">⭐⭐⭐⭐⭐ (Excelente - 5/5)</option>
+              <option value="4">⭐⭐⭐⭐ (Muy Bueno - 4/5)</option>
+              <option value="3">⭐⭐⭐ (Regular - 3/5)</option>
+              <option value="2">⭐⭐ (Malo - 2/5)</option>
+              <option value="1">⭐ (Muy Malo - 1/5)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Tu Opinión Detallada *</label>
+          <textarea id="rComment" rows="4" required placeholder="Comenta sobre la cercanía a la UP, la seguridad de la zona, el trato con el dueño, la calidad del internet, etc." class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500"></textarea>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeModal('reviewModal')" class="px-5 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold transition shadow-md">Publicar Reseña</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PARA PUBLICAR ANUNCIO DE BUSCAR ROOMIE -->
+  <div id="roomieModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="closeModal('roomieModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+
+      <div class="border-b border-slate-100 pb-3">
+        <h2 class="font-heading text-xl font-extrabold text-slate-900"><i class="fa-solid fa-user-plus text-indigo-600 mr-1"></i> Buscar Roomie</h2>
+        <p class="text-xs text-slate-500">Publica un anuncio para compartir gastos o encontrar compañero de cuarto.</p>
+      </div>
+
+      <form id="roomieForm" onsubmit="saveRoomie(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Título del Anuncio *</label>
+          <input type="text" id="rmTitle" required placeholder="Ej. Busco roomie para apto cerca de la Fac. de Medicina" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Presupuesto Máximo ($ / mes) *</label>
+            <input type="number" id="rmBudget" required placeholder="Ej. 150" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Zona Preferida *</label>
+            <select id="rmLocation" class="w-full p-3 rounded-xl border border-slate-200 font-medium focus:outline-none focus:border-indigo-500">
+              <option value="El Cangrejo">El Cangrejo</option>
+              <option value="Vía Transístmica">Vía Transístmica</option>
+              <option value="Vista Hermosa">Vista Hermosa</option>
+              <option value="La Cresta">La Cresta</option>
+              <option value="Cualquier zona cercana">Cualquier zona cercana</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tu Teléfono / WhatsApp *</label>
+            <input type="text" id="rmPhone" required placeholder="Ej. 50760000000" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tu Carrera / Facultad</label>
+            <input type="text" id="rmCareer" placeholder="Ej. Medicina / Informática" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Detalles / Hábitos / Preferencias *</label>
+          <textarea id="rmDetails" rows="3" required placeholder="Menciona tu fecha estimada de mudanza, si prefieres pet-friendly, ambiente tranquilo para estudiar, etc." class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeModal('roomieModal')" class="px-5 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition shadow-md">Publicar Anuncio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT CON LA LÓGICA DEL PANEL -->
+  <script>
+    // Datos de ejemplo
+    let myReviews = [
+      {
+        id: 1,
+        listing: "Habitación Amueblada en El Cangrejo",
+        faculty: "Fac. de Ciencias Exactas",
+        rating: 5,
+        comment: "Súper buena ubicación. Camino solo 5 minutos a la facultad. El área es tranquila de noche y hay un super cerca.",
+        date: "2026-02-15"
+      },
+      {
+        id: 2,
+        listing: "Cuarto Universitario en Vía Transístmica",
+        faculty: "Fac. de Medicina",
+        rating: 4,
+        comment: "Muy económico y práctico para cruzar la calle e ingresar a la universidad. El ruido de los buses a veces molesta de día, pero vale la pena.",
+        date: "2026-01-20"
+      }
+    ];
+
+    let myFavorites = [
+      {
+        id: 101,
+        title: "Habitación Amueblada en El Cangrejo",
+        price: 220,
+        location: "El Cangrejo",
+        address: "Calle Eusebio A. Morales",
+        type: "Individual",
+        phone: "50760000000",
+        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 102,
+        title: "Estudio Anexo en La Cresta",
+        price: 280,
+        location: "La Cresta",
+        address: "La Cresta, Panamá",
+        type: "Individual",
+        phone: "50761111111",
+        image: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    let myRoomieAds = [
+      {
+        id: 201,
+        title: "Busco Roomie para compartir apto en El Cangrejo",
+        budget: 160,
+        location: "El Cangrejo",
+        phone: "50762222222",
+        career: "Fac. de Informática",
+        details: "Estudiante de 3er año busca compañero/a ordenado. El apto ya incluye internet y línea blanca.",
+        date: "2026-02-18"
+      }
+    ];
+
+    // Cambiar entre pestañas
+    function switchSection(sec) {
+      const revSec = document.getElementById('reviewsSection');
+      const favSec = document.getElementById('favoritesSection');
+      const rmSec = document.getElementById('roomiesSection');
+
+      const revBtn = document.getElementById('tabReviewsBtn');
+      const favBtn = document.getElementById('tabFavsBtn');
+      const rmBtn = document.getElementById('tabRoomieBtn');
+
+      const activeStyle = "pb-3 text-brand-600 border-b-2 border-brand-600 transition flex items-center gap-2 whitespace-nowrap";
+      const inactiveStyle = "pb-3 text-slate-400 hover:text-slate-600 transition flex items-center gap-2 whitespace-nowrap";
+
+      revSec.classList.add('hidden');
+      favSec.classList.add('hidden');
+      rmSec.classList.add('hidden');
+
+      revBtn.className = inactiveStyle;
+      favBtn.className = inactiveStyle;
+      rmBtn.className = inactiveStyle;
+
+      if (sec === 'reviews') {
+        revSec.classList.remove('hidden');
+        revBtn.className = activeStyle;
+      } else if (sec === 'favorites') {
+        favSec.classList.remove('hidden');
+        favBtn.className = activeStyle;
+      } else if (sec === 'roomies') {
+        rmSec.classList.remove('hidden');
+        rmBtn.className = activeStyle;
+      }
+    }
+
+    // Renderizar Reseñas
+    function renderReviews() {
+      const container = document.getElementById('reviewsGrid');
+      document.getElementById('reviewCount').innerText = myReviews.length;
+      container.innerHTML = '';
+
+      if (myReviews.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">No has publicado reseñas aún.</div>`;
+        return;
+      }
+
+      myReviews.forEach((r, index) => {
+        const stars = "⭐".repeat(r.rating);
+        const card = `
+          <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <div>
+                  <span class="font-bold text-xs text-slate-900 block line-clamp-1">${r.listing}</span>
+                  <span class="text-[10px] text-slate-400 font-medium">${r.faculty} • ${r.date}</span>
+                </div>
+                <span class="text-amber-400 text-xs font-bold whitespace-nowrap">${stars}</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                "${r.comment}"
+              </p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+              <button onclick="openReviewModal(${index})" class="text-xs text-slate-600 hover:text-brand-600 font-bold px-3 py-1 rounded-lg transition">
+                <i class="fa-solid fa-pen mr-1"></i> Editar
+              </button>
+              <button onclick="deleteReview(${index})" class="text-xs text-rose-500 hover:text-rose-700 font-bold px-3 py-1 rounded-lg transition">
+                <i class="fa-solid fa-trash mr-1"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+    // Renderizar Favoritos
+    function renderFavorites() {
+      const container = document.getElementById('favoritesGrid');
+      document.getElementById('favCount').innerText = myFavorites.length;
+      container.innerHTML = '';
+
+      if (myFavorites.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">No tienes cuartos guardados en favoritos.</div>`;
+        return;
+      }
+
+      myFavorites.forEach((f, index) => {
+        const card = `
+          <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="relative h-44 bg-slate-200">
+                <img src="${f.image}" class="w-full h-full object-cover">
+                <span class="absolute top-3 right-3 bg-slate-900/80 text-white text-[11px] font-bold px-3 py-1 rounded-full">
+                  $${f.price} / mes
+                </span>
+              </div>
+              <div class="p-4 space-y-2">
+                <h3 class="font-heading font-bold text-sm text-slate-900 line-clamp-1">${f.title}</h3>
+                <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> ${f.address}</p>
+              </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+              <a href="https://wa.me/${f.phone}" target="_blank" class="flex-1 text-center text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl transition">
+                <i class="fa-brands fa-whatsapp mr-1"></i> Contactar
+              </a>
+              <button onclick="removeFavorite(${index})" class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center text-xs transition" title="Quitar de favoritos">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+    // Renderizar Anuncios de Roomie
+    function renderRoomies() {
+      const container = document.getElementById('roomiesGrid');
+      document.getElementById('roomieCount').innerText = myRoomieAds.length;
+      container.innerHTML = '';
+
+      if (myRoomieAds.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">No tienes anuncios de roomie activos.</div>`;
+        return;
+      }
+
+      myRoomieAds.forEach((item, index) => {
+        const card = `
+          <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3 flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-heading font-bold text-sm text-slate-900">${item.title}</h3>
+                <span class="bg-indigo-50 text-indigo-700 text-[11px] font-extrabold px-2.5 py-1 rounded-full whitespace-nowrap">
+                  Max: $${item.budget}/mes
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-400 font-medium">
+                <i class="fa-solid fa-location-dot mr-1"></i>${item.location} • ${item.career || 'Estudiante'} • ${item.date}
+              </p>
+              <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                ${item.details}
+              </p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <a href="https://wa.me/${item.phone}" target="_blank" class="text-xs text-emerald-600 font-bold hover:underline">
+                <i class="fa-brands fa-whatsapp mr-1"></i> Contacto activo
+              </a>
+              <button onclick="deleteRoomie(${index})" class="text-xs text-rose-500 hover:text-rose-700 font-bold px-3 py-1 rounded-lg transition">
+                <i class="fa-solid fa-trash mr-1"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+    // Modales Control
+    function openReviewModal(index = -1) {
+      document.getElementById('reviewForm').reset();
+      
+      if (index >= 0) {
+        document.getElementById('modalTitle').innerText = "Editar Reseña";
+        document.getElementById('editIndex').value = index;
+
+        const r = myReviews[index];
+        document.getElementById('rListing').value = r.listing;
+        document.getElementById('rFaculty').value = r.faculty;
+        document.getElementById('rRating').value = r.rating;
+        document.getElementById('rComment').value = r.comment;
+      } else {
+        document.getElementById('modalTitle').innerText = "Escribir Reseña";
+        document.getElementById('editIndex').value = -1;
+      }
+
+      document.getElementById('reviewModal').classList.remove('hidden');
+    }
+
+    function openRoomieModal() {
+      document.getElementById('roomieForm').reset();
+      document.getElementById('roomieModal').classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Guardar Reseña
+    function saveReview(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('editIndex').value);
+
+      const data = {
+        id: index >= 0 ? myReviews[index].id : Date.now(),
+        listing: document.getElementById('rListing').value,
+        faculty: document.getElementById('rFaculty').value,
+        rating: parseInt(document.getElementById('rRating').value),
+        comment: document.getElementById('rComment').value,
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      if (index >= 0) {
+        myReviews[index] = data;
+      } else {
+        myReviews.unshift(data);
+      }
+
+      renderReviews();
+      closeModal('reviewModal');
+    }
+
+    // Guardar Anuncio Roomie
+    function saveRoomie(e) {
+      e.preventDefault();
+
+      const data = {
+        id: Date.now(),
+        title: document.getElementById('rmTitle').value,
+        budget: document.getElementById('rmBudget').value,
+        location: document.getElementById('rmLocation').value,
+        phone: document.getElementById('rmPhone').value,
+        career: document.getElementById('rmCareer').value,
+        details: document.getElementById('rmDetails').value,
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      myRoomieAds.unshift(data);
+      renderRoomies();
+      closeModal('roomieModal');
+      switchSection('roomies'); // Cambia a la pestaña de roomies tras publicar
+    }
+
+    function deleteReview(index) {
+      if (confirm('¿Eliminar esta reseña?')) {
+        myReviews.splice(index, 1);
+        renderReviews();
+      }
+    }
+
+    function deleteRoomie(index) {
+      if (confirm('¿Eliminar este anuncio de búsqueda de roomie?')) {
+        myRoomieAds.splice(index, 1);
+        renderRoomies();
+      }
+    }
+
+    function removeFavorite(index) {
+      myFavorites.splice(index, 1);
+      renderFavorites();
+    }
+
+    // Inicialización
+    renderReviews();
+    renderFavorites();
+    renderRoomies();
+  </script>
+
+    <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      
+      <!-- Columna 1: Información del sitio y logotipo -->
+      <div class="space-y-4">
+        <a href="#" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna 2: Sobre Nosotros -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Línea divisoria y Copyright -->
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-rose-500 mx-1"></i> por <a href="https://www.wecreatebylucero.com" target="_blank" class="text-slate-400 hover:text-white transition-colors">WeCreate</a>.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

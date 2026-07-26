@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donaciones</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .blob {
+      filter: blur(60px);
+      z-index: 0;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ================= MENÚ FLOTANTE================= -->
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+    
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+        <i class="fa-solid fa-house-user"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+          UniCuartos
+        </span>
+        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+          Panamá / UP
+        </span>
+      </div>
+    </a>
+
+    <!-- Navegación Principal -->
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
+      <a href="historia.html" class="text-brand-600 font-bold transition">Nuestra Historia</a>
+      <a href="index.html#faq" class="hover:text-brand-600 transition">Preguntas</a>
+    </nav>
+
+    <!-- Botón de Retorno -->
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-full shadow transition flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= SECCIÓN 1: HERO  ================= -->
+  <section class="relative pt-36 pb-24 px-4 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#14b8a6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/20 backdrop-blur-md border border-teal-400/30 text-teal-300 text-xs md:text-sm font-semibold shadow-inner">
+        <i class="fa-solid fa-heart text-rose-400 animate-pulse"></i> Creado por un estudiante para otro estudiante
+      </span>
+
+      <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
+        Detrás de cada pantalla hay una historia de <span class="bg-gradient-to-r from-teal-300 via-sky-300 to-emerald-300 bg-clip-text text-transparent">lucha y muchos sueños</span>
+      </h1>
+
+      <p class="text-slate-300 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+        Soy estudiante de la <strong class="text-white font-semibold">Universidad de Panamá</strong>. Viví en carne propia lo difícil que es encontrar un lugar digno sin que te vacíen el bolsillo. Por eso programé este refugio digital: para que nadie camine solo en su etapa universitaria.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN 2: CARDS ================= -->
+  <section class="py-24 px-4 max-w-6xl mx-auto relative">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+      <span class="text-xs font-extrabold text-brand-600 uppercase tracking-widest bg-brand-50 px-3.5 py-1.5 rounded-full border border-brand-200 shadow-sm">
+        ✨ Nuestra Vibra y Propósito
+      </span>
+      <h2 class="font-heading text-3xl md:text-4xl font-extrabold text-slate-900">
+        ¿Por qué existe este rincón en la web?
+      </h2>
+      <p class="text-slate-600 text-sm md:text-base font-medium">
+        Un espacio libre, seguro y sin rodeos corporativos. Hecho por puro amor al estudio y compañerismo genuino.
+      </p>
+    </div>
+
+    <!-- Grid Moderno Estilo Bento / Tarjetas Juveniles -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Card 1: 0% Costo / Libertad -->
+      <div class="relative bg-gradient-to-b from-white to-teal-50/40 p-8 rounded-[2.5rem] border border-teal-100 shadow-xl shadow-teal-900/5 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-36 h-36 bg-teal-400/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="space-y-4 relative z-10">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-400 to-brand-600 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-teal-500/30">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full border border-teal-100 inline-block">100% Gratuito</span>
+          <h3 class="font-heading font-extrabold text-xl text-slate-900">Cero comisiones, cero abusos</h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Aquí no hay intermediarios raros ni cobros por buscar o publicar. Es una plataforma abierta, transparente y libre de estrés.
+          </p>
+        </div>
+        <div class="pt-6 relative z-10 flex items-center gap-2 text-xs font-bold text-brand-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Activo 24/7 para ti
+        </div>
+      </div>
+
+      <!-- Card 2: Seguridad y Hermandad -->
+      <div class="relative bg-gradient-to-b from-white to-sky-50/40 p-8 rounded-[2.5rem] border border-sky-100 shadow-xl shadow-sky-900/5 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-36 h-36 bg-sky-400/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="space-y-4 relative z-10">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-accent-600 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-sky-500/30">
+            <i class="fa-solid fa-people-group"></i>
+          </div>
+          <span class="text-[10px] font-black text-accent-600 uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full border border-sky-100 inline-block">Hermandad UP</span>
+          <h3 class="font-heading font-extrabold text-xl text-slate-900">Comunidad y Apoyo Real</h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Conectamos cuartos verificados con estudiantes que vienen del interior o de pueblos lejanos. ¡Queremos que te sientas seguro!
+          </p>
+        </div>
+        <div class="pt-6 relative z-10 flex items-center gap-2 text-xs font-bold text-accent-600">
+          <span class="w-2 h-2 rounded-full bg-accent-500 animate-ping"></span> Hecho con empatía
+        </div>
+      </div>
+
+      <!-- Card 3: Éxito y Enfoque -->
+      <div class="relative bg-gradient-to-b from-white to-amber-50/40 p-8 rounded-[2.5rem] border border-amber-100 shadow-xl shadow-amber-900/5 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="space-y-4 relative z-10">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-amber-500/30">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full border border-amber-100 inline-block">Enfoque Total</span>
+          <h3 class="font-heading font-extrabold text-xl text-slate-900">Menos estrés, mejores notas</h3>
+          <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
+            Menos horas atrapados en el tranque significa más tiempo para repasar apuntes, descansar bien y asegurar el índice académico que tanto mereces.
+          </p>
+        </div>
+        <div class="pt-6 relative z-10 flex items-center gap-2 text-xs font-bold text-amber-700">
+          <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> Tu futuro primero
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN 3: BANNER DE DONACIÓN ================= -->
+  <section class="relative w-full bg-gradient-to-r from-teal-600 via-brand-600 to-sky-700 text-white py-24 px-6 overflow-hidden shadow-2xl mb-0">
+    <!-- Círculos de luz flotantes -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center space-y-6">
+      
+      <!-- Pill badge juvenil -->
+      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/15 backdrop-blur-md text-amber-300 text-xs md:text-sm font-extrabold border border-white/20 shadow-lg">
+        <i class="fa-solid fa-mug-hot text-amber-300 animate-bounce"></i> ¡Un cafecito para el dev y estudiante!
+      </div>
+
+      <!-- Título llamativo -->
+      <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
+        ¿Encontraste lo que buscabas <br class="hidden sm:inline"> o lograste alquilar tu cuarto? 🎉
+      </h2>
+
+      <!-- Descripción emotiva y moderna -->
+      <p class="text-teal-100 text-base md:text-lg max-w-2xl font-light leading-relaxed">
+        Este sitio web se mantiene activo gracias al amor por la comunidad universitaria y a pequeños aportes voluntarios. Si esta plataforma te salvó la vida, te ayudó a mudarte o te facilitó la búsqueda, puedes dejar una donación con Yappy. ¡Cada granito ayuda a pagar el servidor web y apoya directamente mis copias, impresiones y estudios en la UP! 📚🚀
+      </p>
+
+      <!-- Botón de Donación Yappy -->
+      <div class="pt-4 flex flex-col items-center gap-3">
+        <a href="https://link.yappy.com.pa/stc/XkMGTOrblK8WXRhvYJGkWBSk16Vdr9BZvaim7nGhYrA%3D" target="_blank" class="px-10 py-5 bg-white text-brand-700 hover:bg-slate-100 font-extrabold text-lg rounded-2xl shadow-2xl transform hover:scale-105 transition duration-300 flex items-center gap-3 group">
+          <span class="w-10 h-10 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center font-black text-xl group-hover:rotate-12 transition">
+            <i class="fa-solid fa-heart text-rose-600"></i>
+          </span>
+          <span>Donar con Yappy</span>
+        </a>
+        <span class="text-xs text-teal-200 font-medium tracking-wide">
+          🔒 Enlace oficial y seguro de Yappy
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+   <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      
+      <!-- Columna 1: Información del sitio y logotipo -->
+      <div class="space-y-4">
+        <a href="#" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna 2: Sobre Nosotros -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Línea divisoria y Copyright -->
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-rose-500 mx-1"></i> por <a href="https://www.wecreatebylucero.com" target="_blank" class="text-slate-400 hover:text-white transition-colors">WeCreate</a>.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Cuarto - UniCuartos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Contenido Principal -->
+  <main class="max-w-4xl mx-auto px-6 py-12 w-full space-y-6">
+    <a href="index.html" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 text-xs font-bold transition">
+      <i class="fa-solid fa-arrow-left"></i> Volver al catálogo
+    </a>
+
+    <div class="bg-white text-slate-900 rounded-3xl p-8 shadow-2xl space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-6">
+        <div>
+          <span id="detailType" class="bg-teal-50 text-teal-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"></span>
+          <h1 id="detailTitle" class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-2"></h1>
+          <p id="detailLocation" class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-teal-600 mr-1"></i> </p>
+        </div>
+        <div id="detailPrice" class="text-2xl font-black text-teal-600 bg-teal-50 px-4 py-2 rounded-2xl"></div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="font-bold text-slate-800 text-sm">Descripción y Servicios</h3>
+        <p id="detailDesc" class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100"></p>
+      </div>
+
+      <div class="pt-4 flex flex-col sm:flex-row gap-3">
+        <button onclick="selectRoomForStudent()" class="flex-1 py-3 bg-teal-50 hover:bg-teal-100 text-teal-700 text-center font-bold text-xs rounded-xl border border-teal-200 transition">
+          📌 Elegir este anuncio para mi perfil
+        </button>
+        <a id="detailWaLink" href="https://wa.me/" target="_blank" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Contactar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Script para cargar la información guardada -->
+  <script>
+    let selectedRoom = JSON.parse(localStorage.getItem('unicuartos_selected_room'));
+
+    if (selectedRoom) {
+      document.getElementById('detailTitle').innerText = selectedRoom.title;
+      document.getElementById('detailPrice').innerText = selectedRoom.price;
+      document.getElementById('detailLocation').innerHTML = `<i class="fa-solid fa-location-dot text-teal-600 mr-1"></i> ${selectedRoom.location}`;
+      document.getElementById('detailType').innerText = selectedRoom.type;
+      document.getElementById('detailDesc').innerText = selectedRoom.desc;
+      document.getElementById('detailWaLink').href = `https://wa.me/50760000000?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20${encodeURIComponent(selectedRoom.title)}`;
+    } else {
+      document.querySelector('main').innerHTML = `
+        <div class="text-center py-20 space-y-4">
+          <h2 class="text-xl font-bold">No se encontró información del cuarto.</h2>
+          <a href="index.html" class="inline-block bg-teal-400 text-slate-900 font-bold px-6 py-2.5 rounded-full text-xs">Volver al inicio</a>
+        </div>
+      `;
+    }
+
+    function selectRoomForStudent() {
+      let currentUser = JSON.parse(localStorage.getItem('unicuartos_user'));
+      if (!currentUser) {
+        alert('Debes iniciar sesión para guardar un cuarto en tu perfil.');
+        return;
+      }
+      alert('¡Anuncio guardado en tu perfil correctamente!');
+    }
+  </script>
+</body>
+</html>
