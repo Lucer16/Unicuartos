@@ -7,6 +7,28 @@ let currentSlide = 0;
 let selectedRoomTemp = null;
 
 // ==========================================
+// FUNCIONES DE MENÚ MÓVIL
+// ==========================================
+function toggleMobileMenu() {
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('mobileBackdrop');
+  
+  if (!drawer || !backdrop) return;
+
+  const isOpen = drawer.classList.contains('translate-x-full');
+
+  if (isOpen) {
+    drawer.classList.remove('translate-x-full');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden';
+  } else {
+    drawer.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = '';
+  }
+}
+
+// ==========================================
 // ACORDEÓN DE PREGUNTAS FRECUENTES
 // ==========================================
 function toggleFaq(button) {
@@ -46,28 +68,65 @@ function updateAuthNav() {
   if (currentUser) {
     const isStudent = currentUser.role === 'estudiante';
     const targetPage = isStudent ? 'panel_estudiante.html' : 'panel_propietario.html';
-    const roleLabel = 'Mi Panel';
     const roleIcon = isStudent ? 'fa-graduation-cap' : 'fa-house-user';
 
     container.innerHTML = `
-      <div class="flex items-center gap-3">
-        <a href="${targetPage}" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
-          <i class="fa-solid ${roleIcon}"></i>
-          <span>${roleLabel}</span>
+      <div class="flex items-center gap-1.5">
+        <a href="${targetPage}" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-full shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
+          <i class="fa-solid ${roleIcon} text-[10px]"></i>
+          <span class="hidden sm:inline">Mi Panel</span>
+          <span class="sm:hidden">Panel</span>
         </a>
-        <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-400 hover:text-rose-500 font-bold text-xs p-2 rounded-full transition">
-          <i class="fa-solid fa-right-from-bracket text-base"></i>
+        <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-400 hover:text-rose-500 font-bold text-xs p-1.5 rounded-full transition shrink-0">
+          <i class="fa-solid fa-right-from-bracket text-sm"></i>
         </button>
       </div>
     `;
   } else {
     container.innerHTML = `
-      <button onclick="openModal('accountModal')" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
-        <i class="fa-solid fa-user text-xs"></i>
+      <button onclick="openModal('accountModal')" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-full shadow-md transition flex items-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-user text-[10px]"></i>
         <span>Ingresar</span>
       </button>
     `;
   }
+  
+  // Actualizar también el menú móvil
+  updateMobileAuth();
+}
+
+// ==========================================
+// ACTUALIZAR MENÚ MÓVIL CON AUTENTICACIÓN
+// ==========================================
+function updateMobileAuth() {
+  const section = document.getElementById('mobileAuthSection');
+  if (!section) return;
+  
+  if (currentUser) {
+    const isStudent = currentUser.role === 'estudiante';
+    const targetPage = isStudent ? 'panel_estudiante.html' : 'panel_propietario.html';
+    const roleLabel = isStudent ? '🎓 Mi Panel' : '🏠 Mi Panel';
+    
+    section.innerHTML = `
+      <a href="${targetPage}" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-2.5 rounded-xl bg-brand-50 text-brand-600 hover:bg-brand-100 transition">
+        <i class="fa-solid fa-user w-4 text-sm"></i> ${roleLabel}
+      </a>
+      <button onclick="handleLogoutMobile()" class="flex items-center gap-3 p-2.5 rounded-xl text-rose-600 hover:bg-rose-50 transition w-full text-left">
+        <i class="fa-solid fa-right-from-bracket w-4 text-sm"></i> Cerrar Sesión
+      </button>
+    `;
+  } else {
+    section.innerHTML = `
+      <button onclick="openModal('accountModal'); toggleMobileMenu();" class="flex items-center gap-3 p-2.5 rounded-xl bg-brand-600 text-white hover:bg-brand-700 transition w-full">
+        <i class="fa-solid fa-user w-4 text-sm"></i> Iniciar Sesión / Registrarse
+      </button>
+    `;
+  }
+}
+
+function handleLogoutMobile() {
+  handleLogout();
+  toggleMobileMenu();
 }
 
 function openModal(id) {
@@ -100,7 +159,6 @@ function executePendingAction() {
       showToast('Solo cuentas con perfil de Arrendador pueden publicar cuartos.');
     }
   } else if (pendingAction === 'review') {
-    // Cargar publicaciones antes de abrir el modal
     loadListingsForReview();
     openModal('postReviewModal');
   } else if (pendingAction === 'select') {
@@ -199,12 +257,28 @@ function handleRegister(e) {
 function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('loginEmail').value;
+  const name = email.split('@')[0];
+  
   currentUser = {
-    name: email.split('@')[0],
+    name: name,
     email: email,
     role: 'estudiante'
   };
   localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
+  
+  // Guardar el usuario en la lista de todos los usuarios
+  let users = JSON.parse(localStorage.getItem('unicuartos_users') || '[]');
+  const existingUser = users.find(u => u.email === email);
+  if (!existingUser) {
+    users.push({
+      name: name,
+      email: email,
+      role: 'estudiante',
+      registeredAt: new Date().toISOString()
+    });
+    localStorage.setItem('unicuartos_users', JSON.stringify(users));
+  }
+  
   closeModal('accountModal');
   updateAuthNav();
   showToast('Sesión iniciada correctamente.');
@@ -238,7 +312,7 @@ function syncPropertiesToCatalog() {
         price: prop.price,
         type: prop.type,
         location: prop.location,
-        desc: prop.requirements || 'Sin descripción',
+        desc: prop.description || prop.requirements || 'Sin descripción',
         image: prop.images && prop.images.length > 0 ? prop.images[0] : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80',
         status: prop.status,
         phone: prop.phone,
@@ -305,6 +379,10 @@ function loadStoredListingsAndReviews() {
             <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> ${room.location}</p>
             ${room.publisher ? `<p class="text-[10px] text-slate-400 mt-0.5"><i class="fa-solid fa-user mr-1"></i> Publicado por: ${room.publisher}</p>` : ''}
           </div>
+          <!-- Descripción resumida en la tarjeta -->
+          <p class="text-xs text-slate-600 bg-slate-50 p-2 rounded-xl border border-slate-100 line-clamp-2 leading-relaxed">
+            ${room.description || room.desc || 'Sin descripción disponible.'}
+          </p>
           <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-slate-600">
             ${room.services && room.services.length > 0 ? room.services.slice(0, 2).map(s => `<span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-check text-teal-600 mr-1"></i> ${s}</span>`).join('') : ''}
           </div>
@@ -319,7 +397,6 @@ function loadStoredListingsAndReviews() {
       
       // Click en la tarjeta para ir al detalle
       newCard.addEventListener('click', function(e) {
-        // Evitar que se active si se hizo click en el botón de favorito o en el enlace
         if (e.target.closest('.favorite-btn') || e.target.closest('a')) return;
         window.location.href = `producto.html?room=${room.id}`;
       });
@@ -336,7 +413,7 @@ function loadStoredListingsAndReviews() {
 }
 
 // ==========================================
-// FAVORITOS (CORAZÓN ROJO) - FUNCIÓN PRINCIPAL
+// FAVORITOS - FUNCIÓN PRINCIPAL
 // ==========================================
 function toggleFavoriteFromCard(roomId, buttonElement) {
   if (!currentUser) {
@@ -419,7 +496,7 @@ function openDetailModal(roomId) {
   document.getElementById('mPrice').innerText = `$${room.price} / mes`;
   document.getElementById('mLoc').innerText = `${room.location} - ${room.address || 'Cerca de la UP'}`;
   document.getElementById('mDesc').innerHTML = `
-    <strong>Descripción:</strong> ${room.desc || room.requirements || 'Sin descripción'}<br>
+    <strong>Descripción:</strong> ${room.description || room.desc || room.requirements || 'Sin descripción'}<br>
     <strong>Publicado por:</strong> ${room.publisher || 'Propietario'}<br>
     ${room.status ? `<strong>Estado:</strong> ${room.status}` : ''}
   `;
@@ -665,7 +742,7 @@ function showToast(msg) {
 }
 
 // ==========================================
-// RENDERIZAR RESEÑAS MODERNAS (SOLO 6)
+// RENDERIZAR RESEÑAS MODERNAS
 // ==========================================
 function renderModernReviews() {
   const container = document.getElementById('reviewsContainer');
@@ -814,4 +891,5 @@ document.addEventListener('DOMContentLoaded', function() {
   loadStoredListingsAndReviews();
   updateAllFavoriteButtons();
   setSlide(0);
+  updateMobileAuth();
 });

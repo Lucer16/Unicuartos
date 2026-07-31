@@ -6,9 +6,6 @@
   <title>UniCuartos - Cuartos Disponibles</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="script.js" defer></script>
-  <script src="style.js"></script>
-
   <script>
     tailwind.config = {
       theme: {
@@ -57,48 +54,60 @@
     .slide-fade {
       transition: opacity 0.8s ease-in-out;
     }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   </style>
 
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
 
   <!-- ================= MENÚ ================= -->
-  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
-    <a href="index.html" class="flex items-center gap-2 group">
-      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
-        <i class="fa-solid fa-house-user"></i>
-      </div>
-      <div class="flex flex-col">
-        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
-          UniCuartos
-        </span>
-        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
-          Panamá / UP
-        </span>
-      </div>
-    </a>
-
-    <!-- Menú de Escritorio -->
-    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
-      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
-      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
-      <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
-      <a href="donaciones.html" class="hover:text-brand-600 transition">¿Cómo apoyar?</a>
-      <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
-      <a href="blog.html" class="hover:text-brand-600 transition">Blog</a>
-    </nav>
-
-    <div class="flex items-center gap-3">
-      <div id="authNavContainer" class="flex items-center gap-3">
-        <!-- Inyectado dinámicamente -->
-      </div>
-      
-      <!-- Botón de Menú Móvil (Hamburguesa) -->
-      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
-        <i class="fa-solid fa-bars text-lg"></i>
-      </button>
+<header class="fixed top-2 left-1/2 -translate-x-1/2 w-[96%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-4 py-2 flex items-center justify-between transition-all">
+  <a href="index.html" class="flex items-center gap-1.5 group shrink-0">
+    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-sm font-black shadow-md shadow-brand-500/30">
+      <i class="fa-solid fa-house-user text-xs"></i>
     </div>
-  </header>
+    <div class="flex flex-col leading-none">
+      <span class="font-heading text-base font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+        UniCuartos
+      </span>
+      <span class="text-[8px] font-bold text-teal-700 uppercase tracking-widest -mt-0.5">
+        Panamá / UP
+      </span>
+    </div>
+  </a>
+
+  <!-- NAVEGACIÓN ESCRITORIO (oculta en móvil) -->
+  <nav class="hidden md:flex items-center gap-5 text-xs font-semibold text-slate-600">
+    <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+    <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos</a>
+    <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
+    <a href="roomies.html" class="hover:text-brand-600 transition">Roomies</a>
+    <a href="index.html#blog-destacados" class="hover:text-brand-600 transition">Blog</a>
+    <a href="donaciones.html" class="hover:text-brand-600 transition">Apoyar</a>
+    <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
+  </nav>
+
+  <!-- BOTONES DE ACCIÓN -->
+  <div class="flex items-center gap-1.5">
+    <div id="authNavContainer" class="flex items-center gap-1.5"></div>
+    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition focus:outline-none shrink-0">
+      <i class="fa-solid fa-bars text-sm"></i>
+    </button>
+  </div>
+</header>
 
   <!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
   <div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
@@ -340,16 +349,6 @@
       <div class="bg-slate-50 p-6 md:p-10 border-t border-slate-200/60">
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm text-slate-600">
-          <!-- Requisitos enfatizados en Celeste -->
-          <div class="bg-sky-50/70 p-6 rounded-2xl border border-sky-200 space-y-2">
-            <h4 class="font-bold text-sky-950 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-clipboard-list text-brand-600"></i> Requisitos de Admisión
-            </h4>
-            <p id="detRequirements" class="text-sky-900 leading-relaxed text-xs md:text-sm">
-              Requisitos del propietario...
-            </p>
-          </div>
-
           <!-- Descripción Detallada -->
           <div class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-2 shadow-sm">
             <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
@@ -357,6 +356,16 @@
             </h4>
             <p id="detDescription" class="text-slate-600 leading-relaxed text-xs md:text-sm">
               Descripción del cuarto...
+            </p>
+          </div>
+
+          <!-- Requisitos enfatizados en Celeste -->
+          <div class="bg-sky-50/70 p-6 rounded-2xl border border-sky-200 space-y-2">
+            <h4 class="font-bold text-sky-950 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-list text-brand-600"></i> Requisitos de Admisión
+            </h4>
+            <p id="detRequirements" class="text-sky-900 leading-relaxed text-xs md:text-sm">
+              Requisitos del propietario...
             </p>
           </div>
         </div>
@@ -600,10 +609,10 @@
             price: 220,
             type: "Individual",
             phone: "60000000",
+            description: "Cómoda habitación individual totalmente amueblada en la mejor zona de El Cangrejo, a solo 5 minutos caminando de la Universidad de Panamá. Cuenta con excelente iluminación natural, cerca de supermercados, farmacias y transporte público.",
             images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
             services: ["Luz, Agua y WiFi incluido", "Amoblado", "Baño individual", "Aire Acondicionado"],
             requirements: "Copia de cédula/pasaporte, matrícula universitaria vigente y depósito equivalente a medio mes.",
-            description: "Cómoda habitación individual totalmente amueblada en la mejor zona de El Cangrejo, a solo 5 minutos caminando de la Universidad de Panamá.",
             publisher: "María Arrendadora",
             verified: true
           },
@@ -616,10 +625,10 @@
             price: 140,
             type: "Compartido",
             phone: "61111111",
+            description: "Espacio compartido ideal para estudiantes económicos, a solo 3 minutos cruzando la vía de la Universidad de Panamá. Ambiente tranquilo y familiar, perfecto para estudiantes que buscan ahorrar.",
             images: ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80"],
             services: ["Luz, Agua y WiFi incluido", "Baño compartido", "Acceso a Cocina"],
             requirements: "Solo estudiantes activos. Pago puntual los 30 de cada mes.",
-            description: "Espacio compartido ideal para estudiantes económicos, a solo 3 minutos cruzando la vía de la UP.",
             publisher: "Carlos Propietario",
             verified: false
           },
@@ -632,10 +641,10 @@
             price: 280,
             type: "Individual",
             phone: "62222222",
+            description: "Estudio anexo independiente con baño privado y entrada separada, perfecto para estudiantes que buscan privacidad y tranquilidad para estudiar.",
             images: ["https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80"],
             services: ["Baño Propio", "Entrada Independiente", "WiFi High Speed", "Aire Acondicionado"],
             requirements: "Ambiente tranquilo para estudio, preferiblemente estudiantes de posgrado.",
-            description: "Estudio anexo independiente con baño privado y entrada separada, perfecto para estudiantes que buscan privacidad.",
             publisher: "Laura Arrendadora",
             verified: true
           }
@@ -652,7 +661,7 @@
     }
 
     // ==========================================
-    // FUNCIONES DE AUTENTICACIÓN (desde script.js)
+    // FUNCIONES DE AUTENTICACIÓN
     // ==========================================
     function updateAuthNav() {
       const container = document.getElementById('authNavContainer');
@@ -855,6 +864,11 @@
               <p class="text-xs text-slate-500 flex items-start gap-1.5">
                 <i class="fa-solid fa-location-dot text-brand-600 mt-0.5 shrink-0"></i>
                 <span class="line-clamp-1">${p.address || p.location}</span>
+              </p>
+
+              <!-- Descripción (resumida) -->
+              <p class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100 line-clamp-2 leading-relaxed">
+                ${p.description || p.desc || 'Sin descripción disponible.'}
               </p>
 
               <div class="flex flex-wrap gap-1 pt-1">
@@ -1062,6 +1076,8 @@
             <p class="text-xs text-slate-500 flex items-center gap-1">
               <i class="fa-solid fa-user text-[10px]"></i> ${p.publisher || 'Propietario'}
             </p>
+            <!-- Descripción resumida en relacionados -->
+            <p class="text-xs text-slate-600 line-clamp-2">${p.description || p.desc || 'Sin descripción.'}</p>
             <div class="flex items-baseline gap-1 pt-1">
               <span class="text-2xl font-extrabold text-slate-900">$${p.price}</span>
               <span class="text-xs text-slate-500">/ mes</span>

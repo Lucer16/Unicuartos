@@ -6,9 +6,40 @@
   <title>UniCuartos - Panel de Propietario</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="script.js" defer></script>
-  <script src="style.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
 
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     .glass-nav {
@@ -25,17 +56,21 @@
     .slide-fade {
       transition: opacity 0.8s ease-in-out;
     }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   </style>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
@@ -205,9 +240,17 @@
           </div>
         </div>
 
+        <!-- ========================================== -->
+        <!-- NUEVO: Descripción del Alojamiento         -->
+        <!-- ========================================== -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">📝 Descripción del Alojamiento</label>
+          <textarea id="pDescription" rows="3" placeholder="Ej. Cómoda habitación con excelente iluminación natural, cerca de supermercados y transporte público. Ambiente tranquilo y familiar." class="w-full p-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 text-sm"></textarea>
+        </div>
+
         <!-- Requisitos Enfatizados en Celeste -->
         <div>
-          <label class="block font-bold text-sky-900 mb-1">Requisitos para el Alquiler</label>
+          <label class="block font-bold text-sky-900 mb-1">📋 Requisitos para el Alquiler</label>
           <textarea id="pRequirements" rows="3" placeholder="Ej. Matrícula universitaria vigente, copia de cédula, ambiente tranquilo de estudio..." class="w-full p-3.5 rounded-xl border border-sky-300 bg-sky-50/50 focus:outline-none focus:border-sky-500 focus:bg-white text-slate-800 placeholder:text-sky-400 text-xs font-medium"></textarea>
         </div>
 
@@ -280,6 +323,7 @@
         price: 220,
         type: "Individual",
         phone: "60000000",
+        description: "Cómoda habitación individual totalmente amueblada en la mejor zona de El Cangrejo, a solo 5 minutos caminando de la Universidad de Panamá. Cuenta con excelente iluminación natural, cerca de supermercados, farmacias y transporte público.",
         images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
         services: ["Luz, Agua y WiFi incluido", "Amoblado", "Baño individual", "Aire Acondicionado"],
         requirements: "Copia de cédula/pasaporte, matrícula universitaria vigente y depósito equivalente a medio mes."
@@ -293,6 +337,7 @@
         price: 140,
         type: "Compartido",
         phone: "61111111",
+        description: "Espacio compartido ideal para estudiantes económicos, a solo 3 minutos cruzando la vía de la Universidad de Panamá. Ambiente tranquilo y familiar, perfecto para estudiantes que buscan ahorrar.",
         images: ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80"],
         services: ["Luz, Agua y WiFi incluido", "Baño compartido", "Acceso a Cocina"],
         requirements: "Solo estudiantes activos. Pago puntual los 30 de cada mes."
@@ -331,6 +376,7 @@
         document.getElementById('pPrice').value = p.price;
         document.getElementById('pType').value = p.type;
         document.getElementById('pPhone').value = p.phone;
+        document.getElementById('pDescription').value = p.description || '';
         document.getElementById('pRequirements').value = p.requirements;
 
         document.querySelectorAll('input[name="services"]').forEach(cb => {
@@ -343,6 +389,7 @@
       } else {
         document.getElementById('pageTitle').innerText = "Publicar Nuevo Cuarto";
         document.getElementById('editIndex').value = -1;
+        document.getElementById('pDescription').value = '';
       }
     }
 
@@ -404,6 +451,12 @@
                   <i class="fa-solid fa-location-dot text-teal-600 mt-0.5"></i>
                   <span><strong>${p.location}:</strong> ${p.address}</span>
                 </p>
+
+                <!-- Descripción del alojamiento -->
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-[11px] text-slate-700">
+                  <strong class="text-slate-800 block mb-0.5 font-bold">📝 Descripción:</strong>
+                  <p class="line-clamp-2 leading-relaxed">${p.description || 'Sin descripción disponible.'}</p>
+                </div>
 
                 <div class="bg-sky-50 p-3 rounded-2xl border border-sky-200 text-[11px] text-sky-950">
                   <strong class="text-sky-900 block mb-0.5 font-bold">📋 Requisitos:</strong>
@@ -496,6 +549,7 @@
         price: price,
         type: document.getElementById('pType').value,
         phone: document.getElementById('pPhone').value,
+        description: document.getElementById('pDescription').value || 'Sin descripción disponible.',
         images: currentImages.length > 0 ? currentImages : ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
         services: checkedServices,
         requirements: document.getElementById('pRequirements').value
