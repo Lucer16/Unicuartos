@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCuartos - Panel de Administración</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background: #f1f5f9; 
+    }
+    .font-heading { font-family: 'Outfit', sans-serif; }
+    .glass-card { 
+      background: rgba(255,255,255,0.85); 
+      backdrop-filter: blur(12px); 
+    }
+    
+    /* Estilos para el login */
+    .login-bg {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .login-bg::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 80%, rgba(56, 189, 248, 0.06) 0%, transparent 50%);
+      animation: rotateBg 30s linear infinite;
+    }
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .login-glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .input-glass {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.3s ease;
+      color: white;
+    }
+    .input-glass:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(20, 184, 166, 0.5);
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+      outline: none;
+    }
+    .input-glass::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .btn-glow {
+      background: linear-gradient(135deg, #14b8a6, #0d9488);
+      transition: all 0.3s ease;
+    }
+    .btn-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -10px rgba(20, 184, 166, 0.4);
+    }
+    .lock-icon {
+      animation: pulseLock 3s infinite ease-in-out;
+    }
+    @keyframes pulseLock {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    /* Estilos para tarjetas admin */
+    .admin-card {
+      transition: all 0.3s ease;
+    }
+    .admin-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+    }
+    .stat-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px -10px rgba(13, 148, 136, 0.15);
+      border-color: #14b8a6;
+    }
+    .stat-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    /* Pestañas */
+    .admin-tab {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      font-size: 0.75rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .admin-tab.active {
+      background: #14b8a6;
+      color: white;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    }
+    .admin-tab.inactive {
+      color: #64748b;
+      background: transparent;
+    }
+    .admin-tab.inactive:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA DE LOGIN (SIEMPRE VISIBLE INICIALMENTE)              -->
+  <!-- ============================================================ -->
+  <div id="loginScreen" class="login-bg min-h-screen flex items-center justify-center p-4 relative z-10">
+    
+    <div class="relative z-20 w-full max-w-md">
+      
+      <!-- Logo / Cabecera -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-teal-500 to-cyan-400 shadow-2xl shadow-teal-500/30 mb-4 lock-icon">
+          <i class="fa-solid fa-shield-halved text-4xl text-white"></i>
+        </div>
+        <h1 class="font-heading text-3xl font-extrabold text-white tracking-tight">
+          Uni<span class="text-teal-400">Cuartos</span>
+        </h1>
+        <p class="text-slate-400 text-sm mt-1 font-medium">Panel de Administración</p>
+        <div class="w-16 h-1 bg-gradient-to-r from-teal-500 to-cyan-400 rounded-full mx-auto mt-3"></div>
+      </div>
+
+      <!-- Tarjeta de Login -->
+      <div class="login-glass rounded-3xl p-8">
+        <h2 class="text-white text-xl font-bold mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-lock text-teal-400 text-sm"></i>
+          Acceso Restringido
+        </h2>
+
+        <!-- Mensaje de error -->
+        <div id="loginError" class="hidden bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-medium px-4 py-3 rounded-xl mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-circle-exclamation text-rose-400"></i>
+          <span id="errorMsg">Usuario o contraseña incorrectos.</span>
+        </div>
+
+        <form id="loginFormAdmin" onsubmit="handleAdminLogin(event)" class="space-y-5">
+          
+          <div>
+            <label class="block text-slate-300 text-xs font-bold uppercase tracking-wider mb-1.5">
+              <i class="fa-regular fa-user mr-1"></i> Usuario
+            </label>
+            <input type="text" id="adminUser" required placeholder="Ingresa tu usuario" 
+                   class="input-glass w-full px-4 py-3.5 rounded-xl text-sm font-medium">
+          </div>
+
+          <div>
+            <label class="block text-slate-300 text-xs font-bold uppercase tracking-wider mb-1.5">
+              <i class="fa-regular fa-key mr-1"></i> Contraseña
+            </label>
+            <input type="password" id="adminPass" required placeholder="Ingresa tu contraseña" 
+                   class="input-glass w-full px-4 py-3.5 rounded-xl text-sm font-medium">
+          </div>
+
+          <button type="submit" class="btn-glow w-full py-3.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            Ingresar al Panel
+          </button>
+
+        </form>
+
+        <div class="mt-6 pt-5 border-t border-white/10 text-center">
+          <p class="text-slate-500 text-xs">
+            <i class="fa-regular fa-circle-info mr-1"></i>
+            Acceso exclusivo para administradores autorizados.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PANEL DE ADMINISTRACIÓN (OCULTO INICIALMENTE)                -->
+  <!-- ============================================================ -->
+  <div id="adminPanel" class="hidden min-h-screen flex flex-col">
+
+    <!-- NAVEGACIÓN -->
+    <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center text-white text-base font-black shadow-md">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="font-heading text-lg font-extrabold tracking-tight text-white">
+            UniCuartos <span class="text-xs font-normal text-amber-400 font-sans">| Panel Admin</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-3">
+          <button onclick="handleAdminLogout()" class="text-xs font-bold text-slate-300 hover:text-rose-400 transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i> Cerrar Sesión
+          </button>
+          <a href="index.html" class="text-xs font-bold text-slate-300 hover:text-white transition">
+            <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Volver al Sitio
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+      
+      <!-- ESTADÍSTICAS -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Usuarios</p>
+              <p class="text-2xl font-black text-slate-900 mt-1" id="totalUsers">0</p>
+            </div>
+            <div class="stat-icon bg-indigo-50 text-indigo-600">
+              <i class="fa-solid fa-users"></i>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Anuncios</p>
+              <p class="text-2xl font-black text-slate-900 mt-1" id="totalListings">0</p>
+            </div>
+            <div class="stat-icon bg-emerald-50 text-emerald-600">
+              <i class="fa-solid fa-door-open"></i>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Reseñas</p>
+              <p class="text-2xl font-black text-slate-900 mt-1" id="totalReviews">0</p>
+            </div>
+            <div class="stat-icon bg-amber-50 text-amber-600">
+              <i class="fa-solid fa-star"></i>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Roomies</p>
+              <p class="text-2xl font-black text-slate-900 mt-1" id="totalRoomies">0</p>
+            </div>
+            <div class="stat-icon bg-rose-50 text-rose-600">
+              <i class="fa-solid fa-user-group"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN RÁPIDA -->
+      <div class="flex flex-wrap gap-3">
+        <button onclick="syncCurrentUser()" class="text-xs font-bold px-4 py-2.5 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition flex items-center gap-2">
+          <i class="fa-solid fa-sync"></i>
+          Sincronizar Usuario Actual
+        </button>
+        <button onclick="addTestUsers()" class="text-xs font-bold px-4 py-2.5 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition flex items-center gap-2">
+          <i class="fa-solid fa-user-plus"></i>
+          Agregar Usuarios de Prueba
+        </button>
+        <button onclick="clearAllData()" class="text-xs font-bold px-4 py-2.5 rounded-full bg-rose-100 text-rose-700 hover:bg-rose-200 transition flex items-center gap-2">
+          <i class="fa-solid fa-trash-can"></i>
+          Limpiar Datos
+        </button>
+      </div>
+
+      <!-- PESTAÑAS -->
+      <div class="flex flex-wrap gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-200">
+        <button onclick="switchAdminTab('listings')" id="adminTabListings" class="admin-tab active">
+          <i class="fa-solid fa-door-open"></i> Anuncios
+        </button>
+        <button onclick="switchAdminTab('reviews')" id="adminTabReviews" class="admin-tab inactive">
+          <i class="fa-solid fa-star"></i> Reseñas
+        </button>
+        <button onclick="switchAdminTab('roomies')" id="adminTabRoomies" class="admin-tab inactive">
+          <i class="fa-solid fa-user-group"></i> Roomies
+        </button>
+        <button onclick="switchAdminTab('users')" id="adminTabUsers" class="admin-tab inactive">
+          <i class="fa-solid fa-users"></i> Usuarios
+        </button>
+      </div>
+
+      <!-- SECCIÓN: ANUNCIOS -->
+      <section id="adminListingsSection">
+        <div id="adminListingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Cargado dinámicamente -->
+        </div>
+      </section>
+
+      <!-- SECCIÓN: RESEÑAS -->
+      <section id="adminReviewsSection" class="hidden">
+        <div id="adminReviewsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Cargado dinámicamente -->
+        </div>
+      </section>
+
+      <!-- SECCIÓN: ROOMIES -->
+      <section id="adminRoomiesSection" class="hidden">
+        <div id="adminRoomiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Cargado dinámicamente -->
+        </div>
+      </section>
+
+      <!-- SECCIÓN: USUARIOS -->
+      <section id="adminUsersSection" class="hidden">
+        <div id="adminUsersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Cargado dinámicamente -->
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-xs mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>© 2026 UniCuartos - Panel de Administración</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TOAST NOTIFICACIONES                                          -->
+  <!-- ============================================================ -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Actualizado</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL CONFIRMAR ELIMINACIÓN                                   -->
+  <!-- ============================================================ -->
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeConfirmModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center mx-auto mb-4">
+          <i class="fa-solid fa-triangle-exclamation text-2xl text-rose-600"></i>
+        </div>
+        <h3 class="font-heading text-xl font-extrabold text-slate-900">¿Eliminar este elemento?</h3>
+        <p class="text-sm text-slate-500 mt-2">Esta acción no se puede deshacer.</p>
+        <div class="flex gap-3 mt-6">
+          <button onclick="closeConfirmModal()" class="flex-1 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition">Cancelar</button>
+          <button id="confirmDeleteBtn" class="flex-1 py-3 rounded-xl font-bold text-white bg-rose-600 hover:bg-rose-700 transition">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // CREDENCIALES DE ADMINISTRADOR
+    // ============================================================
+    var ADMIN_CREDENTIALS = {
+      username: '2-738-1285',
+      password: 'Luz1285'
+    };
+
+    // Variables para confirmar eliminación
+    var confirmDeleteCallback = null;
+
+    // ============================================================
+    // FUNCIONES DE LOGIN / LOGOUT
+    // ============================================================
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      
+      var user = document.getElementById('adminUser').value.trim();
+      var pass = document.getElementById('adminPass').value.trim();
+      var errorDiv = document.getElementById('loginError');
+      var errorMsg = document.getElementById('errorMsg');
+
+      if (user === ADMIN_CREDENTIALS.username && pass === ADMIN_CREDENTIALS.password) {
+        errorDiv.classList.add('hidden');
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        localStorage.setItem('admin_logged_in', 'true');
+        initAdminPanel();
+        showToast('✅ Bienvenido al Panel de Administración');
+      } else {
+        errorMsg.textContent = user === ADMIN_CREDENTIALS.username ? 'Contraseña incorrecta.' : 'Usuario no encontrado.';
+        errorDiv.classList.remove('hidden');
+        document.getElementById('adminPass').value = '';
+        document.getElementById('adminPass').focus();
+      }
+    }
+
+    function handleAdminLogout() {
+      localStorage.removeItem('admin_logged_in');
+      document.getElementById('adminPanel').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('adminUser').value = '';
+      document.getElementById('adminPass').value = '';
+      document.getElementById('loginError').classList.add('hidden');
+      showToast('🔒 Sesión cerrada');
+    }
+
+    // ============================================================
+    // CONFIRMAR ELIMINACIÓN
+    // ============================================================
+    function showConfirmModal(callback) {
+      confirmDeleteCallback = callback;
+      document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      confirmDeleteCallback = null;
+    }
+
+    // ============================================================
+    // TOAST NOTIFICACIONES
+    // ============================================================
+    function showToast(msg, isSuccess) {
+      if (isSuccess === undefined) isSuccess = true;
+      var toast = document.getElementById('toast');
+      var toastMsg = document.getElementById('toastMsg');
+      var icon = toast.querySelector('i');
+      
+      toastMsg.innerText = msg;
+      icon.className = isSuccess ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-solid fa-circle-exclamation text-rose-400';
+      
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(function() {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // ============================================================
+    // ACCIONES RÁPIDAS
+    // ============================================================
+    
+    // Sincronizar usuario actual con la lista de usuarios
+    function syncCurrentUser() {
+      var currentUser = JSON.parse(localStorage.getItem('unicuartos_user') || 'null');
+      var users = JSON.parse(localStorage.getItem('unicuartos_users') || '[]');
+      
+      if (currentUser) {
+        var exists = users.some(function(u) { return u.email === currentUser.email; });
+        if (!exists) {
+          users.push({
+            name: currentUser.name,
+            email: currentUser.email,
+            role: currentUser.role,
+            registeredAt: new Date().toISOString()
+          });
+          localStorage.setItem('unicuartos_users', JSON.stringify(users));
+          renderAdminUsers();
+          getAdminStats();
+          showToast('✅ Usuario sincronizado: ' + currentUser.name);
+        } else {
+          showToast('ℹ️ Usuario ya existe en la lista');
+        }
+      } else {
+        showToast('⚠️ No hay usuario con sesión activa. Regístrate primero en la página principal.');
+      }
+    }
+
+    // Agregar usuarios de prueba
+    function addTestUsers() {
+      var users = JSON.parse(localStorage.getItem('unicuartos_users') || '[]');
+      
+      var testUsers = [
+        { name: 'Carlos Estudiante', email: 'carlos@up.ac.pa', role: 'estudiante' },
+        { name: 'María Arrendadora', email: 'maria@email.com', role: 'arrendador' },
+        { name: 'Ana Torres', email: 'ana@email.com', role: 'estudiante' },
+        { name: 'Luis Rodríguez', email: 'luis@email.com', role: 'arrendador' },
+        { name: 'Valentina Pérez', email: 'valentina@up.ac.pa', role: 'estudiante' },
+        { name: 'Roberto Sánchez', email: 'roberto@email.com', role: 'arrendador' },
+        { name: 'Laura Gómez', email: 'laura@up.ac.pa', role: 'estudiante' }
+      ];
+      
+      var addedCount = 0;
+      testUsers.forEach(function(testUser) {
+        var exists = users.some(function(u) { return u.email === testUser.email; });
+        if (!exists) {
+          users.push({
+            name: testUser.name,
+            email: testUser.email,
+            role: testUser.role,
+            registeredAt: new Date().toISOString()
+          });
+          addedCount++;
+        }
+      });
+      
+      localStorage.setItem('unicuartos_users', JSON.stringify(users));
+      renderAdminUsers();
+      getAdminStats();
+      showToast('✅ ' + addedCount + ' usuarios de prueba agregados');
+    }
+
+    // Limpiar todos los datos (con confirmación)
+    function clearAllData() {
+      if (confirm('⚠️ ¿Estás seguro de que quieres ELIMINAR TODOS los datos? Esta acción no se puede deshacer.')) {
+        if (confirm('Confirmación final: ¿Eliminar TODOS los datos de UniCuartos?')) {
+          localStorage.removeItem('unicuartos_users');
+          localStorage.removeItem('unicuartos_catalog');
+          localStorage.removeItem('unicuartos_properties');
+          localStorage.removeItem('unicuartos_reviews');
+          localStorage.removeItem('unicuartos_roomies');
+          localStorage.removeItem('unicuartos_favorites');
+          localStorage.removeItem('unicuartos_user');
+          
+          // Recargar todo
+          getAdminStats();
+          renderAdminListings();
+          renderAdminReviews();
+          renderAdminRoomies();
+          renderAdminUsers();
+          showToast('🗑️ Todos los datos han sido eliminados');
+        }
+      }
+    }
+
+    // ============================================================
+    // DATOS Y ESTADÍSTICAS
+    // ============================================================
+    function getAdminStats() {
+      var catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+      var reviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+      var roomies = JSON.parse(localStorage.getItem('unicuartos_roomies') || '[]');
+      var users = JSON.parse(localStorage.getItem('unicuartos_users') || '[]');
+      
+      // Si no hay usuarios, crear algunos por defecto
+      if (users.length === 0) {
+        var defaultUsers = [
+          { name: 'Carlos Estudiante', email: 'carlos@up.ac.pa', role: 'estudiante', registeredAt: new Date().toISOString() },
+          { name: 'María Arrendadora', email: 'maria@email.com', role: 'arrendador', registeredAt: new Date().toISOString() },
+          { name: 'Ana Torres', email: 'ana@email.com', role: 'estudiante', registeredAt: new Date().toISOString() },
+          { name: 'Luis Rodríguez', email: 'luis@email.com', role: 'arrendador', registeredAt: new Date().toISOString() },
+          { name: 'Valentina Pérez', email: 'valentina@up.ac.pa', role: 'estudiante', registeredAt: new Date().toISOString() }
+        ];
+        localStorage.setItem('unicuartos_users', JSON.stringify(defaultUsers));
+        users = defaultUsers;
+      }
+      
+      // Verificar si el usuario actual está en la lista
+      var currentUser = JSON.parse(localStorage.getItem('unicuartos_user') || 'null');
+      if (currentUser) {
+        var exists = users.some(function(u) { return u.email === currentUser.email; });
+        if (!exists) {
+          users.push({
+            name: currentUser.name,
+            email: currentUser.email,
+            role: currentUser.role,
+            registeredAt: new Date().toISOString()
+          });
+          localStorage.setItem('unicuartos_users', JSON.stringify(users));
+        }
+      }
+      
+      document.getElementById('totalUsers').textContent = users.length;
+      document.getElementById('totalListings').textContent = catalog.length;
+      document.getElementById('totalReviews').textContent = reviews.length;
+      document.getElementById('totalRoomies').textContent = roomies.length;
+    }
+
+    // ============================================================
+    // PESTAÑAS
+    // ============================================================
+    function switchAdminTab(tab) {
+      var sections = {
+        listings: document.getElementById('adminListingsSection'),
+        reviews: document.getElementById('adminReviewsSection'),
+        roomies: document.getElementById('adminRoomiesSection'),
+        users: document.getElementById('adminUsersSection')
+      };
+      
+      var tabs = {
+        listings: document.getElementById('adminTabListings'),
+        reviews: document.getElementById('adminTabReviews'),
+        roomies: document.getElementById('adminTabRoomies'),
+        users: document.getElementById('adminTabUsers')
+      };
+      
+      Object.keys(sections).forEach(function(key) {
+        sections[key].classList.toggle('hidden', key !== tab);
+        tabs[key].className = key === tab ? 'admin-tab active' : 'admin-tab inactive';
+      });
+      
+      if (tab === 'listings') renderAdminListings();
+      if (tab === 'reviews') renderAdminReviews();
+      if (tab === 'roomies') renderAdminRoomies();
+      if (tab === 'users') renderAdminUsers();
+    }
+
+    // ============================================================
+    // RENDERIZAR ANUNCIOS
+    // ============================================================
+    function renderAdminListings() {
+      var catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+      var container = document.getElementById('adminListingsGrid');
+      
+      if (catalog.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+              <i class="fa-solid fa-door-open text-3xl text-slate-300"></i>
+            </div>
+            <p class="text-slate-400 text-sm">No hay anuncios publicados.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = catalog.map(function(item, index) {
+        return `
+          <div class="bg-white rounded-2xl overflow-hidden border ${item.verified ? 'border-emerald-200' : 'border-amber-200'} shadow-sm hover:shadow-md transition admin-card">
+            <div class="relative h-40 bg-slate-200">
+              <img src="${item.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'">
+              <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${item.verified ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'}">
+                ${item.verified ? '✓ Verificado' : '⏳ Pendiente'}
+              </span>
+              <span class="absolute top-2 right-2 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                $${item.price}/mes
+              </span>
+              <span class="absolute bottom-2 left-2 bg-slate-900/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                ${item.status || 'Disponible'}
+              </span>
+            </div>
+            <div class="p-4 space-y-2">
+              <h4 class="font-bold text-sm text-slate-900 line-clamp-1">${item.title}</h4>
+              <p class="text-xs text-slate-500"><i class="fa-solid fa-user mr-1"></i> ${item.publisher || 'Propietario'}</p>
+              <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot mr-1"></i> ${item.location}</p>
+              ${item.services && item.services.length > 0 ? `
+                <div class="flex flex-wrap gap-1">
+                  ${item.services.slice(0, 2).map(function(s) { return `<span class="text-[9px] bg-slate-100 px-1.5 py-0.5 rounded">${s}</span>`; }).join('')}
+                  ${item.services.length > 2 ? `<span class="text-[9px] text-slate-400">+${item.services.length - 2}</span>` : ''}
+                </div>
+              ` : ''}
+              <div class="flex gap-2 pt-2 border-t border-slate-100">
+                <button onclick="verifyListing(${index})" class="text-xs font-bold px-3 py-1.5 rounded-lg ${item.verified ? 'bg-slate-100 text-slate-500' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'} transition flex-1">
+                  ${item.verified ? '✓ Verificado' : 'Verificar'}
+                </button>
+                <button onclick="confirmDeleteListing(${index})" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 transition">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    // RENDERIZAR RESEÑAS
+    // ============================================================
+    function renderAdminReviews() {
+      var reviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+      var container = document.getElementById('adminReviewsGrid');
+      
+      if (reviews.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+              <i class="fa-regular fa-comment-dots text-3xl text-slate-300"></i>
+            </div>
+            <p class="text-slate-400 text-sm">No hay reseñas publicadas.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = reviews.map(function(r, index) {
+        return `
+          <div class="bg-white p-4 rounded-2xl border ${r.verified ? 'border-emerald-200' : 'border-amber-200'} shadow-sm admin-card">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="font-bold text-slate-800 text-sm">${r.faculty}</span>
+                <p class="text-xs text-slate-500">${r.date}</p>
+              </div>
+              <span class="text-amber-400 text-xs">${'⭐'.repeat(r.rating)}</span>
+            </div>
+            <p class="text-xs text-slate-600 mt-2 line-clamp-2">"${r.comment}"</p>
+            <p class="text-[10px] text-slate-400 mt-1 truncate">${r.listing || 'Reseña general'}</p>
+            <div class="flex gap-2 mt-3 pt-2 border-t border-slate-100">
+              <button onclick="verifyReview(${index})" class="text-xs font-bold px-3 py-1.5 rounded-lg ${r.verified ? 'bg-slate-100 text-slate-500' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'} transition flex-1">
+                ${r.verified ? '✓ Verificada' : 'Verificar'}
+              </button>
+              <button onclick="confirmDeleteReview(${index})" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 transition">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    // RENDERIZAR ROOMIES
+    // ============================================================
+    function renderAdminRoomies() {
+      var roomies = JSON.parse(localStorage.getItem('unicuartos_roomies') || '[]');
+      var container = document.getElementById('adminRoomiesGrid');
+      
+      if (roomies.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+              <i class="fa-solid fa-user-group text-3xl text-slate-300"></i>
+            </div>
+            <p class="text-slate-400 text-sm">No hay anuncios de roomies.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = roomies.map(function(item, index) {
+        var typeLabel = item.type === 'Tengo el cuarto' 
+          ? '<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">🏠 Tengo el cuarto</span>'
+          : '<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">🔍 Busco el cuarto</span>';
+        
+        return `
+          <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition admin-card">
+            <div class="relative h-32 bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+              ${item.image ? `
+                <img src="${item.image}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+              ` : `
+                <div class="absolute inset-0 bg-black/10"></div>
+              `}
+              <div class="relative z-10 text-center text-white">
+                <i class="fa-solid fa-user-group text-4xl ${item.image ? 'opacity-70' : 'opacity-50'}"></i>
+                <span class="block text-[10px] font-bold mt-0.5 opacity-80">Roomie</span>
+              </div>
+              <div class="absolute top-2 right-2">
+                <span class="bg-white/20 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  ${typeLabel}
+                </span>
+              </div>
+              <div class="absolute bottom-2 left-2">
+                <span class="bg-white/20 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  <i class="fa-regular fa-clock mr-1"></i> ${item.date || 'Reciente'}
+                </span>
+              </div>
+            </div>
+            <div class="p-4 space-y-2">
+              <div class="flex items-start justify-between">
+                <h4 class="font-bold text-sm text-slate-900 flex-1">${item.title}</h4>
+                <span class="bg-indigo-50 text-indigo-700 font-extrabold text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap ml-2">
+                  $${item.budget}/mes
+                </span>
+              </div>
+              <p class="text-xs text-slate-500">
+                <i class="fa-solid fa-location-dot mr-1"></i> ${item.location}
+                ${item.faculty ? `• <i class="fa-solid fa-graduation-cap mr-1"></i> ${item.faculty}` : ''}
+              </p>
+              <p class="text-xs text-slate-600 line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                ${item.details || 'Sin descripción'}
+              </p>
+              <div class="flex gap-2 pt-2 border-t border-slate-100">
+                <button onclick="window.open('https://wa.me/${item.phone || '50760000000'}', '_blank')" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition flex-1 text-center">
+                  <i class="fa-brands fa-whatsapp mr-1"></i> Contactar
+                </button>
+                <button onclick="confirmDeleteRoomie(${index})" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 transition">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    // RENDERIZAR USUARIOS
+    // ============================================================
+    function renderAdminUsers() {
+      var users = JSON.parse(localStorage.getItem('unicuartos_users') || '[]');
+      var container = document.getElementById('adminUsersGrid');
+      
+      // Si no hay usuarios, crear algunos por defecto
+      if (users.length === 0) {
+        var defaultUsers = [
+          { name: 'Carlos Estudiante', email: 'carlos@up.ac.pa', role: 'estudiante', registeredAt: new Date().toISOString() },
+          { name: 'María Arrendadora', email: 'maria@email.com', role: 'arrendador', registeredAt: new Date().toISOString() },
+          { name: 'Ana Torres', email: 'ana@email.com', role: 'estudiante', registeredAt: new Date().toISOString() },
+          { name: 'Luis Rodríguez', email: 'luis@email.com', role: 'arrendador', registeredAt: new Date().toISOString() },
+          { name: 'Valentina Pérez', email: 'valentina@up.ac.pa', role: 'estudiante', registeredAt: new Date().toISOString() }
+        ];
+        localStorage.setItem('unicuartos_users', JSON.stringify(defaultUsers));
+        users = defaultUsers;
+      }
+      
+      if (users.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+              <i class="fa-solid fa-users text-3xl text-slate-300"></i>
+            </div>
+            <p class="text-slate-400 text-sm">No hay usuarios registrados.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = users.map(function(u, index) {
+        var roleColor = u.role === 'estudiante' ? 'indigo' : 'teal';
+        var roleLabel = u.role === 'estudiante' ? '🎓 Estudiante' : '🏠 Arrendador';
+        var date = u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : 'Fecha no disponible';
+        
+        return `
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm admin-card">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-${roleColor}-100 text-${roleColor}-600 flex items-center justify-center font-bold text-sm">
+                ${u.name.charAt(0).toUpperCase()}
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-bold text-sm text-slate-900 truncate">${u.name}</p>
+                <p class="text-xs text-slate-500 truncate">${u.email}</p>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="text-[10px] font-bold text-${roleColor}-600">${roleLabel}</span>
+                  <span class="text-[9px] text-slate-400">• ${date}</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-slate-100">
+              <button onclick="confirmDeleteUser(${index})" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 transition w-full">
+                <i class="fa-solid fa-user-slash mr-1"></i> Eliminar Usuario
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    // ACCIONES ADMINISTRATIVAS
+    // ============================================================
+    
+    // --- Anuncios ---
+    function verifyListing(index) {
+      var catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+      catalog[index].verified = !catalog[index].verified;
+      localStorage.setItem('unicuartos_catalog', JSON.stringify(catalog));
+      
+      var properties = JSON.parse(localStorage.getItem('unicuartos_properties') || '[]');
+      var propIndex = properties.findIndex(function(p) { return p.id === catalog[index].id; });
+      if (propIndex !== -1) {
+        properties[propIndex].verified = catalog[index].verified;
+        localStorage.setItem('unicuartos_properties', JSON.stringify(properties));
+      }
+      
+      renderAdminListings();
+      getAdminStats();
+      showToast(catalog[index].verified ? '✅ Anuncio verificado' : 'Verificación removida');
+    }
+
+    function confirmDeleteListing(index) {
+      showConfirmModal(function() { deleteListing(index); });
+    }
+
+    function deleteListing(index) {
+      var catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+      var id = catalog[index].id;
+      catalog.splice(index, 1);
+      localStorage.setItem('unicuartos_catalog', JSON.stringify(catalog));
+      
+      var properties = JSON.parse(localStorage.getItem('unicuartos_properties') || '[]');
+      var filtered = properties.filter(function(p) { return p.id !== id; });
+      localStorage.setItem('unicuartos_properties', JSON.stringify(filtered));
+      
+      renderAdminListings();
+      getAdminStats();
+      showToast('🗑️ Anuncio eliminado');
+    }
+
+    // --- Reseñas ---
+    function verifyReview(index) {
+      var reviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+      reviews[index].verified = !reviews[index].verified;
+      localStorage.setItem('unicuartos_reviews', JSON.stringify(reviews));
+      renderAdminReviews();
+      getAdminStats();
+      showToast(reviews[index].verified ? '✅ Reseña verificada' : 'Verificación removida');
+    }
+
+    function confirmDeleteReview(index) {
+      showConfirmModal(function() { deleteReview(index); });
+    }
+
+    function deleteReview(index) {
+      var reviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+      reviews.splice(index, 1);
+      localStorage.setItem('unicuartos_reviews', JSON.stringify(reviews));
+      renderAdminReviews();
+      getAdminStats();
+      showToast('🗑️ Reseña eliminada');
+    }
+
+    // --- Roomies ---
+    function confirmDeleteRoomie(index) {
+      showConfirmModal(function() { deleteRoomie(index); });
+    }
+
+    function deleteRoomie(index) {
+      var roomies = JSON.parse(localStorage.getItem('unicuartos_roomies') || '[]');
+      roomies.splice(index, 1);
+      localStorage.setItem('unicuartos_roomies', JSON.stringify(roomies));
+      renderAdminRoomies();
+      getAdminStats();
+      showToast('🗑️ Anuncio de roomie eliminado');
+    }
+
+    // --- Usuarios ---
+    function confirmDeleteUser(index) {
+      showConfirmModal(function() { deleteUser(index); });
+    }
+
+    function deleteUser(index) {
+      var users = JSON.parse(localStorage.getItem('unicuartos_users') || '[]');
+      var userName = users[index]?.name || 'Usuario';
+      users.splice(index, 1);
+      localStorage.setItem('unicuartos_users', JSON.stringify(users));
+      renderAdminUsers();
+      getAdminStats();
+      showToast('🗑️ Usuario "' + userName + '" eliminado');
+    }
+
+    // ============================================================
+    // INICIALIZACIÓN DEL PANEL
+    // ============================================================
+    function initAdminPanel() {
+      getAdminStats();
+      renderAdminListings();
+      renderAdminReviews();
+      renderAdminRoomies();
+      renderAdminUsers();
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Botón de confirmación de eliminación
+      document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (typeof confirmDeleteCallback === 'function') {
+          confirmDeleteCallback();
+        }
+        closeConfirmModal();
+      });
+
+      // Verificar sesión
+      var isLoggedIn = localStorage.getItem('admin_logged_in') === 'true';
+      if (isLoggedIn) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        initAdminPanel();
+      }
+    });
+
+    // ============================================================
+    // PERMITIR ENTER PARA ENVIAR LOGIN
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !document.getElementById('loginScreen').classList.contains('hidden')) {
+        document.getElementById('loginFormAdmin').dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Exponer funciones globalmente
+    window.handleAdminLogin = handleAdminLogin;
+    window.handleAdminLogout = handleAdminLogout;
+    window.switchAdminTab = switchAdminTab;
+    window.verifyListing = verifyListing;
+    window.confirmDeleteListing = confirmDeleteListing;
+    window.deleteListing = deleteListing;
+    window.verifyReview = verifyReview;
+    window.confirmDeleteReview = confirmDeleteReview;
+    window.deleteReview = deleteReview;
+    window.confirmDeleteRoomie = confirmDeleteRoomie;
+    window.deleteRoomie = deleteRoomie;
+    window.confirmDeleteUser = confirmDeleteUser;
+    window.deleteUser = deleteUser;
+    window.showToast = showToast;
+    window.showConfirmModal = showConfirmModal;
+    window.closeConfirmModal = closeConfirmModal;
+    window.syncCurrentUser = syncCurrentUser;
+    window.addTestUsers = addTestUsers;
+    window.clearAllData = clearAllData;
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCuartos - Todas las Reseñas</title>
+  
+  <!-- Tailwind CSS con configuración personalizada -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .review-card-modern {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(226, 232, 240, 0.6);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+    .review-card-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #14b8a6, #0d9488, #38bdf8, #14b8a6);
+      background-size: 300% 100%;
+      animation: shimmer-review 4s ease-in-out infinite;
+    }
+    @keyframes shimmer-review {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+    }
+    .review-card-modern:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 20px 40px -12px rgba(13, 148, 136, 0.2);
+      border-color: #14b8a6;
+    }
+    .review-avatar {
+      background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+      border: 2px solid #14b8a6;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+    }
+    .review-quote-icon {
+      color: #14b8a6;
+      opacity: 0.15;
+      font-size: 48px;
+      position: absolute;
+      top: 12px;
+      right: 16px;
+    }
+  </style>
+  
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
+
+  <!-- ================= MENÚ ================= -->
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+        <i class="fa-solid fa-house-user"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+          UniCuartos
+        </span>
+        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+          Panamá / UP
+        </span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos</a>
+      <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
+      <a href="roomies.html" class="hover:text-brand-600 transition">Roomies</a>
+      <a href="index.html#blog-destacados" class="hover:text-brand-600 transition">Blog</a>
+      <a href="donaciones.html" class="hover:text-brand-600 transition">Apoyar</a>
+      <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <div id="authNavContainer" class="flex items-center gap-3"></div>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
+  <div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
+  <div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+      <span class="font-heading font-extrabold text-lg text-slate-900">Menú</span>
+      <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+    </div>
+    <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
+      <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+      </a>
+      <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos
+      </a>
+      <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
+      </a>
+      <a href="roomies.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-user-group text-brand-600 w-5"></i> Roomies
+      </a>
+      <a href="index.html#blog-destacados" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
+      </a>
+      <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> Apoyar
+      </a>
+      <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
+      </a>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Actualizado</span>
+  </div>
+
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
+  <main class="pt-28 pb-16 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-600 text-xs font-extrabold uppercase tracking-widest mb-3">
+        <i class="fa-regular fa-star mr-1"></i> Todas las Reseñas
+      </span>
+      <h1 class="font-heading text-3xl md:text-4xl font-extrabold text-slate-900">
+        Opiniones de la <span class="text-brand-600">comunidad</span>
+      </h1>
+      <p class="text-sm text-slate-500 mt-2 max-w-2xl mx-auto">
+        Todas las experiencias auténticas de estudiantes sobre alojamientos y zonas cerca de la UP.
+      </p>
+      <div class="w-16 h-1 bg-gradient-to-r from-brand-500 to-teal-500 rounded-full mx-auto mt-4"></div>
+      <div class="mt-4">
+        <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-2 rounded-full flex items-center gap-2 justify-center max-w-fit mx-auto">
+          <i class="fa-solid fa-circle text-[6px] text-emerald-500"></i>
+          <span id="totalReviewsCount">0</span> reseñas publicadas
+        </span>
+      </div>
+    </div>
+
+    <!-- Grid de todas las reseñas -->
+    <div id="allReviewsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <div id="noReviewsMsg" class="hidden text-center py-12">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+        <i class="fa-regular fa-comment-dots text-3xl text-slate-300"></i>
+      </div>
+      <p class="text-slate-400 text-sm">Aún no hay reseñas publicadas.</p>
+      <p class="text-slate-400 text-xs">¡Sé el primero en compartir tu experiencia!</p>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="index.html#reviews" class="inline-flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700 transition-colors">
+        <i class="fa-solid fa-arrow-left text-xs"></i>
+        Volver a la página principal
+      </a>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      <div class="space-y-4">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+      </div>
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
+        <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?</p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="script.js" defer></script>
+  
+  <script>
+    // ==========================================
+    // RENDERIZAR TODAS LAS RESEÑAS
+    // ==========================================
+    function renderAllReviews() {
+      const container = document.getElementById('allReviewsContainer');
+      const countDisplay = document.getElementById('totalReviewsCount');
+      const noMsg = document.getElementById('noReviewsMsg');
+      
+      if (!container) return;
+      
+      const allReviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+      const totalReviews = allReviews.length;
+      
+      if (countDisplay) countDisplay.textContent = totalReviews;
+      
+      if (allReviews.length === 0) {
+        container.innerHTML = '';
+        if (noMsg) noMsg.classList.remove('hidden');
+        return;
+      }
+      
+      if (noMsg) noMsg.classList.add('hidden');
+      
+      const ratingLabels = ['', 'Muy Malo', 'Malo', 'Regular', 'Bueno', 'Excelente'];
+      
+      container.innerHTML = allReviews.map((review, index) => {
+        const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        const verifiedBadge = review.verified ? 
+          '<span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-check-circle"></i> Verificada</span>' : 
+          '<span class="inline-flex items-center gap-1 text-[10px] text-slate-400 font-medium"><i class="fa-regular fa-clock"></i> Pendiente</span>';
+        
+        const ratingLabel = ratingLabels[review.rating] || '';
+        const initial = review.faculty ? review.faculty.charAt(0).toUpperCase() : 'E';
+        const facultyText = review.faculty || 'Estudiante UP';
+        
+        return `
+          <div class="review-card-modern bg-white rounded-2xl p-6 shadow-sm">
+            <div class="relative">
+              <i class="fa-solid fa-quote-right review-quote-icon"></i>
+              
+              <div class="flex items-start gap-4 mb-4">
+                <div class="review-avatar w-12 h-12 rounded-full flex items-center justify-center text-brand-600 font-heading font-bold text-lg flex-shrink-0">
+                  ${initial}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-heading font-bold text-sm text-slate-900">${facultyText}</p>
+                  <p class="text-[10px] text-slate-400 flex items-center gap-2">
+                    <span>${review.date || ''}</span>
+                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                    ${verifiedBadge}
+                  </p>
+                </div>
+              </div>
+              
+              <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                "${review.comment}"
+              </p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                <div class="flex items-center gap-1">
+                  <span class="text-xs font-bold text-amber-400">${stars}</span>
+                  <span class="text-[10px] text-slate-400">${ratingLabel}</span>
+                </div>
+                <span class="text-[10px] font-medium text-brand-600 bg-brand-50 px-2.5 py-0.5 rounded-full truncate max-w-[160px]">
+                  <i class="fa-solid fa-tag mr-1"></i>
+                  ${review.listing && review.listing !== 'Reseña General del Sector / Zona' ? review.listing : 'Reseña general'}
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================
+    // TOAST NOTIFICACIONES
+    // ==========================================
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+      
+      toastMsg.innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // ==========================================
+    // MENÚ MÓVIL
+    // ==========================================
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const backdrop = document.getElementById('mobileBackdrop');
+      if (!drawer || !backdrop) return;
+      const isOpen = drawer.classList.contains('translate-x-full');
+      if (isOpen) {
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // ==========================================
+    // AUTENTICACIÓN (copiada de script.js)
+    // ==========================================
+    let currentUser = JSON.parse(localStorage.getItem('unicuartos_user')) || null;
+
+    function updateAuthNav() {
+      const container = document.getElementById('authNavContainer');
+      if (!container) return;
+
+      if (currentUser) {
+        const isStudent = currentUser.role === 'estudiante';
+        const targetPage = isStudent ? 'panel_estudiante.html' : 'panel_propietario.html';
+        const roleIcon = isStudent ? 'fa-graduation-cap' : 'fa-house-user';
+
+        container.innerHTML = `
+          <div class="flex items-center gap-3">
+            <a href="${targetPage}" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
+              <i class="fa-solid ${roleIcon}"></i>
+              <span>Mi Panel</span>
+            </a>
+            <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-400 hover:text-rose-500 font-bold text-xs p-2 rounded-full transition">
+              <i class="fa-solid fa-right-from-bracket text-base"></i>
+            </button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="openModal('accountModal')" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-user text-xs"></i>
+            <span>Ingresar</span>
+          </button>
+        `;
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('unicuartos_user');
+      currentUser = null;
+      updateAuthNav();
+      showToast('Has cerrado sesión exitosamente.');
+    }
+
+    function openModal(id) {
+      document.getElementById(id)?.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id)?.classList.add('hidden');
+    }
+
+    // ==========================================
+    // INICIALIZACIÓN
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      updateAuthNav();
+      renderAllReviews();
+      
+      // Escuchar cambios en localStorage para actualizar reseñas
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'unicuartos_reviews') {
+          renderAllReviews();
+        }
+      });
+    });
+
+    // Exponer funciones globalmente
+    window.renderAllReviews = renderAllReviews;
+    window.showToast = showToast;
+    window.toggleMobileMenu = toggleMobileMenu;
+    window.handleLogout = handleLogout;
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+  </script>
+
+</body>
+</html>

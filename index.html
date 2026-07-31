@@ -4,11 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UniCuartos - Alquileres para Estudiantes de la UP</title>
-  <!-- Tailwind CSS -->
+  
+  <!-- Tailwind CSS con configuración personalizada -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
   <script src="script.js" defer></script>
+  
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,113 +59,172 @@
     .slide-fade {
       transition: opacity 0.8s ease-in-out;
     }
+    
+    .review-modal-glass {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    }
+    .review-input {
+      transition: all 0.3s ease;
+      border: 2px solid #e2e8f0;
+    }
+    .review-input:focus {
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+      outline: none;
+    }
+    .review-input:hover {
+      border-color: #94a3b8;
+    }
+    .rating-star {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .rating-star:hover {
+      transform: scale(1.2);
+    }
+    .rating-star.active {
+      color: #f59e0b;
+      transform: scale(1.1);
+    }
+
+    /* === RESEÑAS MODERNAS === */
+    .review-card-modern {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(226, 232, 240, 0.6);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+    .review-card-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #14b8a6, #0d9488, #38bdf8, #14b8a6);
+      background-size: 300% 100%;
+      animation: shimmer-review 4s ease-in-out infinite;
+    }
+    @keyframes shimmer-review {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+    }
+    .review-card-modern:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 20px 40px -12px rgba(13, 148, 136, 0.2);
+      border-color: #14b8a6;
+    }
+    .review-avatar {
+      background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+      border: 2px solid #14b8a6;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+    }
+    .review-quote-icon {
+      color: #14b8a6;
+      opacity: 0.15;
+      font-size: 48px;
+      position: absolute;
+      top: 12px;
+      right: 16px;
+    }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   </style>
+  
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
 
   <!-- ================= MENÚ ================= -->
-<header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
-  <a href="index.html" class="flex items-center gap-2 group">
-    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
-      <i class="fa-solid fa-house-user"></i>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
-        UniCuartos
-      </span>
-      <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
-        Panamá / UP
-      </span>
-    </div>
-  </a>
-
-  <!-- Menú de Escritorio -->
-  <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
-    <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
-    <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
-    <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
-    <a href="donaciones.html" class="hover:text-brand-600 transition">¿Cómo apoyar?</a>
-    <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
-    <a href="blog.html" class="hover:text-brand-600 transition">Blog</a>
-</nav>
-
-  <div class="flex items-center gap-3">
-    <div id="authNavContainer" class="flex items-center gap-3">
-      <!-- Inyectado dinámicamente -->
-    </div>
-    
-    <!-- Botón de Menú Móvil (Hamburguesa) -->
-    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
-      <i class="fa-solid fa-bars text-lg"></i>
-    </button>
-  </div>
-</header>
-
-<!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
-<div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
-
-<div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
-  <!-- Cabecera del menú lateral -->
-  <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-    <span class="font-heading font-extrabold text-lg text-slate-900">Menú de Navegación</span>
-    <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
-      <i class="fa-solid fa-xmark text-base"></i>
-    </button>
-  </div>
-
-  <!-- Enlaces de navegación móvil -->
-  <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
-    <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+        <i class="fa-solid fa-house-user"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+          UniCuartos
+        </span>
+        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+          Panamá / UP
+        </span>
+      </div>
     </a>
-    <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos Disponibles
-    </a>
-    <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
-    </a>
-    <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> ¿Cómo apoyar?
-    </a>
-    <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
-    </a>
-    <a href="blog.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
-    </a>
-  </div>
-</div>
 
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos</a>
+      <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
+      <a href="roomies.html" class="hover:text-brand-600 transition">Roomies</a>
+      <a href="index.html#blog-destacados" class="hover:text-brand-600 transition">Blog</a>
+      <a href="donaciones.html" class="hover:text-brand-600 transition">Apoyar</a>
+      <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
+    </nav>
 
-    <!-- NOTIFICACIÓN TOAST -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
-      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
-      <span id="toastMsg">Actualizado</span>
+    <div class="flex items-center gap-3">
+      <div id="authNavContainer" class="flex items-center gap-3"></div>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
     </div>
   </header>
 
-  <script>
-   function toggleMobileMenu() {
-  const drawer = document.getElementById('mobileDrawer');
-  const backdrop = document.getElementById('mobileBackdrop');
-  
-  if (!drawer || !backdrop) return;
+  <!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
+  <div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
+  <div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+      <span class="font-heading font-extrabold text-lg text-slate-900">Menú</span>
+      <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+    </div>
+    <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
+      <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+      </a>
+      <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos
+      </a>
+      <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
+      </a>
+      <a href="roomies.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-user-group text-brand-600 w-5"></i> Roomies
+      </a>
+      <a href="index.html#blog-destacados" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
+      </a>
+      <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> Apoyar
+      </a>
+      <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
+      </a>
+    </div>
+  </div>
 
-  const isOpen = drawer.classList.contains('translate-x-full');
-
-  if (isOpen) {
-    // Abrir menú
-    drawer.classList.remove('translate-x-full');
-    backdrop.classList.remove('opacity-0', 'pointer-events-none');
-    document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
-  } else {
-    // Cerrar menú
-    drawer.classList.add('translate-x-full');
-    backdrop.classList.add('opacity-0', 'pointer-events-none');
-    document.body.style.overflow = ''; // Restaura el scroll
-  }
-}
-    </script>
+  <!-- NOTIFICACIÓN TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Actualizado</span>
+  </div>
 
   <!-- ================= BANNER ================= -->
   <section id="hero" class="relative min-h-[88vh] flex items-center justify-center pt-28 pb-16 px-4 overflow-hidden bg-slate-900">
@@ -158,7 +247,6 @@
         Opciones económicas, cómodas y verificadas a pocos minutos caminando del campus.
       </p>
 
-      <!-- BARRA DE BÚSQUEDA -->
       <div class="pt-4 max-w-4xl mx-auto">
         <div class="glass-card p-3 md:p-4 rounded-3xl md:rounded-full shadow-2xl border border-white/50 text-left">
           <form onsubmit="event.preventDefault(); filterRooms();" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
@@ -214,7 +302,7 @@
     </div>
   </section>
 
-  <!-- ================= CUARTOS ================= -->
+  <!-- ================= CUARTOS (SOLO 6) ================= -->
   <section id="cuartos" class="py-16 px-4 max-w-7xl mx-auto">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
       <div>
@@ -224,6 +312,7 @@
         <h2 class="font-heading text-3xl font-extrabold text-slate-900 mt-2">
           Cuartos Disponibles
         </h2>
+        <p class="text-sm text-slate-500 mt-1">Los 6 mejores alojamientos para estudiantes</p>
       </div>
       <div class="flex flex-wrap gap-2 text-xs font-semibold">
         <button onclick="quickFilter('todos')" class="px-3.5 py-1.5 rounded-full bg-brand-600 text-white">Todos</button>
@@ -233,98 +322,15 @@
       </div>
     </div>
 
-    <div id="roomsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Cuarto 1 -->
-      <div class="room-item bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition group flex flex-col" data-location="El Cangrejo" data-price="220" data-type="Individual">
-        <div class="relative h-52 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <span class="absolute top-3 left-3 bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-full">Verificado</span>
-          <button onclick="toggleFavorite('Habitación Amueblada en El Cangrejo')" class="absolute top-3 right-3 bg-white/90 text-rose-500 hover:bg-white w-8 h-8 rounded-full flex items-center justify-center shadow transition">
-            <i class="fa-regular fa-heart text-sm"></i>
-          </button>
-          <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white font-black px-3 py-1 rounded-xl text-lg">
-            $220 <span class="text-xs font-normal text-slate-300">/ mes</span>
-          </div>
-        </div>
-        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <h3 class="font-heading font-bold text-lg text-slate-900">Habitación Amueblada en El Cangrejo</h3>
-            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> Calle Eusebio A. Morales</p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-slate-600">
-            <span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-wifi text-teal-600 mr-1"></i> WiFi 500MB</span>
-            <span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-snowflake text-teal-600 mr-1"></i> A/A Incluido</span>
-          </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-walking text-brand-600 mr-1"></i> 5 min caminando</span>
-            <a href="producto.html?room=1" class="text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg inline-block text-center">
-              Ver Información
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cuarto 2 -->
-      <div class="room-item bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition group flex flex-col" data-location="Transístmica" data-price="140" data-type="Compartido">
-        <div class="relative h-52 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <span class="absolute top-3 left-3 bg-brand-600 text-white text-[11px] font-bold px-3 py-1 rounded-full">Económico</span>
-          <button onclick="toggleFavorite('Cuarto Compartido - Vía Transístmica')" class="absolute top-3 right-3 bg-white/90 text-rose-500 hover:bg-white w-8 h-8 rounded-full flex items-center justify-center shadow transition">
-            <i class="fa-regular fa-heart text-sm"></i>
-          </button>
-          <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white font-black px-3 py-1 rounded-xl text-lg">
-            $140 <span class="text-xs font-normal text-slate-300">/ mes p/p</span>
-          </div>
-        </div>
-        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <h3 class="font-heading font-bold text-lg text-slate-900">Cuarto Compartido - Vía Transístmica</h3>
-            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> Frente a la entrada de la UP</p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-slate-600">
-            <span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-wifi text-teal-600 mr-1"></i> Internet</span>
-            <span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-kitchen-set text-teal-600 mr-1"></i> Cocina</span>
-          </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-walking text-brand-600 mr-1"></i> 3 min cruzando la vía</span>
-            <a href="producto.html?room=2" class="text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg inline-block text-center">
-              Ver Información
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cuarto 3 -->
-      <div class="room-item bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition group flex flex-col" data-location="La Cresta" data-price="280" data-type="Individual">
-        <div class="relative h-52 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <span class="absolute top-3 left-3 bg-purple-600 text-white text-[11px] font-bold px-3 py-1 rounded-full">Baño Privado</span>
-          <button onclick="toggleFavorite('Estudio Anexo en La Cresta')" class="absolute top-3 right-3 bg-white/90 text-rose-500 hover:bg-white w-8 h-8 rounded-full flex items-center justify-center shadow transition">
-            <i class="fa-regular fa-heart text-sm"></i>
-          </button>
-          <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white font-black px-3 py-1 rounded-xl text-lg">
-            $280 <span class="text-xs font-normal text-slate-300">/ mes</span>
-          </div>
-        </div>
-        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <h3 class="font-heading font-bold text-lg text-slate-900">Estudio Anexo en La Cresta</h3>
-            <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i> La Cresta</p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 text-[11px] font-medium text-slate-600">
-            <span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-bath text-teal-600 mr-1"></i> Baño Propio</span>
-            <span class="bg-slate-100 px-2 py-1 rounded"><i class="fa-solid fa-key text-teal-600 mr-1"></i> Entrada Independiente</span>
-          </div>
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-walking text-brand-600 mr-1"></i> 8 min caminando</span>
-            <a href="producto.html?room=3" class="text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg inline-block text-center">
-              Ver Información
-            </a>
-          </div>
-        </div>
-      </div>
+    <div id="roomsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    
+    <div class="text-center mt-8">
+      <a href="producto.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700 transition-colors">
+        Ver todos los cuartos <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
     </div>
   </section>
+
   <!-- ================= CTA PUBLICAR ANUNCIO ================= -->
   <section id="publicar-sec" class="py-14 bg-gradient-to-r from-brand-600 to-accent-600 text-white">
     <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
@@ -338,25 +344,205 @@
     </div>
   </section>
 
-  <!-- ================= RESEÑAS ================= -->
-  <section id="reviews" class="py-16 px-4 max-w-5xl mx-auto bg-slate-100/70 rounded-3xl my-8">
+<!-- ================= RESEÑAS MODERNAS (CON PAGINACIÓN) ================= -->
+<section id="reviews" class="py-16 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-600 text-xs font-extrabold uppercase tracking-widest mb-3">
+        <i class="fa-regular fa-star mr-1"></i> Opiniones Reales
+      </span>
+      <h2 class="font-heading text-3xl md:text-4xl font-extrabold text-slate-900">
+        Lo que dicen los <span class="text-brand-600">estudiantes</span>
+      </h2>
+      <p class="text-sm text-slate-500 mt-2 max-w-2xl mx-auto">
+        Experiencias auténticas de la comunidad universitaria sobre alojamientos y zonas cerca de la UP.
+      </p>
+      <div class="w-16 h-1 bg-gradient-to-r from-brand-500 to-teal-500 rounded-full mx-auto mt-4"></div>
+    </div>
+
     <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
-      <div>
-        <h2 class="font-heading text-2xl font-extrabold text-slate-900">Opiniones de Estudiantes</h2>
-        <p class="text-xs text-slate-500">Experiencias reales sobre cuartos y zonas cerca de la UP.</p>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Comunidad UniCuartos</span>
+        <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+          <i class="fa-solid fa-circle text-[6px] text-emerald-500"></i>
+          <span id="reviewsCountDisplay">0</span> reseñas
+        </span>
       </div>
-      <button onclick="requireAuth('review')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
-        <i class="fa-solid fa-pen"></i> Escribir Reseña
+      <button onclick="requireAuth('review')" class="bg-gradient-to-r from-brand-600 to-teal-600 hover:from-brand-700 hover:to-teal-700 text-white font-bold text-xs px-6 py-3 rounded-full shadow-md shadow-brand-500/25 transition flex items-center gap-2 group">
+        <i class="fa-solid fa-pen group-hover:rotate-12 transition"></i>
+        Escribir Reseña
       </button>
     </div>
-    <div id="reviewsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-2">
-        <div class="flex justify-between items-center">
-          <span class="font-bold text-slate-800 text-xs">Carlos M.</span>
-          <span class="text-amber-400 text-xs">⭐⭐⭐⭐⭐</span>
-        </div>
-        <p class="text-xs text-slate-600">"El Cangrejo es super seguro y todo queda cerca de la Universidad de Panamá. Recomendado 100%."</p>
+
+    <!-- Grid de reseñas modernas -->
+    <div id="reviewsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <!-- Botón para ver todas las reseñas -->
+    <div id="reviewsPagination" class="text-center mt-8 hidden">
+      <a href="resenas.html" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-brand-600 to-accent-500 text-white font-bold text-sm shadow-md shadow-brand-500/25 hover:shadow-lg hover:shadow-brand-500/40 transition-all hover:scale-105">
+        <i class="fa-regular fa-star"></i>
+        Ver todas las reseñas
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
+      <p class="text-xs text-slate-400 mt-2">Mira todas las opiniones de la comunidad universitaria</p>
+    </div>
+
+    <div id="noReviewsMsg" class="hidden text-center py-12">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 mb-4">
+        <i class="fa-regular fa-comment-dots text-3xl text-slate-300"></i>
       </div>
+      <p class="text-slate-400 text-sm">Aún no hay reseñas publicadas.</p>
+      <p class="text-slate-400 text-xs">¡Sé el primero en compartir tu experiencia!</p>
+    </div>
+  </section>
+
+  <!-- ================= BUSCAR ROOMIE (SOLO 6) ================= -->
+  <section id="roomies" class="py-16 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-extrabold uppercase tracking-widest mb-3">
+        <i class="fa-solid fa-user-group mr-1"></i> Comparte tu Espacio
+      </span>
+      <h2 class="font-heading text-3xl md:text-4xl font-extrabold text-slate-900">
+        Busca o Publica <span class="text-brand-600">Roomie</span>
+      </h2>
+      <p class="text-sm text-slate-500 mt-2 max-w-2xl mx-auto">
+        Encuentra el compañero ideal para compartir gastos y hacer tu vida universitaria más económica y divertida.
+      </p>
+      <div class="w-16 h-1 bg-gradient-to-r from-brand-500 to-teal-500 rounded-full mx-auto mt-4"></div>
+    </div>
+
+    <div id="roomiesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Los anuncios se cargan dinámicamente -->
+    </div>
+
+    <div class="text-center flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+      <a href="roomies.html" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-brand-600 to-accent-500 text-white font-bold text-sm shadow-md shadow-brand-500/25 hover:shadow-lg hover:shadow-brand-500/40 transition-all hover:scale-105">
+        <i class="fa-solid fa-eye"></i>
+        Ver todos los anuncios
+      </a>
+      <button onclick="requireAuth('roomie')" class="inline-flex items-center gap-2 px-8 py-4 rounded-full border-2 border-brand-600 text-brand-600 font-bold text-sm hover:bg-brand-50 transition-all">
+        <i class="fa-solid fa-plus-circle"></i>
+        Publicar Anuncio
+      </button>
+    </div>
+    <p class="text-xs text-slate-400 text-center mt-3">¡100% gratuito para estudiantes de la UP!</p>
+  </section>
+
+  <!-- ================= ARTÍCULOS DESTACADOS DEL BLOG ================= -->
+  <section id="blog-destacados" class="py-16 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-600 text-xs font-extrabold uppercase tracking-widest mb-3">
+        <i class="fa-regular fa-newspaper mr-1"></i> Blog UniCuartos
+      </span>
+      <h2 class="font-heading text-3xl md:text-4xl font-extrabold text-slate-900">
+        Artículos que te <span class="text-brand-600">ayudarán</span> a vivir mejor
+      </h2>
+      <p class="text-sm text-slate-500 mt-2 max-w-2xl mx-auto">
+        Consejos prácticos, guías de zona y todo lo que necesitas saber para tu vida universitaria.
+      </p>
+      <div class="w-16 h-1 bg-gradient-to-r from-brand-500 to-teal-500 rounded-full mx-auto mt-4"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Artículo 1 -->
+      <a href="blog.html" class="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+        <div class="relative h-48 overflow-hidden bg-gradient-to-br from-brand-500 to-teal-600">
+          <div class="absolute inset-0 flex items-center justify-center text-white text-6xl opacity-20">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <div class="absolute top-4 left-4">
+            <span class="text-[10px] font-bold text-white bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">Finanzas</span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <span class="text-xs text-white/80 flex items-center gap-2">
+              <i class="fa-regular fa-clock"></i> 5 min
+            </span>
+          </div>
+        </div>
+        <div class="p-6 flex-grow">
+          <h3 class="font-heading text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors line-clamp-2">
+            Cómo leer y entender un contrato de alquiler sin morir en el intento
+          </h3>
+          <p class="text-slate-500 text-sm mt-2 line-clamp-2">
+            Consejos clave sobre cláusulas de rescisión, depósitos de garantía y qué pasa si te mudas antes de tiempo.
+          </p>
+          <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+            <span><i class="fa-regular fa-calendar mr-1"></i> 28 Jul, 2026</span>
+            <span class="text-brand-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              Leer más <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Artículo 2 -->
+      <a href="blog.html" class="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+        <div class="relative h-48 overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600">
+          <div class="absolute inset-0 flex items-center justify-center text-white text-6xl opacity-20">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+          </div>
+          <div class="absolute top-4 left-4">
+            <span class="text-[10px] font-bold text-white bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">Alquileres</span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <span class="text-xs text-white/80 flex items-center gap-2">
+              <i class="fa-regular fa-clock"></i> 4 min
+            </span>
+          </div>
+        </div>
+        <div class="p-6 flex-grow">
+          <h3 class="font-heading text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors line-clamp-2">
+            ¿Depósito de garantía o adelanto? Conoce tus derechos
+          </h3>
+          <p class="text-slate-500 text-sm mt-2 line-clamp-2">
+            Aprende a diferenciar los pagos iniciales y cómo exigir la devolución justa de tu dinero.
+          </p>
+          <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+            <span><i class="fa-regular fa-calendar mr-1"></i> 27 Jul, 2026</span>
+            <span class="text-brand-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              Leer más <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Artículo 3 -->
+      <a href="blog.html" class="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+        <div class="relative h-48 overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600">
+          <div class="absolute inset-0 flex items-center justify-center text-white text-6xl opacity-20">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div class="absolute top-4 left-4">
+            <span class="text-[10px] font-bold text-white bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">Guías de Zona</span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <span class="text-xs text-white/80 flex items-center gap-2">
+              <i class="fa-regular fa-clock"></i> 5 min
+            </span>
+          </div>
+        </div>
+        <div class="p-6 flex-grow">
+          <h3 class="font-heading text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors line-clamp-2">
+            Vivir cerca de la UP: Los mejores sectores para estudiantes
+          </h3>
+          <p class="text-slate-500 text-sm mt-2 line-clamp-2">
+            Descubre los barrios más seguros, céntricos y conectados para establecer tu base estudiantil.
+          </p>
+          <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+            <span><i class="fa-regular fa-calendar mr-1"></i> 15 Jul, 2026</span>
+            <span class="text-brand-600 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              Leer más <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="blog.html" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-brand-600 to-accent-500 text-white font-bold text-sm shadow-md shadow-brand-500/25 hover:shadow-lg hover:shadow-brand-500/40 transition-all hover:scale-105">
+        <i class="fa-regular fa-newspaper"></i>
+        Ver todos los artículos
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </a>
     </div>
   </section>
 
@@ -370,9 +556,7 @@
       <p class="text-slate-500 text-sm mt-2">Todo lo que necesitas saber sobre el alquiler y uso de la plataforma.</p>
     </div>
 
-    <!-- Contenedor en Grid de 2 columnas para escritorio -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start text-sm" id="faqAccordion">
-      
       <!-- Item 1 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -385,7 +569,6 @@
           <p class="pb-5">Al hacer clic en "Ver Contacto" en cualquier tarjeta, podrás abrir un chat directo de WhatsApp con el arrendador.</p>
         </div>
       </div>
-
       <!-- Item 2 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -398,7 +581,6 @@
           <p class="pb-5">No, es un servicio totalmente gratuito tanto para estudiantes como para propietarios.</p>
         </div>
       </div>
-
       <!-- Item 3 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -411,7 +593,6 @@
           <p class="pb-5">Por lo general, solicitan cédula o carnet de estudiante vigente, comprobante de pago o constancia de matrícula, y el pago del mes por adelantado junto con un depósito de garantía.</p>
         </div>
       </div>
-
       <!-- Item 4 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -424,7 +605,6 @@
           <p class="pb-5">Varía según cada anuncio. En la descripción detallada de cada habitación puedes verificar si incluye cama, escritorio, aire acondicionado, closet o línea blanca compartida.</p>
         </div>
       </div>
-
       <!-- Item 5 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -437,7 +617,6 @@
           <p class="pb-5">¡Sí! Si tienes una habitación individual, un anexo independiente o un espacio compartido ideal para universitarios, puedes registrarte como arrendador y publicarlo gratis.</p>
         </div>
       </div>
-
       <!-- Item 6 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -450,7 +629,6 @@
           <p class="pb-5">Los cuartos que cuentan con la etiqueta verde de "Verificado" han pasado por una revisión previa de nuestros administradores para ofrecer mayor confianza a la comunidad estudiantil.</p>
         </div>
       </div>
-
       <!-- Item 7 -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:border-brand-300 md:col-span-2 md:max-w-xl md:mx-auto w-full">
         <button onclick="toggleFaq(this)" class="w-full p-5 text-left flex items-center justify-between gap-4 focus:outline-none group">
@@ -463,30 +641,25 @@
           <p class="pb-5">Puedes reportarlo directamente con nosotros o contactar a soporte desde tu panel para que podamos revisarlo y mantener el catálogo limpio y confiable para todos.</p>
         </div>
       </div>
-
     </div>
   </section>
 
-<!-- ================= SECCIÓN "DONA UN CAFÉ"================= -->
+  <!-- ================= DONA UN CAFÉ ================= -->
   <section class="relative w-full bg-gradient-to-r from-brand-700 via-brand-600 to-accent-600 text-white py-20 px-6 overflow-hidden">
-    <!-- Círculos decorativos ambientales de fondo -->
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-black/10 rounded-full blur-3xl pointer-events-none"></div>
-
     <div class="max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-      
       <div class="space-y-4 text-center md:text-left max-w-2xl">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-teal-200 text-xs md:text-sm font-bold border border-white/20">
-          <i class="fa-solid fa-mug-hot text-amber-300 animate-bounce"></i> ¡Un cafecito para el dev y estudiante!
+          <i class="fa-solid fa-mug-hot text-amber-300 animate-bounce"></i> ¡Un cafecito para el dev!
         </div>
         <h3 class="font-heading text-3xl md:text-4xl font-black tracking-tight leading-tight">
-          ¿Encontraste lo que buscabas o lograste alquilar tu cuarto? 🎉
+          ¿Encontraste lo que buscabas? 🎉
         </h3>
         <p class="text-slate-100 text-sm md:text-base leading-relaxed font-light">
-          Mantener servidores al día, optimizar la búsqueda de cuartos y mejorar la plataforma requiere altas dosis de cafeína y dedicación constante. Si lograste conseguir un buen hospedaje o te encanta el proyecto, invítanos un café o aporta de forma voluntaria para mantenerlo rápido, útil y libre de publicidad molesta.
+          Si lograste conseguir un buen hospedaje o te encanta el proyecto, invítanos un café para mantenerlo rápido, útil y libre de publicidad molesta.
         </p>
       </div>
-
       <div class="flex flex-col items-center gap-3 whitespace-nowrap">
         <a href="https://link.yappy.com.pa/stc/XkMGTOrblK8WXRhvYJGkWBSk16Vdr9BZvaim7nGhYrA%3D" target="_blank" class="bg-white text-brand-700 hover:bg-slate-100 font-extrabold text-sm md:text-base px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3 group">
           <span class="text-2xl group-hover:rotate-12 transition-transform">☕</span>
@@ -494,69 +667,57 @@
         </a>
         <span class="text-xs text-teal-100 font-medium tracking-wide">¡100% opcional, infinitamente agradecido! 🙏</span>
       </div>
-
     </div>
   </section>
 
- <!-- ================= FOOTER ================= -->
-<footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
-  <!-- Contenedor de 3 columnas (grid-cols-1 md:grid-cols-3) para escritorio -->
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-    
-    <!-- Columna 1: Información y marca -->
-    <div class="space-y-4">
-      <a href="index.html" onclick="showCatalogView()" class="flex items-center gap-2 group">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
-          <i class="fa-solid fa-house-user"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
-            UniCuartos
-          </span>
-          <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
-            Panamá / UP
-          </span>
-        </div>
-      </a>
-      <p class="text-slate-400 leading-relaxed text-xs">
-        Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
-      </p>
-    </div>
-
-    <!-- Columna 2: Enlaces de Información -->
-    <div class="space-y-3">
-      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
-      <ul class="space-y-2 text-xs">
-        <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
-        <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
-        <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
-      </ul>
-    </div>
-
-    <!-- Columna 3: Soporte -->
-    <div class="space-y-3">
-      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
-      <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?.</p>
-      <div class="pt-1">
-        <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
-          <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      <div class="space-y-4">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
         </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+      </div>
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
+        <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?</p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
+        </div>
       </div>
     </div>
-
-  </div>
-
-  <!-- Copyright -->
-  <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-    <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
-    <p class="flex items-center gap-1">
-      Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
-    </p>
-  </div>
-</footer>
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
+      </p>
+    </div>
+  </footer>
 
   <!-- ================= MODALES ================= -->
-
   <!-- MODAL DETALLES DE CUARTO -->
   <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
@@ -566,8 +727,9 @@
       <p id="mLoc" class="text-xs text-slate-500"></p>
       <p id="mDesc" class="text-xs text-slate-600 leading-relaxed"></p>
       <div id="mSelectArea" class="pt-2">
-        <button onclick="selectRoomForStudent()" class="w-full py-2.5 mb-2 bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 text-center font-bold text-xs rounded-xl transition">
-          📌 Elegir este anuncio para mi perfil
+        <button onclick="selectRoomForStudent()" class="w-full py-2.5 mb-2 bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 text-center font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
+          <i id="modalFavIcon" class="fa-solid fa-heart text-sm transition-colors" style="color: #94a3b8;"></i> 
+          <span id="modalFavText">Elegir este anuncio para mi perfil</span>
         </button>
       </div>
       <a id="mWaLink" href="https://wa.me/" target="_blank" class="block w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold text-xs rounded-xl transition">
@@ -576,21 +738,17 @@
     </div>
   </div>
 
-  <!-- MODAL CUENTA (LOGIN / REGISTRO / OLVIDO DE CONTRASEÑA) -->
+  <!-- MODAL CUENTA -->
   <div id="accountModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
       <button onclick="closeModal('accountModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      
       <div id="authTabsHeader" class="flex border-b border-slate-200 text-sm font-bold">
         <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="w-1/2 py-2 text-brand-600 border-b-2 border-brand-600">Crear Cuenta</button>
         <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 py-2 text-slate-400">Iniciar Sesión</button>
       </div>
-
       <p id="authNotice" class="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200 hidden font-medium">
         <i class="fa-solid fa-circle-info mr-1"></i> Debes crear una cuenta o iniciar sesión para realizar esta acción.
       </p>
-
-      <!-- FORMULARIO REGISTRO -->
       <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Nombre Completo</label>
@@ -603,8 +761,8 @@
         <div>
           <label class="block font-bold text-slate-700 mb-1">¿Qué perfil deseas?</label>
           <select id="regRole" class="w-full p-3 rounded-xl border border-slate-200 font-semibold text-slate-700 focus:outline-none">
-            <option value="estudiante">🎓 Estudiante (Busco cuarto / Escribir reseñas)</option>
-            <option value="arrendador">🏠 Arrendador (Publicar y administrar cuartos)</option>
+            <option value="estudiante">🎓 Estudiante</option>
+            <option value="arrendador">🏠 Arrendador</option>
           </select>
         </div>
         <div>
@@ -615,8 +773,6 @@
           Crear Mi Cuenta
         </button>
       </form>
-
-      <!-- FORMULARIO LOGIN -->
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs hidden">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
@@ -633,8 +789,6 @@
           Iniciar Sesión
         </button>
       </form>
-
-      <!-- FORMULARIO OLVIDÉ CONTRASEÑA (OCULTO POR DEFECTO) -->
       <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-3 text-xs hidden">
         <div class="bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800 space-y-1">
           <p class="font-bold">Restablecer acceso</p>
@@ -651,11 +805,10 @@
           ← Volver al inicio de sesión
         </button>
       </form>
-
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR ANUNCIO (RESTRINGIDO A ARRENDADORES) -->
+  <!-- MODAL PUBLICAR ANUNCIO -->
   <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
       <button onclick="closeModal('postRoomModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
@@ -663,7 +816,6 @@
         <h3 class="font-heading text-xl font-extrabold text-slate-900">Publicar Anuncio de Cuarto</h3>
         <p class="text-xs text-slate-500">Completa la información para que aparezca en el catálogo general.</p>
       </div>
-
       <form onsubmit="handlePostRoom(event)" class="space-y-3 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Título del Anuncio</label>
@@ -709,33 +861,752 @@
   </div>
 
   <!-- MODAL PUBLICAR RESEÑA -->
-  <div id="postReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
-      <button onclick="closeModal('postReviewModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      <div>
-        <h3 class="font-heading text-xl font-extrabold text-slate-900">Escribir una Reseña</h3>
-        <p class="text-xs text-slate-500">Comparte tu experiencia para orientar a otros estudiantes.</p>
+  <div id="postReviewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"></div>
+    <div class="review-modal-glass relative rounded-3xl max-w-lg w-full p-8 shadow-2xl max-h-[90vh] overflow-y-auto animate-[fadeIn_0.3s_ease-out]">
+      <style>
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.95) translateY(10px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+      </style>
+
+      <button onclick="closeModal('postReviewModal')" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-500 hover:text-slate-700">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-teal-500 shadow-lg shadow-brand-500/30 mb-3">
+          <i class="fa-solid fa-pen-to-square text-2xl text-white"></i>
+        </div>
+        <h3 class="font-heading text-2xl font-extrabold text-slate-900">Comparte tu Experiencia</h3>
+        <p class="text-sm text-slate-500 mt-1">Ayuda a otros estudiantes a elegir el mejor lugar</p>
+        <div class="w-12 h-1 bg-gradient-to-r from-brand-500 to-teal-500 rounded-full mx-auto mt-3"></div>
       </div>
-      <form onsubmit="handlePostReview(event)" class="space-y-3 text-xs">
+
+      <form onsubmit="handlePostReview(event)" class="space-y-5">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Puntuación</label>
-          <select id="reviewRating" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none font-bold text-amber-500">
-            <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
-            <option value="4">⭐⭐⭐⭐ (Buena opción)</option>
-            <option value="3">⭐⭐⭐ (Regular)</option>
-            <option value="2">⭐⭐ (Poco recomendado)</option>
-            <option value="1">⭐ (Mala experiencia)</option>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-solid fa-door-open text-brand-500 mr-1.5"></i>
+            Publicación / Alojamiento *
+          </label>
+          <select id="reviewListing" required class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm font-medium text-slate-700">
+            <option value="">-- Selecciona una publicación --</option>
           </select>
+          <p class="text-xs text-rose-500 mt-1 hidden" id="listingError">
+            <i class="fa-solid fa-circle-exclamation mr-1"></i>
+            Debes seleccionar una publicación para continuar.
+          </p>
         </div>
+
         <div>
-          <label class="block font-bold text-slate-700 mb-1">Tu Opinión</label>
-          <textarea id="reviewText" rows="4" required placeholder="¿Qué tal es la zona? ¿El ambiente de la casa? ¿El trato con el arrendador?" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
+          <label class="block font-bold text-slate-700 text-sm mb-2">
+            <i class="fa-regular fa-star text-amber-400 mr-1.5"></i>
+            Puntuación *
+          </label>
+          <div class="flex items-center gap-1 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <span class="text-xs font-medium text-slate-500 mr-2">Califica:</span>
+            <div class="flex gap-0.5" id="starContainer">
+              <i class="rating-star fa-regular fa-star text-2xl text-slate-300" data-value="1" onclick="setRating(1)"></i>
+              <i class="rating-star fa-regular fa-star text-2xl text-slate-300" data-value="2" onclick="setRating(2)"></i>
+              <i class="rating-star fa-regular fa-star text-2xl text-slate-300" data-value="3" onclick="setRating(3)"></i>
+              <i class="rating-star fa-regular fa-star text-2xl text-slate-300" data-value="4" onclick="setRating(4)"></i>
+              <i class="rating-star fa-regular fa-star text-2xl text-slate-300" data-value="5" onclick="setRating(5)"></i>
+            </div>
+            <span id="ratingLabel" class="text-xs font-bold text-slate-400 ml-2">Selecciona</span>
+          </div>
+          <input type="hidden" id="reviewRating" required value="0">
         </div>
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
-          Publicar Reseña
-        </button>
+
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-solid fa-building-columns text-brand-500 mr-1.5"></i>
+            Facultad / Escuela *
+          </label>
+          <input type="text" id="reviewFaculty" required placeholder="Ej. Facultad de Ciencias Exactas" 
+                 class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-regular fa-comment text-brand-500 mr-1.5"></i>
+            Tu Opinión *
+          </label>
+          <textarea id="reviewComment" rows="4" required 
+                    placeholder="¿Cómo fue tu experiencia? Cuéntanos sobre la ubicación, el trato con el arrendador, la seguridad, etc." 
+                    class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400 resize-none"></textarea>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" onclick="closeModal('postReviewModal')" 
+                  class="flex-1 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition">
+            Cancelar
+          </button>
+          <button type="submit" 
+                  class="flex-1 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-brand-600 to-teal-600 hover:from-brand-700 hover:to-teal-700 shadow-lg shadow-brand-500/25 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            Publicar Reseña
+          </button>
+        </div>
       </form>
     </div>
   </div>
 
+  <!-- MODAL PUBLICAR ANUNCIO DE ROOMIE -->
+  <div id="postRoomieModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closeModal('postRoomieModal')"></div>
+    <div class="review-modal-glass relative rounded-3xl max-w-lg w-full p-8 shadow-2xl max-h-[90vh] overflow-y-auto animate-[fadeIn_0.3s_ease-out]">
+      <button onclick="closeModal('postRoomieModal')" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-slate-500 hover:text-slate-700">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-teal-500 shadow-lg shadow-brand-500/30 mb-3">
+          <i class="fa-solid fa-user-plus text-2xl text-white"></i>
+        </div>
+        <h3 class="font-heading text-2xl font-extrabold text-slate-900">Buscar Roomie</h3>
+        <p class="text-sm text-slate-500 mt-1">Publica un anuncio y encuentra el compañero ideal</p>
+        <div class="w-12 h-1 bg-gradient-to-r from-brand-500 to-teal-500 rounded-full mx-auto mt-3"></div>
+      </div>
+
+      <form onsubmit="handlePostRoomie(event)" class="space-y-5">
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-solid fa-tag text-brand-500 mr-1.5"></i>
+            Tipo de Anuncio *
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 p-3 rounded-xl border-2 border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="radio" name="roomieType" value="Tengo el cuarto" checked class="w-4 h-4 text-brand-600">
+              <span class="text-xs font-medium">🏠 Tengo el cuarto</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border-2 border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="radio" name="roomieType" value="Busco el cuarto" class="w-4 h-4 text-brand-600">
+              <span class="text-xs font-medium">🔍 Busco el cuarto</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-solid fa-heading text-brand-500 mr-1.5"></i>
+            Título del Anuncio *
+          </label>
+          <input type="text" id="roomieTitle" required placeholder="Ej. Busco roomie para apto cerca de la Facultad" 
+                 class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 text-sm mb-1.5">
+              <i class="fa-solid fa-money-bill text-brand-500 mr-1.5"></i>
+              Presupuesto Máximo *
+            </label>
+            <input type="number" id="roomieBudget" required placeholder="150" 
+                   class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 text-sm mb-1.5">
+              <i class="fa-solid fa-location-dot text-brand-500 mr-1.5"></i>
+              Zona *
+            </label>
+            <select id="roomieLocation" required class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm font-medium text-slate-700">
+              <option value="El Cangrejo">El Cangrejo</option>
+              <option value="Vía Transístmica">Vía Transístmica</option>
+              <option value="Vista Hermosa">Vista Hermosa</option>
+              <option value="La Cresta">La Cresta</option>
+              <option value="Cualquier zona">Cualquier zona</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 text-sm mb-1.5">
+              <i class="fa-brands fa-whatsapp text-emerald-500 mr-1.5"></i>
+              WhatsApp *
+            </label>
+            <input type="tel" id="roomiePhone" required placeholder="60000000" 
+                   class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 text-sm mb-1.5">
+              <i class="fa-solid fa-graduation-cap text-brand-500 mr-1.5"></i>
+              Facultad
+            </label>
+            <input type="text" id="roomieFaculty" placeholder="Ej. Medicina" 
+                   class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-solid fa-image text-brand-500 mr-1.5"></i>
+            Subir imagen (opcional)
+          </label>
+          <div class="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-brand-300 transition cursor-pointer" id="dropZone">
+            <input type="file" id="roomieImage" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+            <i class="fa-solid fa-cloud-upload-alt text-3xl text-slate-300 mb-2"></i>
+            <p class="text-xs text-slate-500">Haz clic o arrastra una imagen aquí</p>
+            <p class="text-[10px] text-slate-400 mt-1">Formatos: JPG, PNG, GIF (máx. 5MB)</p>
+            <div id="imagePreview" class="hidden mt-3">
+              <img id="imagePreviewImg" src="" alt="Vista previa" class="max-h-32 mx-auto rounded-lg border border-slate-200">
+              <button type="button" onclick="removeImage()" class="text-xs text-red-500 mt-1 hover:text-red-700">Eliminar imagen</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-2">
+            <i class="fa-solid fa-wifi text-brand-500 mr-1.5"></i>
+            Servicios y Comodidades
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Amoblado" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">🪑 Amoblado</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Incluye luz" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">💡 Incluye luz</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Incluye agua" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">💧 Incluye agua</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="WiFi incluido" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">📶 WiFi incluido</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Baño privado" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">🚿 Baño privado</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Cocina compartida" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">🍳 Cocina compartida</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Pet-friendly" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">🐾 Pet-friendly</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:border-brand-300 transition cursor-pointer">
+              <input type="checkbox" name="services" value="Aire acondicionado" class="w-4 h-4 text-brand-600">
+              <span class="text-xs">❄️ Aire acond.</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 text-sm mb-1.5">
+            <i class="fa-regular fa-comment text-brand-500 mr-1.5"></i>
+            Descripción y Preferencias *
+          </label>
+          <textarea id="roomieDetails" rows="4" required 
+                    placeholder="Cuéntanos sobre ti, tus hábitos, fecha de mudanza, si prefieres ambiente tranquilo para estudiar, pet-friendly, etc." 
+                    class="review-input w-full px-4 py-3 rounded-xl bg-white text-sm placeholder:text-slate-400 resize-none"></textarea>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" onclick="closeModal('postRoomieModal')" 
+                  class="flex-1 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition">
+            Cancelar
+          </button>
+          <button type="submit" 
+                  class="flex-1 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 shadow-lg shadow-brand-500/25 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            Publicar Anuncio
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // FUNCIONES GLOBALES BÁSICAS
+    // ==========================================
+    
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const backdrop = document.getElementById('mobileBackdrop');
+      if (!drawer || !backdrop) return;
+      const isOpen = drawer.classList.contains('translate-x-full');
+      if (isOpen) {
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // ==========================================
+    // SISTEMA DE CALIFICACIÓN CON ESTRELLAS
+    // ==========================================
+    let selectedRating = 0;
+
+    function setRating(value) {
+      selectedRating = value;
+      document.getElementById('reviewRating').value = value;
+      
+      const stars = document.querySelectorAll('.rating-star');
+      const label = document.getElementById('ratingLabel');
+      
+      const labels = ['', 'Muy Malo', 'Malo', 'Regular', 'Bueno', 'Excelente'];
+      
+      stars.forEach((star, index) => {
+        const starValue = index + 1;
+        if (starValue <= value) {
+          star.className = 'rating-star fa-solid fa-star text-2xl text-amber-400 active';
+        } else {
+          star.className = 'rating-star fa-regular fa-star text-2xl text-slate-300';
+        }
+      });
+      
+      label.textContent = labels[value] || 'Selecciona';
+      label.className = `text-xs font-bold ml-2 ${value > 0 ? 'text-amber-500' : 'text-slate-400'}`;
+    }
+
+    // ==========================================
+    // CARGAR PUBLICACIONES EN EL SELECTOR
+    // ==========================================
+    function loadListingsForReview() {
+      let properties = JSON.parse(localStorage.getItem('unicuartos_properties') || '[]');
+      
+      if (properties.length === 0) {
+        let catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+        properties = catalog.map(c => ({
+          id: c.id,
+          title: c.title,
+          price: c.price,
+          location: c.location,
+          images: c.image ? [c.image] : ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80']
+        }));
+        if (properties.length > 0) {
+          localStorage.setItem('unicuartos_properties', JSON.stringify(properties));
+        }
+      }
+      
+      const select = document.getElementById('reviewListing');
+      if (!select) return;
+      
+      while (select.options.length > 1) {
+        select.remove(1);
+      }
+      
+      if (properties.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = '-- No hay publicaciones disponibles --';
+        option.disabled = true;
+        select.appendChild(option);
+        return;
+      }
+      
+      properties.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room.id;
+        const title = room.title || 'Publicación sin título';
+        const price = room.price || '0';
+        const location = room.location || 'Ubicación no especificada';
+        option.textContent = `${title} ($${price}/mes - ${location})`;
+        select.appendChild(option);
+      });
+    }
+
+    // ==========================================
+    // RENDERIZAR RESEÑAS MODERNAS (SOLO 6 - SIN "Recomendado" y SIN "Reseña General")
+    // ==========================================
+function renderModernReviews() {
+  const container = document.getElementById('reviewsContainer');
+  const countDisplay = document.getElementById('reviewsCountDisplay');
+  const noMsg = document.getElementById('noReviewsMsg');
+  
+  if (!container) return;
+  
+  const allReviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+  const reviews = allReviews.slice(0, 6);
+  
+  if (countDisplay) countDisplay.textContent = allReviews.length;
+  
+  if (reviews.length === 0) {
+    container.innerHTML = '';
+    if (noMsg) noMsg.classList.remove('hidden');
+    return;
+  }
+  
+  if (noMsg) noMsg.classList.add('hidden');
+  
+  const ratingLabels = ['', 'Muy Malo', 'Malo', 'Regular', 'Bueno', 'Excelente'];
+  
+  container.innerHTML = reviews.map((review, index) => {
+    const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+    const verifiedBadge = review.verified ? 
+      '<span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-check-circle"></i> Verificada</span>' : 
+      '<span class="inline-flex items-center gap-1 text-[10px] text-slate-400 font-medium"><i class="fa-regular fa-clock"></i> Pendiente</span>';
+    
+    const ratingLabel = ratingLabels[review.rating] || '';
+    const initial = review.faculty ? review.faculty.charAt(0).toUpperCase() : 'E';
+    const facultyText = review.faculty || 'Estudiante UP';
+    
+    return `
+      <div class="review-card-modern bg-white rounded-2xl p-6 shadow-sm">
+        <div class="relative">
+          <i class="fa-solid fa-quote-right review-quote-icon"></i>
+          
+          <div class="flex items-start gap-4 mb-4">
+            <div class="review-avatar w-12 h-12 rounded-full flex items-center justify-center text-brand-600 font-heading font-bold text-lg flex-shrink-0">
+              ${initial}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-heading font-bold text-sm text-slate-900">${facultyText}</p>
+              <p class="text-[10px] text-slate-400 flex items-center gap-2">
+                <span>${review.date || ''}</span>
+                <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                ${verifiedBadge}
+              </p>
+            </div>
+          </div>
+          
+          <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-3">
+            "${review.comment}"
+          </p>
+          
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <div class="flex items-center gap-1">
+              <span class="text-xs font-bold text-amber-400">${stars}</span>
+              <span class="text-[10px] text-slate-400">${ratingLabel}</span>
+            </div>
+            <span class="text-[10px] font-medium text-brand-600 bg-brand-50 px-2.5 py-0.5 rounded-full truncate max-w-[160px]">
+              <i class="fa-solid fa-tag mr-1"></i>
+              ${review.listing && review.listing !== 'Reseña General del Sector / Zona' ? review.listing : 'Reseña general'}
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+    // ==========================================
+    // HANDLE POST REVIEW
+    // ==========================================
+    function handlePostReview(e) {
+      e.preventDefault();
+      
+      const listingId = document.getElementById('reviewListing').value;
+      const rating = parseInt(document.getElementById('reviewRating').value);
+      const faculty = document.getElementById('reviewFaculty').value;
+      const comment = document.getElementById('reviewComment').value;
+      
+      if (!listingId) {
+        document.getElementById('listingError').classList.remove('hidden');
+        document.getElementById('reviewListing').classList.add('border-rose-500', 'border-2');
+        return;
+      }
+      
+      if (rating === 0) {
+        showToast('⚠️ Por favor selecciona una calificación');
+        return;
+      }
+      
+      const select = document.getElementById('reviewListing');
+      const fullText = select.options[select.selectedIndex].text;
+      const listingName = fullText.split(' (')[0] || fullText;
+      
+      const newReview = {
+        id: Date.now(),
+        listing: listingName,
+        faculty: faculty || 'Estudiante UP',
+        rating: rating,
+        comment: comment,
+        date: new Date().toISOString().split('T')[0],
+        verified: false
+      };
+      
+      let reviews = JSON.parse(localStorage.getItem('unicuartos_reviews') || '[]');
+      reviews.unshift(newReview);
+      localStorage.setItem('unicuartos_reviews', JSON.stringify(reviews));
+      
+      renderModernReviews();
+      
+      closeModal('postReviewModal');
+      showToast('✅ Reseña publicada correctamente');
+      
+      e.target.reset();
+      selectedRating = 0;
+      document.querySelectorAll('.rating-star').forEach(star => {
+        star.className = 'rating-star fa-regular fa-star text-2xl text-slate-300';
+      });
+      document.getElementById('ratingLabel').textContent = 'Selecciona';
+      document.getElementById('ratingLabel').className = 'text-xs font-bold text-slate-400 ml-2';
+      document.getElementById('listingError').classList.add('hidden');
+      document.getElementById('reviewListing').classList.remove('border-rose-500', 'border-2');
+    }
+
+    // ==========================================
+    // SOBRESCRIBIR openModal PARA CARGAR LISTADOS
+    // ==========================================
+    const originalOpenModal = window.openModal;
+    window.openModal = function(id) {
+      if (id === 'postReviewModal') {
+        loadListingsForReview();
+        document.getElementById('listingError').classList.add('hidden');
+        document.getElementById('reviewListing').classList.remove('border-rose-500', 'border-2');
+      }
+      if (typeof originalOpenModal === 'function') {
+        originalOpenModal(id);
+      } else {
+        document.getElementById(id)?.classList.remove('hidden');
+      }
+    };
+
+    // ==========================================
+    // FUNCIÓN PARA CARGAR RESEÑAS Y CATÁLOGO
+    // ==========================================
+    function loadStoredListingsAndReviews() {
+      renderModernReviews();
+    }
+
+    // ==========================================
+    // FUNCIONES PARA ROOMIES (SOLO 6)
+    // ==========================================
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          window.uploadedImage = e.target.result;
+          document.getElementById('imagePreviewImg').src = window.uploadedImage;
+          document.getElementById('imagePreview').classList.remove('hidden');
+          document.querySelector('#dropZone p').textContent = 'Imagen cargada ✓';
+          document.querySelector('#dropZone p').className = 'text-xs text-green-600';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeImage() {
+      window.uploadedImage = null;
+      document.getElementById('imagePreview').classList.add('hidden');
+      document.getElementById('roomieImage').value = '';
+      document.querySelector('#dropZone p').textContent = 'Haz clic o arrastra una imagen aquí';
+      document.querySelector('#dropZone p').className = 'text-xs text-slate-500';
+    }
+
+    function loadRoomies() {
+      const container = document.getElementById('roomiesContainer');
+      if (!container) return;
+      
+      const allRoomies = JSON.parse(localStorage.getItem('unicuartos_roomies') || '[]');
+      const roomies = allRoomies.slice(0, 6);
+      
+      if (roomies.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand-50 mb-4">
+              <i class="fa-solid fa-user-group text-3xl text-brand-300"></i>
+            </div>
+            <p class="text-slate-400 text-sm">Aún no hay anuncios de roomies.</p>
+            <p class="text-slate-400 text-xs">¡Sé el primero en publicar!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = roomies.map((roomie) => {
+        const maxLength = 100;
+        const details = roomie.details && roomie.details.length > maxLength 
+          ? roomie.details.substring(0, maxLength) + '...' 
+          : roomie.details || 'Sin descripción';
+        
+        const typeLabel = roomie.type === 'Tengo el cuarto' 
+          ? '<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">🏠 Tengo el cuarto</span>'
+          : '<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">🔍 Busco el cuarto</span>';
+        
+        const servicesHtml = roomie.services && roomie.services.length > 0 
+          ? roomie.services.slice(0, 3).map(s => `<span class="inline-block bg-brand-50 text-brand-700 text-[9px] font-semibold px-1.5 py-0.5 rounded border border-brand-100">${s}</span>`).join('')
+          : '';
+        
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+            <div class="relative h-32 bg-gradient-to-r from-brand-500 to-teal-600 flex items-center justify-center">
+              ${roomie.image ? `
+                <img src="${roomie.image}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20"></div>
+              ` : `
+                <div class="absolute inset-0 bg-black/10"></div>
+              `}
+              <div class="relative z-10 text-center text-white">
+                <i class="fa-solid fa-user-group text-4xl ${roomie.image ? 'opacity-70' : 'opacity-50'}"></i>
+                <span class="block text-[10px] font-bold mt-0.5 opacity-80">Roomie</span>
+              </div>
+              <div class="absolute top-2 right-2">
+                <span class="bg-white/20 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  ${typeLabel}
+                </span>
+              </div>
+              <div class="absolute bottom-2 left-2">
+                <span class="bg-white/20 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                  <i class="fa-regular fa-clock mr-1"></i> ${roomie.date || 'Reciente'}
+                </span>
+              </div>
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-heading font-bold text-sm text-slate-900 line-clamp-1">${roomie.title}</h3>
+                  <span class="bg-brand-50 text-brand-700 font-extrabold text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap">
+                    $${roomie.budget}/mes
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                  <span class="flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-brand-500"></i> ${roomie.location}
+                  </span>
+                  ${roomie.faculty ? `
+                    <span class="text-slate-300">•</span>
+                    <span class="flex items-center gap-1">
+                      <i class="fa-solid fa-graduation-cap text-brand-500"></i> ${roomie.faculty}
+                    </span>
+                  ` : ''}
+                </div>
+                ${servicesHtml ? `<div class="flex flex-wrap gap-1 mt-1.5">${servicesHtml}</div>` : ''}
+                <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2 rounded-xl border border-slate-100 leading-relaxed line-clamp-2">
+                  ${details}
+                </p>
+              </div>
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                <a href="https://wa.me/${roomie.phone || '50760000000'}?text=Hola,%20vi%20tu%20anuncio%20de%20roomie:%20${encodeURIComponent(roomie.title)}" 
+                   target="_blank" 
+                   class="text-emerald-600 hover:text-emerald-700 font-bold text-xs transition-colors flex items-center gap-1.5">
+                  <i class="fa-brands fa-whatsapp text-sm"></i>
+                  Contactar
+                </a>
+                <span class="text-[10px] text-slate-400">
+                  <i class="fa-regular fa-user"></i> ${roomie.publisher || 'Estudiante'}
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handlePostRoomie(e) {
+      e.preventDefault();
+      
+      const type = document.querySelector('input[name="roomieType"]:checked')?.value || 'Busco el cuarto';
+      const title = document.getElementById('roomieTitle').value;
+      const budget = document.getElementById('roomieBudget').value;
+      const location = document.getElementById('roomieLocation').value;
+      const phone = document.getElementById('roomiePhone').value;
+      const faculty = document.getElementById('roomieFaculty').value;
+      const details = document.getElementById('roomieDetails').value;
+      
+      const serviceCheckboxes = document.querySelectorAll('input[name="services"]:checked');
+      const services = Array.from(serviceCheckboxes).map(cb => cb.value);
+      
+      if (!currentUser) {
+        showToast('⚠️ Debes iniciar sesión para publicar un anuncio');
+        return;
+      }
+      
+      const newRoomie = {
+        id: Date.now(),
+        type: type,
+        title: title,
+        budget: budget,
+        location: location,
+        phone: phone,
+        faculty: faculty || 'Estudiante UP',
+        services: services,
+        details: details,
+        image: window.uploadedImage || null,
+        date: new Date().toISOString().split('T')[0],
+        publisher: currentUser.name || 'Estudiante'
+      };
+      
+      let roomies = JSON.parse(localStorage.getItem('unicuartos_roomies') || '[]');
+      roomies.unshift(newRoomie);
+      localStorage.setItem('unicuartos_roomies', JSON.stringify(roomies));
+      
+      window.uploadedImage = null;
+      document.getElementById('imagePreview').classList.add('hidden');
+      document.getElementById('roomieImage').value = '';
+      
+      loadRoomies();
+      closeModal('postRoomieModal');
+      showToast('✅ Anuncio de roomie publicado correctamente');
+      e.target.reset();
+    }
+
+    // ==========================================
+    // INICIALIZACIÓN
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      renderModernReviews();
+      loadRoomies();
+      
+      const dropZone = document.getElementById('dropZone');
+      if (dropZone) {
+        dropZone.addEventListener('click', function() {
+          document.getElementById('roomieImage').click();
+        });
+        dropZone.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          this.classList.add('border-brand-500', 'bg-brand-50');
+        });
+        dropZone.addEventListener('dragleave', function(e) {
+          e.preventDefault();
+          this.classList.remove('border-brand-500', 'bg-brand-50');
+        });
+        dropZone.addEventListener('drop', function(e) {
+          e.preventDefault();
+          this.classList.remove('border-brand-500', 'bg-brand-50');
+          const file = e.dataTransfer.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+              window.uploadedImage = event.target.result;
+              document.getElementById('imagePreviewImg').src = window.uploadedImage;
+              document.getElementById('imagePreview').classList.remove('hidden');
+              document.querySelector('#dropZone p').textContent = 'Imagen cargada ✓';
+              document.querySelector('#dropZone p').className = 'text-xs text-green-600';
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+      
+      if (!document.getElementById('postReviewModal').classList.contains('hidden')) {
+        loadListingsForReview();
+      }
+      
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'unicuartos_reviews') {
+          renderModernReviews();
+        }
+        if (e.key === 'unicuartos_roomies') {
+          loadRoomies();
+        }
+      });
+    });
+
+    window.setRating = setRating;
+    window.loadListingsForReview = loadListingsForReview;
+    window.handlePostReview = handlePostReview;
+    window.renderModernReviews = renderModernReviews;
+    window.loadStoredListingsAndReviews = loadStoredListingsAndReviews;
+    window.loadRoomies = loadRoomies;
+    window.handlePostRoomie = handlePostRoomie;
+    window.handleImageUpload = handleImageUpload;
+    window.removeImage = removeImage;
+  </script>
+
 </body>
+</html>

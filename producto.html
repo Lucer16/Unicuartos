@@ -3,10 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cuartos Disponibles</title>
+  <title>UniCuartos - Cuartos Disponibles</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
+  <script src="style.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0284c7',
+              600: '#0369a1',
+            }
+          }
+        }
+      }
+    }
+  </script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- Google Fonts -->
@@ -35,112 +63,103 @@
 <body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
 
   <!-- ================= MENÚ ================= -->
-<header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
-  <a href="index.html" class="flex items-center gap-2 group">
-    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
-      <i class="fa-solid fa-house-user"></i>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
-        UniCuartos
-      </span>
-      <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
-        Panamá / UP
-      </span>
-    </div>
-  </a>
-
-  <!-- Menú de Escritorio -->
-  <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
-    <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
-    <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
-    <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
-    <a href="donaciones.html" class="hover:text-brand-600 transition">¿Cómo apoyar?</a>
-    <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
-    <a href="blog.html" class="hover:text-brand-600 transition">Blog</a>
-</nav>
-
-  <div class="flex items-center gap-3">
-    <div id="authNavContainer" class="flex items-center gap-3">
-      <!-- Inyectado dinámicamente -->
-    </div>
-    
-    <!-- Botón de Menú Móvil (Hamburguesa) -->
-    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
-      <i class="fa-solid fa-bars text-lg"></i>
-    </button>
-  </div>
-</header>
-
-<!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
-<div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
-
-<div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
-  <!-- Cabecera del menú lateral -->
-  <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-    <span class="font-heading font-extrabold text-lg text-slate-900">Menú de Navegación</span>
-    <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
-      <i class="fa-solid fa-xmark text-base"></i>
-    </button>
-  </div>
-
-  <!-- Enlaces de navegación móvil -->
-  <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
-    <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 rounded-full glass-nav shadow-lg shadow-teal-900/5 px-6 py-3 flex items-center justify-between transition-all">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30">
+        <i class="fa-solid fa-house-user"></i>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-heading text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-brand-600 to-accent-500 bg-clip-text text-transparent">
+          UniCuartos
+        </span>
+        <span class="text-[10px] font-bold text-teal-700 uppercase tracking-widest -mt-1">
+          Panamá / UP
+        </span>
+      </div>
     </a>
-    <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos Disponibles
-    </a>
-    <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
-    </a>
-    <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> ¿Cómo apoyar?
-    </a>
-    <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
-    </a>
-    <a href="blog.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
-      <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
-    </a>
-  </div>
-</div>
 
+    <!-- Menú de Escritorio -->
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+      <a href="index.html#hero" class="hover:text-brand-600 transition">Inicio</a>
+      <a href="index.html#cuartos" class="hover:text-brand-600 transition">Cuartos Disponibles</a>
+      <a href="index.html#reviews" class="hover:text-brand-600 transition">Reseñas</a>
+      <a href="donaciones.html" class="hover:text-brand-600 transition">¿Cómo apoyar?</a>
+      <a href="index.html#faq" class="hover:text-brand-600 transition">FAQS</a>
+      <a href="blog.html" class="hover:text-brand-600 transition">Blog</a>
+    </nav>
 
-    <!-- NOTIFICACIÓN TOAST -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
-      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
-      <span id="toastMsg">Actualizado</span>
+    <div class="flex items-center gap-3">
+      <div id="authNavContainer" class="flex items-center gap-3">
+        <!-- Inyectado dinámicamente -->
+      </div>
+      
+      <!-- Botón de Menú Móvil (Hamburguesa) -->
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition focus:outline-none">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
     </div>
   </header>
 
+  <!-- ================= MENÚ LATERAL FLOTANTE MÓVIL ================= -->
+  <div id="mobileBackdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
+
+  <div id="mobileDrawer" class="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+      <span class="font-heading font-extrabold text-lg text-slate-900">Menú de Navegación</span>
+      <button onclick="toggleMobileMenu()" class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+    </div>
+    <div class="p-6 flex-1 flex flex-col gap-4 text-base font-semibold text-slate-700 overflow-y-auto">
+      <a href="index.html#hero" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-house text-brand-600 w-5"></i> Inicio
+      </a>
+      <a href="index.html#cuartos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-door-open text-brand-600 w-5"></i> Cuartos Disponibles
+      </a>
+      <a href="index.html#reviews" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-star text-brand-600 w-5"></i> Reseñas
+      </a>
+      <a href="donaciones.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-mug-hot text-brand-600 w-5"></i> ¿Cómo apoyar?
+      </a>
+      <a href="index.html#faq" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-circle-question text-brand-600 w-5"></i> FAQS
+      </a>
+      <a href="blog.html" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-brand-50 hover:text-brand-600 transition">
+        <i class="fa-solid fa-blog text-brand-600 w-5"></i> Blog
+      </a>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Actualizado</span>
+  </div>
+
   <script>
    function toggleMobileMenu() {
-  const drawer = document.getElementById('mobileDrawer');
-  const backdrop = document.getElementById('mobileBackdrop');
-  
-  if (!drawer || !backdrop) return;
+    const drawer = document.getElementById('mobileDrawer');
+    const backdrop = document.getElementById('mobileBackdrop');
+    
+    if (!drawer || !backdrop) return;
 
-  const isOpen = drawer.classList.contains('translate-x-full');
+    const isOpen = drawer.classList.contains('translate-x-full');
 
-  if (isOpen) {
-    // Abrir menú
-    drawer.classList.remove('translate-x-full');
-    backdrop.classList.remove('opacity-0', 'pointer-events-none');
-    document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
-  } else {
-    // Cerrar menú
-    drawer.classList.add('translate-x-full');
-    backdrop.classList.add('opacity-0', 'pointer-events-none');
-    document.body.style.overflow = ''; // Restaura el scroll
+    if (isOpen) {
+      drawer.classList.remove('translate-x-full');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = 'hidden';
+    } else {
+      drawer.classList.add('translate-x-full');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+    }
   }
-}
-    </script>
-
+  </script>
 
   <!-- ================= 1. VISTA DE CATÁLOGO GENERAL ================= -->
-  <!-- Se añadió mt-28 para evitar que el menú flotante tape el contenido -->
   <main id="catalogView" class="max-w-7xl mx-auto px-4 mt-28 mb-10 flex-1 w-full space-y-8">
     
     <!-- Encabezado -->
@@ -149,6 +168,9 @@
         <h1 class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Habitaciones Disponibles</h1>
         <p class="text-xs md:text-sm text-slate-500">Explora alojamientos verificados y seguros diseñados para estudiantes universitarios.</p>
       </div>
+      <a href="index.html#cuartos" class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 hover:text-brand-700 transition-colors bg-brand-50 px-4 py-2.5 rounded-2xl border border-brand-100 hover:bg-brand-100">
+        <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
+      </a>
     </div>
 
     <!-- BARRA DE BÚSQUEDA AVANZADA -->
@@ -196,7 +218,7 @@
           </select>
         </div>
         <div class="flex items-end">
-          <button type="submit" class="w-full h-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+          <button type="submit" class="w-full h-full min-h-[48px] bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold rounded-2xl shadow-md transition flex items-center justify-center gap-2 text-sm">
             <i class="fa-solid fa-magnifying-glass"></i>
             <span>Buscar</span>
           </button>
@@ -223,9 +245,7 @@
 
   </main>
 
-
   <!-- ================= 2. VISTA DE DETALLE COMPLETA DEL ANUNCIO ================= -->
-  <!-- Se añadió mt-28 para evitar que el menú flotante tape el contenido -->
   <main id="detailView" class="hidden max-w-5xl mx-auto px-4 mt-28 mb-10 flex-1 w-full space-y-6">
     
     <!-- Botón de Retorno -->
@@ -251,6 +271,10 @@
             <span class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1 rounded-full">
               <span id="detTypeBadge">Individual</span>
             </span>
+            <!-- Botón de favorito en detalle -->
+            <button id="detFavoriteBtn" onclick="toggleFavoriteDetail()" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-md hover:scale-110 transition">
+              <i id="detFavoriteIcon" class="fa-regular fa-heart text-lg text-slate-400"></i>
+            </button>
           </div>
           <div id="detThumbnails" class="grid grid-cols-3 gap-3">
             <!-- Inyectado por JS -->
@@ -264,15 +288,24 @@
               <span id="detLocationBadge" class="px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold uppercase tracking-wider border border-brand-100">
                 Zona
               </span>
+              <span id="detVerifiedBadge" class="hidden px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                <i class="fa-solid fa-check-circle mr-1"></i> Verificado
+              </span>
             </div>
 
             <h1 id="detTitle" class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
               Título del anuncio
             </h1>
 
+            <!-- Publicado por -->
+            <p id="detPublisher" class="text-xs text-slate-500 flex items-center gap-1.5">
+              <i class="fa-solid fa-user text-brand-600"></i>
+              <span>Publicado por: <strong id="detPublisherName">Propietario</strong></span>
+            </p>
+
             <div class="flex items-baseline gap-2">
               <span id="detPrice" class="text-3xl md:text-4xl font-extrabold text-slate-900">$0</span>
-              <span class="text-xs md:text-sm text-slate-500 font-medium">/ mes (servicios detallados)</span>
+              <span class="text-xs md:text-sm text-slate-500 font-medium">/ mes</span>
             </div>
 
             <p class="text-xs text-slate-500 flex items-start gap-1.5">
@@ -290,11 +323,11 @@
           </div>
 
           <!-- Botón de Contacto Directo WhatsApp Estilizado -->
-          <div class="pt-4 border-t border-slate-100">
+          <div class="pt-4 border-t border-slate-100 space-y-2">
             <a id="detWhatsappBtn" href="#" target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs md:text-sm py-4 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all">
               <i class="fa-brands fa-whatsapp text-lg"></i> Contactar al Arrendador por WhatsApp
             </a>
-            <p class="text-[10px] text-slate-400 text-center mt-2">
+            <p class="text-[10px] text-slate-400 text-center">
               UniCuartos actúa únicamente como directorio informativo independiente.
             </p>
           </div>
@@ -303,7 +336,7 @@
 
       </div>
 
-      <!-- Sección Inferior: Requisitos -->
+      <!-- Sección Inferior: Requisitos y Descripción -->
       <div class="bg-slate-50 p-6 md:p-10 border-t border-slate-200/60">
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm text-slate-600">
@@ -317,13 +350,13 @@
             </p>
           </div>
 
-          <!-- Garantía Universitaria -->
+          <!-- Descripción Detallada -->
           <div class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-2 shadow-sm">
             <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-shield-halved text-brand-600"></i> Garantía Universitaria UniCuartos
+              <i class="fa-solid fa-info-circle text-brand-600"></i> Descripción del Alojamiento
             </h4>
-            <p class="text-slate-600 leading-relaxed text-xs md:text-sm">
-              Espacio verificado para fomentar un ambiente de estudio enfocado, seguro y accesible dentro de la comunidad de Panamá.
+            <p id="detDescription" class="text-slate-600 leading-relaxed text-xs md:text-sm">
+              Descripción del cuarto...
             </p>
           </div>
         </div>
@@ -352,84 +385,59 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-<footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
-  <!-- Contenedor de 3 columnas (grid-cols-1 md:grid-cols-3) para escritorio -->
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-    
-    <!-- Columna 1: Información y marca -->
-    <div class="space-y-4">
-      <a href="index.html" onclick="showCatalogView()" class="flex items-center gap-2 group">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
-          <i class="fa-solid fa-house-user"></i>
+  <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800 text-xs md:text-sm mt-auto">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+      
+      <div class="space-y-4">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white text-lg font-black shadow-md shadow-brand-500/30 shrink-0">
+            <i class="fa-solid fa-house-user"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
+              UniCuartos
+            </span>
+            <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
+              Panamá / UP
+            </span>
+          </div>
+        </a>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
+          <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+        </ul>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
+        <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?.</p>
+        <div class="pt-1">
+          <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
+            <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
+          </a>
         </div>
-        <div class="flex flex-col">
-          <span class="font-heading text-xl font-extrabold tracking-tight text-white group-hover:text-teal-400 transition-colors">
-            UniCuartos
-          </span>
-          <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest -mt-1">
-            Panamá / UP
-          </span>
-        </div>
-      </a>
-      <p class="text-slate-400 leading-relaxed text-xs">
-        Plataforma independiente diseñada para conectar a la comunidad universitaria de Panamá con opciones de hospedaje cercanas, seguras y accesibles.
+      </div>
+
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-1">
+        Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
       </p>
     </div>
+  </footer>
 
-    <!-- Columna 2: Enlaces de Información -->
-    <div class="space-y-3">
-      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Información</h4>
-      <ul class="space-y-2 text-xs">
-        <li><a href="nosotros.html" class="hover:text-white transition-colors">Nosotros</a></li>
-        <li><a href="terminos.html" class="hover:text-white transition-colors">Términos y Condiciones</a></li>
-        <li><a href="politicas.html" class="hover:text-white transition-colors">Política de Privacidad</a></li>
-      </ul>
-    </div>
-
-    <!-- Columna 3: Soporte -->
-    <div class="space-y-3">
-      <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Soporte</h4>
-      <p class="text-slate-400 text-xs">¿Tienes dudas o necesitas ayuda?.</p>
-      <div class="pt-1">
-        <a href="mailto:soporte@unicuartos.com" class="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 font-medium text-xs transition-colors">
-          <i class="fa-solid fa-envelope"></i> soporte@unicuartos.com
-        </a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Copyright -->
-  <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-    <p>© 2026 UniCuartos. Todos los derechos reservados.</p>
-    <p class="flex items-center gap-1">
-      Hecho con <i class="fa-solid fa-heart text-teal-300 mx-1"></i> por <a href="https://www.wecreatebylucero.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-bold transition-colors">WeCreate</a>
-    </p>
-  </div>
-</footer>
-
-<!-- ================= MODALES ================= -->
-
-  <!-- MODAL DETALLES DE CUARTO -->
-  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
-      <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      <h3 id="mTitle" class="font-heading text-xl font-bold text-slate-900"></h3>
-      <p id="mPrice" class="text-lg font-black text-brand-600"></p>
-      <p id="mLoc" class="text-xs text-slate-500"></p>
-      <p id="mDesc" class="text-xs text-slate-600 leading-relaxed"></p>
-      <div id="mSelectArea" class="pt-2">
-        <button onclick="selectRoomForStudent()" class="w-full py-2.5 mb-2 bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 text-center font-bold text-xs rounded-xl transition">
-          📌 Elegir este anuncio para mi perfil
-        </button>
-      </div>
-      <a id="mWaLink" href="https://wa.me/" target="_blank" class="block w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold text-xs rounded-xl transition">
-        <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Contactar por WhatsApp
-      </a>
-    </div>
-  </div>
-
-  <!-- MODAL CUENTA (LOGIN / REGISTRO / OLVIDO DE CONTRASEÑA) -->
+  <!-- ================= MODALES ================= -->
+  <!-- MODAL CUENTA (LOGIN / REGISTRO) -->
   <div id="accountModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
       <button onclick="closeModal('accountModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
@@ -443,7 +451,6 @@
         <i class="fa-solid fa-circle-info mr-1"></i> Debes crear una cuenta o iniciar sesión para realizar esta acción.
       </p>
 
-      <!-- FORMULARIO REGISTRO -->
       <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Nombre Completo</label>
@@ -469,7 +476,6 @@
         </button>
       </form>
 
-      <!-- FORMULARIO LOGIN -->
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs hidden">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Correo Electrónico</label>
@@ -487,7 +493,6 @@
         </button>
       </form>
 
-      <!-- FORMULARIO OLVIDÉ CONTRASEÑA -->
       <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-3 text-xs hidden">
         <div class="bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800 space-y-1">
           <p class="font-bold">Restablecer acceso</p>
@@ -561,111 +566,226 @@
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR RESEÑA -->
-  <div id="postReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
-      <button onclick="closeModal('postReviewModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold">✕</button>
-      <div>
-        <h3 class="font-heading text-xl font-extrabold text-slate-900">Escribir una Reseña</h3>
-        <p class="text-xs text-slate-500">Comparte tu experiencia para orientar a otros estudiantes.</p>
-      </div>
-      <form onsubmit="handlePostReview(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Puntuación</label>
-          <select id="reviewRating" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none font-bold text-amber-500">
-            <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
-            <option value="4">⭐⭐⭐⭐ (Buena opción)</option>
-            <option value="3">⭐⭐⭐ (Regular)</option>
-            <option value="2">⭐⭐ (Poco recomendado)</option>
-            <option value="1">⭐ (Mala experiencia)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Tu Opinión</label>
-          <textarea id="reviewText" rows="4" required placeholder="¿Qué tal es la zona? ¿El ambiente de la casa? ¿El trato con el arrendador?" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-accent-500 text-white rounded-xl font-bold hover:shadow-lg transition">
-          Publicar Reseña
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ================= SCRIPT LOGICA Y BASE DE DATOS LOCAL ================= -->
   <script>
-    let propertiesData = [
-      {
-        id: 1,
-        title: "Habitación Amueblada en El Cangrejo",
-        status: "Disponible",
-        location: "El Cangrejo",
-        address: "Calle Eusebio A. Morales, Edif. Aurora Apto 2B",
-        price: 220,
-        type: "Individual",
-        phone: "60000000",
-        images: [
-          "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1000&q=80",
-          "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80",
-          "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80"
-        ],
-        services: ["Luz, Agua y WiFi incluido", "Amoblado", "Baño individual", "Aire Acondicionado"],
-        requirements: "Copia de cédula/pasaporte, matrícula universitaria vigente y depósito equivalente a medio mes."
-      },
-      {
-        id: 2,
-        title: "Cuarto Compartido - Vía Transístmica",
-        status: "Disponible",
-        location: "Transístmica",
-        address: "Vía Transístmica frente a la Puerta Principal",
-        price: 140,
-        type: "Compartido",
-        phone: "61111111",
-        images: [
-          "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1000&q=80",
-          "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80"
-        ],
-        services: ["Luz, Agua y WiFi incluido", "Baño compartido", "Acceso a Cocina"],
-        requirements: "Solo estudiantes activos. Pago puntual los 30 de cada mes."
-      },
-      {
-        id: 3,
-        title: "Estudio Estudiantil cerca de El Carmen",
-        status: "Disponible",
-        location: "El Carmen",
-        address: "Via Argentina, Edificio Estudiantil Central",
-        price: 235,
-        type: "Individual",
-        phone: "62222222",
-        images: [
-          "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1000&q=80"
-        ],
-        services: ["WiFi de alta velocidad", "Seguridad 24/7", "Luz y Agua"],
-        requirements: "Estudiante de universidad estatal o privada, carta de trabajo o referencia familiar."
-      },
-      {
-        id: 4,
-        title: "Habitación Económica Tumba Muerto",
-        status: "Disponible",
-        location: "Tumba Muerto",
-        address: "Urbanización Condado del Rey, Cerca de Universidades",
-        price: 155,
-        type: "Compartido",
-        phone: "63333333",
-        images: [
-          "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1000&q=80"
-        ],
-        services: ["Agua y Gas incluidos", "Internet básico", "Área de lavandería"],
-        requirements: "Cédula juvenil o de identidad panameña, récord policivo actualizado."
-      }
-    ];
-
+    // ==========================================
+    // CARGA DE DATOS DESDE LOCALSTORAGE
+    // ==========================================
+    let propertiesData = [];
     let recentlyViewedIds = [];
+    let favoriteIds = [];
+    let currentUser = JSON.parse(localStorage.getItem('unicuartos_user')) || null;
+    let currentDetailProperty = null;
 
-    document.addEventListener("DOMContentLoaded", () => {
+    // Cargar propiedades desde localStorage (sincronizado con index.html y paneles)
+    function loadProperties() {
+      // Intentar cargar desde unicuartos_catalog primero (más completo)
+      let catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+      
+      if (catalog.length > 0) {
+        propertiesData = catalog;
+      } else {
+        // Fallback a unicuartos_properties
+        propertiesData = JSON.parse(localStorage.getItem('unicuartos_properties') || '[]');
+      }
+      
+      // Si aún está vacío, usar datos de ejemplo
+      if (propertiesData.length === 0) {
+        propertiesData = [
+          {
+            id: 1,
+            title: "Habitación Amueblada en El Cangrejo",
+            status: "Disponible",
+            location: "El Cangrejo",
+            address: "Calle Eusebio A. Morales, Edif. Aurora Apto 2B",
+            price: 220,
+            type: "Individual",
+            phone: "60000000",
+            images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
+            services: ["Luz, Agua y WiFi incluido", "Amoblado", "Baño individual", "Aire Acondicionado"],
+            requirements: "Copia de cédula/pasaporte, matrícula universitaria vigente y depósito equivalente a medio mes.",
+            description: "Cómoda habitación individual totalmente amueblada en la mejor zona de El Cangrejo, a solo 5 minutos caminando de la Universidad de Panamá.",
+            publisher: "María Arrendadora",
+            verified: true
+          },
+          {
+            id: 2,
+            title: "Cuarto Compartido - Vía Transístmica",
+            status: "Alquilado",
+            location: "Transístmica",
+            address: "Vía Transístmica frente a la Puerta Principal",
+            price: 140,
+            type: "Compartido",
+            phone: "61111111",
+            images: ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80"],
+            services: ["Luz, Agua y WiFi incluido", "Baño compartido", "Acceso a Cocina"],
+            requirements: "Solo estudiantes activos. Pago puntual los 30 de cada mes.",
+            description: "Espacio compartido ideal para estudiantes económicos, a solo 3 minutos cruzando la vía de la UP.",
+            publisher: "Carlos Propietario",
+            verified: false
+          },
+          {
+            id: 3,
+            title: "Estudio Anexo en La Cresta",
+            status: "Disponible",
+            location: "La Cresta",
+            address: "La Cresta, Calle 3ra, Casa #12",
+            price: 280,
+            type: "Individual",
+            phone: "62222222",
+            images: ["https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80"],
+            services: ["Baño Propio", "Entrada Independiente", "WiFi High Speed", "Aire Acondicionado"],
+            requirements: "Ambiente tranquilo para estudio, preferiblemente estudiantes de posgrado.",
+            description: "Estudio anexo independiente con baño privado y entrada separada, perfecto para estudiantes que buscan privacidad.",
+            publisher: "Laura Arrendadora",
+            verified: true
+          }
+        ];
+        localStorage.setItem('unicuartos_catalog', JSON.stringify(propertiesData));
+      }
+      
+      // Cargar favoritos
+      favoriteIds = JSON.parse(localStorage.getItem('unicuartos_favorites') || '[]').map(f => f.id);
+      
       renderCatalog(propertiesData);
       renderRecentSection();
-    });
+      updateAuthNav();
+    }
 
+    // ==========================================
+    // FUNCIONES DE AUTENTICACIÓN (desde script.js)
+    // ==========================================
+    function updateAuthNav() {
+      const container = document.getElementById('authNavContainer');
+      if (!container) return;
+
+      if (currentUser) {
+        const isStudent = currentUser.role === 'estudiante';
+        const targetPage = isStudent ? 'panel_estudiante.html' : 'panel_propietario.html';
+        const roleIcon = isStudent ? 'fa-graduation-cap' : 'fa-house-user';
+
+        container.innerHTML = `
+          <div class="flex items-center gap-3">
+            <a href="${targetPage}" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
+              <i class="fa-solid ${roleIcon}"></i>
+              <span>Mi Panel</span>
+            </a>
+            <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-400 hover:text-rose-500 font-bold text-xs p-2 rounded-full transition">
+              <i class="fa-solid fa-right-from-bracket text-base"></i>
+            </button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="openModal('accountModal')" class="bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-user text-xs"></i>
+            <span>Ingresar</span>
+          </button>
+        `;
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('unicuartos_user');
+      currentUser = null;
+      updateAuthNav();
+      showToast('Has cerrado sesión exitosamente.');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      currentUser = {
+        name: document.getElementById('regName').value,
+        email: document.getElementById('regEmail').value,
+        role: document.getElementById('regRole').value
+      };
+      localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
+      closeModal('accountModal');
+      updateAuthNav();
+      showToast(`¡Bienvenido a UniCuartos, ${currentUser.name}!`);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      currentUser = {
+        name: email.split('@')[0],
+        email: email,
+        role: 'estudiante'
+      };
+      localStorage.setItem('unicuartos_user', JSON.stringify(currentUser));
+      closeModal('accountModal');
+      updateAuthNav();
+      showToast('Sesión iniciada correctamente.');
+    }
+
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail').value;
+      showToast(`Instrucciones enviadas a ${email}`);
+      closeModal('accountModal');
+      showForgotPassword(false);
+    }
+
+    function switchAuthTab(tab) {
+      const regForm = document.getElementById('registerForm');
+      const loginForm = document.getElementById('loginForm');
+      const regBtn = document.getElementById('tabRegisterBtn');
+      const loginBtn = document.getElementById('tabLoginBtn');
+
+      showForgotPassword(false);
+
+      if (tab === 'register') {
+        regForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        regBtn.className = 'w-1/2 py-2 text-brand-600 border-b-2 border-brand-600';
+        loginBtn.className = 'w-1/2 py-2 text-slate-400';
+      } else {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        loginBtn.className = 'w-1/2 py-2 text-brand-600 border-b-2 border-brand-600';
+        regBtn.className = 'w-1/2 py-2 text-slate-400';
+      }
+    }
+
+    function showForgotPassword(show) {
+      const loginForm = document.getElementById('loginForm');
+      const forgotForm = document.getElementById('forgotForm');
+      const tabsHeader = document.getElementById('authTabsHeader');
+
+      if (show) {
+        loginForm.classList.add('hidden');
+        tabsHeader.classList.add('hidden');
+        forgotForm.classList.remove('hidden');
+      } else {
+        forgotForm.classList.add('hidden');
+        tabsHeader.classList.remove('hidden');
+        loginForm.classList.remove('hidden');
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id)?.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id)?.classList.add('hidden');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+      
+      toastMsg.innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // ==========================================
+    // FUNCIONES DE FILTRADO Y RENDERIZADO
+    // ==========================================
     function filterRooms() {
       const locationVal = document.getElementById("filterLocation").value;
       const priceVal = document.getElementById("filterPrice").value;
@@ -690,6 +810,8 @@
 
     function renderCatalog(items) {
       const grid = document.getElementById("catalogGrid");
+      if (!grid) return;
+      
       grid.innerHTML = "";
 
       if (items.length === 0) {
@@ -700,17 +822,23 @@
       items.forEach(p => {
         const isAvailable = p.status === 'Disponible';
         const badgeColor = isAvailable ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white';
+        const isFav = favoriteIds.includes(p.id);
+        const favIconClass = isFav ? "fa-solid text-rose-500" : "fa-regular text-slate-400";
 
         const card = document.createElement("div");
         card.className = "bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col justify-between group cursor-pointer";
         card.innerHTML = `
           <div class="p-0">
             <div class="relative h-52 bg-slate-200 overflow-hidden">
-              <img src="${p.images[0]}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <img src="${p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'">
               <span class="absolute top-3 left-3 text-[11px] font-bold px-3 py-1 rounded-full ${badgeColor} shadow-md">
                 ${p.status}
               </span>
-              <span class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+              ${p.verified ? `<span class="absolute top-3 left-20 text-[11px] font-bold px-3 py-1 rounded-full bg-emerald-500 text-white shadow-md">✓ Verificado</span>` : ''}
+              <button onclick="event.stopPropagation(); toggleFavorite(${p.id})" class="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-md hover:scale-110 transition">
+                <i class="${favIconClass} fa-heart text-sm"></i>
+              </button>
+              <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                 $${p.price} / mes
               </span>
             </div>
@@ -720,17 +848,17 @@
               <h3 class="font-heading font-extrabold text-base text-slate-900 line-clamp-1 group-hover:text-brand-600 transition-colors">${p.title}</h3>
               
               <p class="text-xs text-slate-500 flex items-start gap-1.5">
-                <i class="fa-solid fa-location-dot text-brand-600 mt-0.5 shrink-0"></i>
-                <span class="line-clamp-1"><strong>Dirección:</strong> ${p.address}</span>
+                <i class="fa-solid fa-user text-brand-600 mt-0.5 shrink-0"></i>
+                <span>Publicado por: <strong>${p.publisher || 'Propietario'}</strong></span>
               </p>
 
-              <div class="bg-sky-50/70 p-3 rounded-2xl border border-sky-100 text-[11px] text-sky-950">
-                <strong class="text-sky-900 block mb-0.5 font-bold">📋 Requisitos:</strong>
-                <p class="line-clamp-2 leading-relaxed">${p.requirements || 'Sin requisitos específicos.'}</p>
-              </div>
+              <p class="text-xs text-slate-500 flex items-start gap-1.5">
+                <i class="fa-solid fa-location-dot text-brand-600 mt-0.5 shrink-0"></i>
+                <span class="line-clamp-1">${p.address || p.location}</span>
+              </p>
 
               <div class="flex flex-wrap gap-1 pt-1">
-                ${p.services.map(s => `<span class="bg-teal-50 text-teal-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-teal-100">${s}</span>`).join('')}
+                ${p.services && p.services.length > 0 ? p.services.slice(0, 3).map(s => `<span class="bg-teal-50 text-teal-700 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-teal-100">${s}</span>`).join('') : ''}
               </div>
             </div>
           </div>
@@ -746,40 +874,79 @@
       });
     }
 
+    // ==========================================
+    // FUNCIONES DE FAVORITOS
+    // ==========================================
+    function toggleFavorite(id) {
+      if (!currentUser) {
+        showToast('Inicia sesión para guardar favoritos.');
+        return;
+      }
+      
+      if (currentUser.role !== 'estudiante') {
+        showToast('Solo los estudiantes pueden guardar favoritos.');
+        return;
+      }
+      
+      const room = propertiesData.find(p => p.id === id);
+      if (!room) return;
+      
+      let favorites = JSON.parse(localStorage.getItem('unicuartos_favorites') || '[]');
+      const existsIndex = favorites.findIndex(f => f.id === id);
+      
+      if (existsIndex === -1) {
+        favorites.push({
+          id: room.id,
+          title: room.title,
+          price: `$${room.price} / mes`,
+          location: room.location,
+          type: room.type,
+          phone: room.phone || '50760000000',
+          image: room.images && room.images.length > 0 ? room.images[0] : null
+        });
+        favoriteIds.push(id);
+        showToast('❤️ Cuarto guardado en favoritos');
+      } else {
+        favorites.splice(existsIndex, 1);
+        favoriteIds = favoriteIds.filter(fid => fid !== id);
+        showToast('Cuarto removido de favoritos');
+      }
+      
+      localStorage.setItem('unicuartos_favorites', JSON.stringify(favorites));
+      
+      // Actualizar UI
+      renderCatalog(propertiesData);
+      if (currentDetailProperty) {
+        updateDetailFavoriteButton();
+      }
+    }
+
+    function toggleFavoriteDetail() {
+      if (currentDetailProperty) {
+        toggleFavorite(currentDetailProperty.id);
+      }
+    }
+
+    function updateDetailFavoriteButton() {
+      const icon = document.getElementById('detFavoriteIcon');
+      if (!icon || !currentDetailProperty) return;
+      
+      const isFav = favoriteIds.includes(currentDetailProperty.id);
+      if (isFav) {
+        icon.className = 'fa-solid fa-heart text-lg text-rose-500';
+      } else {
+        icon.className = 'fa-regular fa-heart text-lg text-slate-400';
+      }
+    }
+
+    // ==========================================
+    // FUNCIONES DE SELECCIÓN Y DETALLE
+    // ==========================================
     function selectProperty(p) {
       recentlyViewedIds = recentlyViewedIds.filter(id => id !== p.id);
       recentlyViewedIds.unshift(p.id);
+      currentDetailProperty = p;
       showDetailView(p);
-    }
-
-    function renderRecentSection() {
-      const section = document.getElementById("recentSection");
-      const grid = document.getElementById("recentCatalogGrid");
-      
-      if (recentlyViewedIds.length === 0) {
-        section.classList.add("hidden");
-        return;
-      }
-
-      section.classList.remove("hidden");
-      grid.innerHTML = "";
-
-      const recentItems = recentlyViewedIds.slice(0, 3).map(id => propertiesData.find(p => p.id === id)).filter(Boolean);
-
-      recentItems.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-all flex items-center gap-4 p-3 cursor-pointer group";
-        card.innerHTML = `
-          <img src="${p.images[0]}" class="w-16 h-16 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform">
-          <div class="overflow-hidden space-y-1">
-            <span class="text-[10px] font-bold text-teal-600 uppercase tracking-wide">${p.location}</span>
-            <h4 class="font-heading font-bold text-xs text-slate-900 line-clamp-1 group-hover:text-brand-600 transition-colors">${p.title}</h4>
-            <span class="text-xs font-extrabold text-slate-900">$${p.price} / mes</span>
-          </div>
-        `;
-        card.addEventListener("click", () => selectProperty(p));
-        grid.appendChild(card);
-      });
     }
 
     function showDetailView(p) {
@@ -790,46 +957,80 @@
       document.getElementById("detTitle").textContent = p.title;
       document.getElementById("detPrice").textContent = `$${p.price}`;
       document.getElementById("detLocationBadge").textContent = p.location;
-      document.getElementById("detAddress").textContent = p.address;
+      document.getElementById("detAddress").textContent = p.address || p.location;
       document.getElementById("detTypeBadge").textContent = p.type;
-      document.getElementById("detMainImage").src = p.images[0];
-      document.getElementById("detRequirements").textContent = p.requirements;
+      document.getElementById("detPublisherName").textContent = p.publisher || 'Propietario';
+      
+      // Descripción
+      document.getElementById("detDescription").textContent = p.description || p.desc || 'Sin descripción disponible.';
+      
+      // Imagen principal
+      const mainImg = document.getElementById("detMainImage");
+      mainImg.src = p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80';
+      mainImg.onerror = function() { this.src = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'; };
 
+      // Estado
       const statusBadge = document.getElementById("detStatusBadge");
       const isAvailable = p.status === 'Disponible';
       statusBadge.textContent = p.status;
       statusBadge.className = `absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md ${isAvailable ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`;
 
+      // Verificado
+      const verifiedBadge = document.getElementById("detVerifiedBadge");
+      if (p.verified) {
+        verifiedBadge.classList.remove('hidden');
+      } else {
+        verifiedBadge.classList.add('hidden');
+      }
+
+      // Requisitos
+      document.getElementById("detRequirements").textContent = p.requirements || 'Sin requisitos específicos.';
+
+      // Thumbnails
       const thumbContainer = document.getElementById("detThumbnails");
       thumbContainer.innerHTML = "";
-      p.images.forEach((imgSrc) => {
+      
+      const images = p.images && p.images.length > 0 ? p.images : ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'];
+      images.forEach((imgSrc) => {
         const thumb = document.createElement("div");
         thumb.className = "h-20 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer opacity-80 hover:opacity-100 transition-opacity shadow-sm";
-        thumb.innerHTML = `<img src="${imgSrc}" class="w-full h-full object-cover">`;
+        thumb.innerHTML = `<img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'">`;
         thumb.addEventListener("click", () => {
           document.getElementById("detMainImage").src = imgSrc;
         });
         thumbContainer.appendChild(thumb);
       });
 
+      // Servicios
       const servContainer = document.getElementById("detServicesContainer");
       servContainer.innerHTML = "";
-      p.services.forEach(s => {
-        servContainer.innerHTML += `
-          <div class="inline-flex items-center gap-2 bg-teal-50 text-teal-800 text-xs font-semibold px-3 py-1.5 rounded-xl border border-teal-100">
-            <i class="fa-solid fa-check text-teal-600"></i> ${s}
-          </div>
-        `;
-      });
+      if (p.services && p.services.length > 0) {
+        p.services.forEach(s => {
+          servContainer.innerHTML += `
+            <div class="inline-flex items-center gap-2 bg-teal-50 text-teal-800 text-xs font-semibold px-3 py-1.5 rounded-xl border border-teal-100">
+              <i class="fa-solid fa-check text-teal-600"></i> ${s}
+            </div>
+          `;
+        });
+      } else {
+        servContainer.innerHTML = `<span class="text-xs text-slate-400">Sin servicios especificados</span>`;
+      }
 
+      // WhatsApp
       const waBtn = document.getElementById("detWhatsappBtn");
-      waBtn.href = `https://wa.me/507${p.phone}?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20*${encodeURIComponent(p.title)}*%20ubicado%20en%20*${encodeURIComponent(p.location)}*.`;
+      const phone = p.phone || '60000000';
+      waBtn.href = `https://wa.me/507${phone}?text=Hola,%20estoy%20interesado%20en%20el%20anuncio:%20*${encodeURIComponent(p.title)}*%20ubicado%20en%20*${encodeURIComponent(p.location)}*.`;
+
+      // Actualizar botón de favorito en detalle
+      updateDetailFavoriteButton();
 
       renderRelatedPrices(p);
     }
 
     function renderRelatedPrices(currentProp) {
       const container = document.getElementById("detRelatedPrices");
+      if (!container) return;
+      
       container.innerHTML = "";
 
       const related = propertiesData.filter(item => item.id !== currentProp.id && Math.abs(item.price - currentProp.price) <= 60);
@@ -846,7 +1047,8 @@
 
       itemsToShow.slice(0, 3).forEach(p => {
         const diff = p.price - currentProp.price;
-        const diffText = diff > 0 ? `+$${diff} vs actual` : diff < 0 ? `-$${Math.abs(diff)} vs actual` : `Mismo precio`;
+        const diffText = diff > 0 ? `+$${diff}` : diff < 0 ? `-$${Math.abs(diff)}` : `Mismo precio`;
+        const diffColor = diff > 0 ? 'text-rose-500' : diff < 0 ? 'text-emerald-500' : 'text-amber-500';
         
         const card = document.createElement("div");
         card.className = "bg-slate-50 p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-teal-500 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group";
@@ -854,9 +1056,12 @@
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-teal-50 text-teal-700 border border-teal-100">${p.location}</span>
-              <span class="text-[10px] font-semibold text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">${diffText}</span>
+              <span class="text-[10px] font-semibold ${diffColor} bg-white px-2 py-0.5 rounded border border-slate-200">${diffText}</span>
             </div>
             <h4 class="font-heading font-bold text-sm text-slate-900 line-clamp-1 group-hover:text-teal-600 transition-colors">${p.title}</h4>
+            <p class="text-xs text-slate-500 flex items-center gap-1">
+              <i class="fa-solid fa-user text-[10px]"></i> ${p.publisher || 'Propietario'}
+            </p>
             <div class="flex items-baseline gap-1 pt-1">
               <span class="text-2xl font-extrabold text-slate-900">$${p.price}</span>
               <span class="text-xs text-slate-500">/ mes</span>
@@ -878,6 +1083,133 @@
       renderRecentSection();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    function renderRecentSection() {
+      const section = document.getElementById("recentSection");
+      const grid = document.getElementById("recentCatalogGrid");
+      
+      if (!section || !grid) return;
+
+      if (recentlyViewedIds.length === 0) {
+        section.classList.add("hidden");
+        return;
+      }
+
+      section.classList.remove("hidden");
+      grid.innerHTML = "";
+
+      const recentItems = recentlyViewedIds.slice(0, 3).map(id => propertiesData.find(p => p.id === id)).filter(Boolean);
+
+      recentItems.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-all flex items-center gap-4 p-3 cursor-pointer group";
+        card.innerHTML = `
+          <img src="${p.images && p.images.length > 0 ? p.images[0] : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'}" class="w-16 h-16 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform" onerror="this.src='https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'">
+          <div class="overflow-hidden space-y-1">
+            <span class="text-[10px] font-bold text-teal-600 uppercase tracking-wide">${p.location}</span>
+            <h4 class="font-heading font-bold text-xs text-slate-900 line-clamp-1 group-hover:text-brand-600 transition-colors">${p.title}</h4>
+            <span class="text-xs font-extrabold text-slate-900">$${p.price} / mes</span>
+          </div>
+        `;
+        card.addEventListener("click", () => selectProperty(p));
+        grid.appendChild(card);
+      });
+    }
+
+    // ==========================================
+    // PUBLICAR NUEVO ANUNCIO
+    // ==========================================
+    function handlePostRoom(e) {
+      e.preventDefault();
+      
+      const title = document.getElementById('roomTitle').value;
+      const price = document.getElementById('roomPrice').value;
+      const type = document.getElementById('roomType').value;
+      const location = document.getElementById('roomLocation').value;
+      const desc = document.getElementById('roomDesc').value;
+      const phone = document.getElementById('roomPhone').value;
+      
+      const publisher = currentUser ? currentUser.name : 'Propietario';
+
+      const newRoomData = {
+        id: Date.now(),
+        title,
+        price: parseInt(price),
+        type,
+        location,
+        desc,
+        phone,
+        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+        status: 'Disponible',
+        publisher: publisher,
+        verified: false,
+        services: ["Luz, Agua y WiFi incluido"],
+        address: location,
+        images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"],
+        requirements: "Estudiante activo de la UP",
+        description: desc
+      };
+
+      // Guardar en catálogo
+      let catalog = JSON.parse(localStorage.getItem('unicuartos_catalog') || '[]');
+      catalog.unshift(newRoomData);
+      localStorage.setItem('unicuartos_catalog', JSON.stringify(catalog));
+      
+      // También guardar en propiedades
+      let properties = JSON.parse(localStorage.getItem('unicuartos_properties') || '[]');
+      properties.unshift({
+        id: newRoomData.id,
+        title: title,
+        price: parseInt(price),
+        type: type,
+        location: location,
+        address: location,
+        requirements: "Estudiante activo de la UP",
+        phone: phone,
+        images: [newRoomData.image],
+        status: 'Disponible',
+        services: ["Luz, Agua y WiFi incluido"],
+        publisher: publisher,
+        verified: false,
+        description: desc
+      });
+      localStorage.setItem('unicuartos_properties', JSON.stringify(properties));
+
+      // Recargar datos
+      propertiesData = catalog;
+      renderCatalog(propertiesData);
+      closeModal('postRoomModal');
+      showToast('¡Anuncio publicado con éxito!');
+      e.target.reset();
+    }
+
+    // ==========================================
+    // INICIALIZACIÓN
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      loadProperties();
+      
+      // Verificar si hay un parámetro en la URL para mostrar un cuarto específico
+      const urlParams = new URLSearchParams(window.location.search);
+      const roomId = urlParams.get('room');
+      if (roomId) {
+        const room = propertiesData.find(p => p.id == roomId);
+        if (room) {
+          setTimeout(() => selectProperty(room), 300);
+        }
+      }
+    });
+
+    // Manejar clics en el overlay de modales
+    window.addEventListener("click", (e) => {
+      const modals = document.querySelectorAll(".fixed.inset-0");
+      modals.forEach(modal => {
+        if (e.target === modal) {
+          modal.classList.add("hidden");
+          document.body.style.overflow = "auto";
+        }
+      });
+    });
   </script>
 </body>
 </html>
